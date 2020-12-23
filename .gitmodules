@@ -7,3 +7,6 @@
 [submodule "www"]
 	path = www
 	url = https://github.com/wuhanstudio/main-page
+[submodule "focus"]
+	path = focus
+	url = https://github.com/wuhanstudio/focus-mainpage
