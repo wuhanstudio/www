@@ -1,0 +1,9 @@
+[submodule "app"]
+	path = app
+	url = https://github.com/wuhanstudio/app-mainpage
+[submodule "bicover"]
+	path = bicover
+	url = https://github.com/wuhanstudio/bicover-mainpage
+[submodule "www"]
+	path = www
+	url = https://github.com/wuhanstudio/main-page
