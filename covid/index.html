@@ -52,14 +52,14 @@
 
 <body>
     <video width="100%" controls="">
-        <source src="https://wuhanshare-1252843818.cos.ap-guangzhou.myqcloud.com/app/Advanced%20Programming%20CW.mp4" type="video/mp4">
+        <source src="AdvancedProgrammingCW.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     <div id="doc" class="markdown-body container-fluid"><h1 id="COVID-19"><a class="anchor hidden-xs" href="#COVID-19" title="COVID-19"><i class="fa fa-link"></i></a>COVID-19</h1><h2 id="Requirements"><a class="anchor hidden-xs" href="#Requirements" title="Requirements"><i class="fa fa-link"></i></a>Requirements</h2><ul>
 <li>Java</li>
 <li>JavaScript</li>
 <li>Chromium Compatible</li>
-</ul><h2 id="0-Demo"><a class="anchor hidden-xs" href="#0-Demo" title="0-Demo"><i class="fa fa-link"></i></a>0. Demo</h2><p><img src="https://wuhanshare-1252843818.cos.ap-guangzhou.myqcloud.com/struct.png" alt="overview"></p><p>这里有两个不同风格的监测系统，大家可以根据自己的审美风格完成大作业，只要能清晰的显示数据就可以了。</p><ul>
+</ul><h2 id="0-Demo"><a class="anchor hidden-xs" href="#0-Demo" title="0-Demo"><i class="fa fa-link"></i></a>0. Demo</h2><p><img src="struct.png" alt="overview"></p><p>这里有两个不同风格的监测系统，大家可以根据自己的审美风格完成大作业，只要能清晰的显示数据就可以了。</p><ul>
 <li><a href="http://covid19.wuhanstudio.team" target="_blank" rel="noopener">http://covid19.wuhanstudio.team</a></li>
 <li><a href="https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6" target="_blank" rel="noopener">Johns Hopkins</a></li>
 </ul><h2 id="1-Database-SQL"><a class="anchor hidden-xs" href="#1-Database-SQL" title="1-Database-SQL"><i class="fa fa-link"></i></a>1. Database (SQL)</h2><p>虽然可以直接抓丁香园或者CDC的数据，但是为了帮助大家体验 OOP (Object Oriented Programming) 大作业要求用 Java，所以还是需要把数据存到<strong>自己的数据库</strong>上。</p><p>具体用什么数据库和数据定义没有要求，SQL 和 nonSQL 都行。</p><ul>
@@ -89,7 +89,7 @@
 <li><a href="https://kubeless.io/docs/quick-start/" target="_blank" rel="noopener">https://kubeless.io/docs/quick-start/</a></li>
 </ul><h2 id="Serverless-function"><a class="anchor hidden-xs" href="#Serverless-function" title="Serverless-function"><i class="fa fa-link"></i></a>Serverless (function)</h2><p>FaaS (Function as a Service) 逐渐成了未来云服务的趋势，这门课程也介绍了 Erlang/Elixir (Functional Programming)，虽然 FaaS 并不一定需要遵从函数式编程，如果大家感兴趣也可以尝试一下 Serverless，但是<strong>并不做要求</strong>，只是作为<strong>加分项</strong>。</p><p>这里推荐 AWS Lambda，当然如果大家能用 k8s 搭建自己的 kubeless，knative 更好。</p><ul>
 <li>AWS Lambda</li>
-</ul><p>例如在腾讯云上可以添加一个云函数，实现获取最新肺炎数据的 API，下面的例子使用 Nodejs8.9 的运行环境，使用 API 网关触发：</p><p><img src="https://wuhanshare-1252843818.cos.ap-guangzhou.myqcloud.com/serverless.png" alt="腾讯云函数"></p><pre><code>const request = require('request')
+</ul><p>例如在腾讯云上可以添加一个云函数，实现获取最新肺炎数据的 API，下面的例子使用 Nodejs8.9 的运行环境，使用 API 网关触发：</p><p></p><pre><code>const request = require('request')
 
 //获取丁香园疫情数据
 async function getDxyData() {
@@ -220,7 +220,7 @@ exports.main_handler = async (event, context, callback) =&gt; {
 </div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
     </div>
     <video width="100%" controls="">
-        <source src="https://wuhanshare-1252843818.cos.ap-guangzhou.myqcloud.com/app/Orchestration.mp4" type="video/mp4">
+        <source src="Orchestration.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
