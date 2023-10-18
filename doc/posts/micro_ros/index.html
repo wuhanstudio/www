@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        MicroROS on RT-Thread - CodiMD
+    </title>
+    <link rel="icon" type="image/png" href="https://codimd.wuhanstudio.cc/favicon.png">
+    <link rel="apple-touch-icon" href="https://codimd.wuhanstudio.cc/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha256-H0KfTigpUV+0/5tn2HXC0CPwhhDhWgSawJdnFd0CGCo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fork-awesome/1.1.3/css/fork-awesome.min.css" integrity="sha256-ZhApazu+kejqTYhMF+1DzNKjIzP7KXu6AzyXcC1gMus=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github-gist.min.css" integrity="sha256-tAflq+ymku3Khs+I/WcAneIlafYgDiOQ9stIHH985Wo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,300italic,300|Source+Serif+Pro|Source+Code+Pro:400,300,500&subset=latin,latin-ext);.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{padding:0 1em;color:#777;border-left:.25em solid #ddd}.night .markdown-body blockquote{color:#bcbcbc}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.night .markdown-body h1,.night .markdown-body h2,.night .markdown-body h3,.night .markdown-body h4,.night .markdown-body h5,.night .markdown-body h6{color:#ddd}.markdown-body h1 .fa-link,.markdown-body h2 .fa-link,.markdown-body h3 .fa-link,.markdown-body h4 .fa-link,.markdown-body h5 .fa-link,.markdown-body h6 .fa-link{color:#000;vertical-align:middle;visibility:hidden;font-size:16px}.night .markdown-body h1 .fa-link,.night .markdown-body h2 .fa-link,.night .markdown-body h3 .fa-link,.night .markdown-body h4 .fa-link,.night .markdown-body h5 .fa-link,.night .markdown-body h6 .fa-link{color:#fff}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .fa-link,.markdown-body h2:hover .anchor .fa-link,.markdown-body h3:hover .anchor .fa-link,.markdown-body h4:hover .anchor .fa-link,.markdown-body h5:hover .anchor .fa-link,.markdown-body h6:hover .anchor .fa-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{margin-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.night .markdown-body table tr{background-color:#5f5f5f}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.night .markdown-body table tr:nth-child(2n){background-color:#4f4f4f}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:.2em 0;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.night .markdown-body code,.night .markdown-body tt{color:#eee;background-color:hsla(0,0%,90.2%,.36)}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\A0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.markdown-body kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid;border-color:#ccc #ccc #bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important}.markdown-body pre{border:inherit!important}.night .markdown-body pre{filter:invert(100%)}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-webkit-inline-flex;display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.night .markdown-body .gist table tr:nth-child(2n){background-color:#ddd}.markdown-body code[data-gist-id]{background:none;padding:0;filter:invert(100%)}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram,.markdown-body pre.vega{text-align:center;background-color:inherit;border-radius:0;white-space:inherit}.night .markdown-body pre.graphviz .graph>polygon{fill:#333}.night .markdown-body pre.mermaid .sectionTitle,.night .markdown-body pre.mermaid .titleText,.night .markdown-body pre.mermaid text{fill:#fff}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code,.markdown-body pre.vega>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg,.markdown-body pre.vega>svg{max-width:100%;height:100%}.night .markdown-body .abc path{fill:#eee}.night .markdown-body .abc path.note_selected{fill:##4DD0E1}.night tspan{fill:#fefefe}.night pre rect{fill:transparent}.night pre.flow-chart path,.night pre.flow-chart rect{stroke:#fff}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p,.markdown-body .alert>ul{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body img{background-color:transparent}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;-webkit-transition:opacity .2s;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;-webkit-transition:opacity .2s;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.MJX_Assistive_MathML{display:none}.ui-infobar{position:relative;z-index:2;max-width:758px;margin-top:25px;margin-bottom:-25px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:10000}.ui-toc-label{opacity:.3;background-color:#ccc;border:none}.ui-toc-label,.ui-toc .open .ui-toc-label{-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc-dropdown{margin-top:23px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child>ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.night .ui-toc-dropdown .nav>li>a:focus,.night .ui-toc-dropdown .nav>li>a:hover{color:#fff;border-left-color:#fff}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.night .ui-toc-dropdown .nav>.active:focus>a,.night .ui-toc-dropdown .nav>.active:hover>a,.night .ui-toc-dropdown .nav>.active>a{color:#fff;border-left:2px solid #fff}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.night .ui-toc-dropdown .nav>li>a{color:#aaa}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,"\30D2\30E9\30AE\30CE\89D2\30B4   Pro W3",Osaka,Meiryo,"\30E1\30A4\30EA\30AA",MS Gothic,"\FF2D\FF33   \30B4\30B7\30C3\30AF",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,"\FF2D\FF33   \FF30\30B4\30B7\30C3\30AF",sans-serif}.markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang TC,Microsoft JhengHei,"\5FAE\8EDF\6B63\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,"\5FAE\8EDF\6B63\9ED1UI",sans-serif}.markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang SC,Microsoft YaHei,"\5FAE\8F6F\96C5\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,"\5FAE\8F6F\96C5\9ED1UI",sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:3px;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:contain}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}small span{line-height:22px}small .dropdown{display:inline-block}small .dropdown a:focus,small .dropdown a:hover{text-decoration:none}.unselectable{-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}.night .navbar{background:#333;border-bottom-color:#333;color:#eee}.night .navbar a{color:#eee}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;font-family:Source Sans Pro,Helvetica,Arial,sans-serif;letter-spacing:.025em}.focus,:focus{outline:none!important}::-moz-focus-inner{border:0!important}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid"><h1 id="MicroROS-on-RT-Thread"><a class="anchor hidden-xs" href="#MicroROS-on-RT-Thread" title="MicroROS-on-RT-Thread"><i class="fa fa-link"></i></a>MicroROS on RT-Thread</h1><ul>
+<li><a href="#microros-on-rt-thread">MicroROS on RT-Thread</a></li>
+<li><a href="#--">前言</a>
+<ul>
+<li><a href="#ros---">ROS 简介</a></li>
+<li><a href="#rt-thread---ros">RT-Thread 与 ROS</a></li>
+<li><a href="#rosserial---micro-ros----">rosserial 和 micro_ros 的区别</a></li>
+</ul>
+</li>
+<li><a href="#rt-thread----kobuki----">RT-Thread 控制 Kobuki 机器人</a>
+<ul>
+<li><a href="#rt-thread----esp8266---">RT-Thread 使用 ESP8266 联网</a></li>
+<li><a href="#ros1--rosserial-">ROS1 (rosserial)</a></li>
+<li><a href="#ros2--micro-ros-">ROS2 (micro_ros)</a></li>
+</ul>
+</li>
+<li><a href="#--">总结</a></li>
+<li><a href="#references">References</a></li>
+</ul><img src="https://doc.wuhanstudio.cc/micro_ros/rtt_uros.png"><h1 id="前言"><a class="anchor hidden-xs" href="#前言" title="前言"><i class="fa fa-link"></i></a>前言</h1><h2 id="ROS-简介"><a class="anchor hidden-xs" href="#ROS-简介" title="ROS-简介"><i class="fa fa-link"></i></a>ROS 简介</h2><p>最初 2007 年左右，斯坦福机器人实验室的两个博士生，Eric Berger 和 Keenan Wyrobek 发现身边的同学们对机器人开发有一种望而却步的感觉。因为机器人本身是一个跨专业的学科，做软件的同学们不太了解机械结构，不熟悉机器人的设计装配流程；做算法的同学们又不太了解嵌入式，不太清楚底层传感器驱动的工作原理，于是合作起来会碰到很多障碍。为了解决这个问题，他们设计了最初的 Robot Operating System (ROS)，极大地提高了团队合作效率。</p><p>由于 ROS 简单好用上手快，从 2007 年 ROS 发布第一版并举行第一届全球 ROS Conf，到 2012 年底第五届会议，使用 ROS 的实验室已经遍布全球了。2013 年 ROS 就由 Open Source Robotics Foundation (OSRF) 接手维护了。另一方面，2005 年斯坦福拿下 DARPA 无人驾驶挑战赛冠军一举成名，随后 ROS 也诞生在斯坦福，很快在无人驾驶领域 ROS 也得到了广泛应用，并且 2018 DARPA 无人驾驶挑战赛专门设置了 ROS 赛道，参赛队伍需要在 ROS Gazebo 模拟环境下测试自己的无人车并得到评分。</p><img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Stanley2.JPG" width="100%"><p>虽然 Robot Operating System (ROS) 取名为机器人操作系统，但其实它并不是一个操作系统，而是在 Linux 之上开发的一系列软件包。为了说明 ROS 开发的简单，高效和稳定，这里简单介绍一下 ROS 很重要的4个设计：</p><ul>
+<li>
+<p>Message (消息)：有的时候可能会苦恼传感器的信息应该以什么样的数据结构发送出去，于是 ROS 定义好了各种常见传感器的数据格式，有了模板只需要填充内容就可以了，这样节省了自定义数据结构的时间。另一方面，也可以自己写一个 .msg 文件定义新的数据结构，ROS 就可以自动生成对应的头文件。这和 Google 的 protobuf 非常相似，定义数据结构，就可以自动生成源码。总而言之，<strong>ROS 的一个消息 (message) 也就是想要发送出去的一个数据包</strong>。</p>
+</li>
+<li>
+<p>Topic (话题)：定义好了数据结构，如何把数据稳定的发送出去，稳定接收也是个问题。一对一的发送可能比较简单，但是如果多个算法需要同一个传感器输入，同一个算法又需要不同传感器输入，很快数据同步就变得棘手了。于是 ROS 采用了发布 (publish) - 订阅 (subscribe) 的模式，比如用 ROS 预先定义好的数据结构发送图像数据，发布出去的图像信息就可以在 /camera 这个话题下找到，所有订阅了这个话题的节点都会收到消息。<strong>相当于我们把消息发给报社，所有订了报纸的人就会收到消息，这样我们只管发消息就是了</strong>，剩下的 ROS 会保证所有节点都收到同步的消息。</p>
+</li>
+</ul><p><img src="https://docs.ros.org/en/foxy/_images/Topic-MultiplePublisherandMultipleSubscriber.gif" alt=""></p><ul>
+<li>
+<p>Node (节点)：像前面说的那样，消息发布出去后，ROS会保证所有订阅了这个话题的节点都会收到同步的消息。于是<strong>一个节点的作用通常就是收一些消息，做一些处理，可能再发布一些新的消息</strong>。比如人脸检测的节点，可能会订阅图像相关的话题，识别完再告诉其他节点自己识别的结果。通常，<strong>一个节点只完成一件事情</strong>，例如人脸识别的节点就只做人脸识别，不会同时又做摔倒检测。这样一个节点只处理一个比较小的任务，再合作实现更大的目标。顺便一提，<strong>一个节点不等于一台电脑</strong>，因为一台电脑如果性能比较强，完全可以部署好几个节点，这样也充分利用资源。</p>
+</li>
+<li>
+<p>Service (服务)：一方面节点可以通过订阅消息获得需要的信息，另一方面节点之间也可以通讯。例如目标追踪的节点，可能先需要调用目标检测节点的服务，知道目标在哪再去追踪。所以服务就是字面上的意思，每个节点可以提供一些服务供其他节点调用。</p>
+</li>
+</ul><p><img src="https://software.intel.com/content/dam/develop/external/us/en/images/build-autonomous-mobile-robot-intel-realsense-camera-ros-sawr-fig08-746963.png" alt=""></p><p>于是有了 ROS 之后，做嵌入式的同学只需要把传感器信息 (message) 发布出去，做算法的同学订阅自己需要的话题 (topic)，作为算法输入，再发布对应的输出。这样每个同学只用专心维护自己的节点，确保自己节点的输入输出正确，整个系统就能正常运作了。</p><hr><p>除了软件设计，前面提到的 ROS Gazebo 仿真环境也极大地加快了迭代过程，在真正的机械臂加工装配之前，先在模拟环境确保可以实现预期的运动，也避免了不必要的试错过程。</p><p><img src="https://doc.wuhanstudio.cc/micro_ros/gazebo.gif" alt=""></p><p>当然，Gazebo 也可以和实际的机器人连接进行联合调试 [1]：</p><p><img src="https://doc.wuhanstudio.cc/micro_ros/gazebo_co.gif" alt=""></p><hr><h2 id="RT-Thread-与-ROS"><a class="anchor hidden-xs" href="#RT-Thread-与-ROS" title="RT-Thread-与-ROS"><i class="fa fa-link"></i></a>RT-Thread 与 ROS</h2><p>那么问题来了，前面提到 ROS 是在 Linux 上运行的一套软件框架，Linux 本身并不是实时系统，机器人一些对实时性要求比较高的任务并不太适合用 Linux，而 RT-Thread 虽然是实时操作系统（RTOS），但毕竟 MCU 的资源有限，并不能直接运行完整的 ROS。</p><p>于是，通常的做法是利用 Linux 丰富的软件包实现一些顶层算法，而 RT-Thread 则负责实时控制相关的任务，它们之间的通信就是后面会介绍到的 rosserial 和 micro_ros。</p><p><img src="https://atadiat.com/wp-content/uploads/2018/11/ROS-motor-controller.jpg" alt="image alt"></p><h2 id="rosserial-和-micro_ros-的区别"><a class="anchor hidden-xs" href="#rosserial-和-micro_ros-的区别" title="rosserial-和-micro_ros-的区别"><i class="fa fa-link"></i></a>rosserial 和 micro_ros 的区别</h2><p>它们共同的目标都是为了把 MCU 接入 ROS，使得 MCU 能和 ROS 通信，并且在 MCU 上调用 ROS 的 API，<strong>主要区别就在于 rosserial 是针对 ROS1，而 micro_ros 是针对 ROS2</strong> [2]。</p><p>第一代的 ROS 发展很多年后，当然也暴露出很多设计不合理的地方，比如有多个 ROS 主机的时候，需要设置 ROS_MASTER_URI 和 ROS_HOST_NAME 环境变量，帮助 ROS Master 找到不同的主机的 IP。一旦主机变多，IP 地址又不太固定的时候就会变得很麻烦，如果能让 ROS 自动发现主机就会方便很多。为了解决第一代 ROS 的历史遗留问题，并且添加新功能，OSRF 发现这会造成新的 ROS 破坏性地不兼容以前的版本，于是他们干脆就直接宣布进入第二代 ROS，重新再开发一套新的 ROS，这也就是 ROS2。</p><p>新一代的 ROS2 使用 Data Distribution Service (DDS) 通信，可以自动发现主机，这样分布式的系统设计就更加方便了，但是 DDS 并不算是一个轻量级的框架，如果要让 MCU 接入 DDS 必然需要足够的硬件资源。然而 ROS2 主要针对的是 64 位的中高端平台，MCU 并不是 ROS2 的主要支持对象，以至于第一代的 rosserial 到了第二代也基本放弃维护了。尽管如此，还是有不少开发者希望能让 MCU 接入 ROS2，直接在 MCU 上调用 ROS2 的 API，于是最终还是有了 Micro ROS。虽然 Micro ROS 借助 Micro XRCE-DDS 实现了轻量级的 DDS，但是<strong>至少还是需要一个 32 位的中端 MCU</strong>，不像第一代的 rosserial 那样可以运行在 8 位的低端 MCU 上。</p><h1 id="RT-Thread-控制-Kobuki-机器人"><a class="anchor hidden-xs" href="#RT-Thread-控制-Kobuki-机器人" title="RT-Thread-控制-Kobuki-机器人"><i class="fa fa-link"></i></a>RT-Thread 控制 Kobuki 机器人</h1><p>前面介绍了 ROS1/ROS2，也介绍了 rosserial (ROS1) 和 micro_ros (ROS2) 的区别，现在 RT-Thread 已经有了 rosserial 和 micro_ros 软件包分别能和 ROS1/ROS2 通信，同时也有 Kobuki 机器人底盘软件包 [5] 和激光雷达 rplidar 软件包 [6]，应当是可以跳过树莓派，直接用 RT-Thread 做一个 SLAM 机器人。顺便一提，<strong>rosserial 支持串口和 TCP 通信，micro_ros 则支持串口和 UDP 通信</strong>；rosserial 只支持 C++，而 micro_ros 支持 C/C++。</p><img src="https://www.tegakari.net/wp-content/uploads/2016/10/kobuki_img-640x381.jpg" width="50%"><p>下面就以 RT-Thread 配合 ROS 控制 Kobuki 机器人为例，分别介绍如何在 RT-Thread 上和 ROS1 (rosserial)，ROS2 (micro_ros) 通信，并且下面的例子都是以无线 (Wifi) 为例，这样就可以不需要树莓派，运行 RT-Thread 的 MCU 直接接入 ROS 了。<strong>顺便一提，下面的操作只要确保有3个串口，用什么开发板都可以。</strong>，当然，如果不需要 RTT 控制台就只需要2个了。</p><p><img src="https://doc.wuhanstudio.cc/micro_ros/rtt_ros.jpg" alt=""></p><h2 id="RT-Thread-使用-ESP8266-联网"><a class="anchor hidden-xs" href="#RT-Thread-使用-ESP8266-联网" title="RT-Thread-使用-ESP8266-联网"><i class="fa fa-link"></i></a>RT-Thread 使用 ESP8266 联网</h2><p>无论是 rosserial (ROS1)，还是 micro_ros (ROS2)，联网部分都是一样的，这里就以 ESP8266 的 AT 固件联网为例。当然，用以太网也是可以的。</p><p>在开始 RT-Thread 开发之前，需要确保用来联网的 ESP8266 是使用的 AT 固件，固件可以在这里下载 (ai-thinker_esp8266_at_firmware_dout_v1.5.4.1-a_20171130.rar)：</p><p><a href="https://docs.ai-thinker.com/en/%E5%9B%BA%E4%BB%B6%E6%B1%87%E6%80%BB" target="_blank" rel="noopener">https://docs.ai-thinker.com/en/固件汇总</a></p><p>把 ESP8266 的串口连接到电脑以后，拉低 GPIO0 复位进入固件下载模式，这样 ESP8266 就可以处理 AT 指令了：</p><pre><code>$ esptool.exe --port com5 erase_flash
+$ esptool.exe --port com5 write_flash --flash_mode dout 0 Ai-Thinker_ESP8266_DOUT_8Mbit_v1.5.4.1-a_20171130.bin
+</code></pre><p>把 ESP8266 和自己的开发板串口 (UART2) 连接上之后，根据自己的开发板型号，在 RT-Thread Studio 里新建项目。前面提到我们需要3个串口，所以在 driver/board.h 里需要打开三个串口，一个用作控制台，一个连接 ESP8266，最后一个和 Kobuki 机器人通信：</p><pre><code># MSH Console
+#define BSP_USING_UART1
+#define BSP_UART1_TX_PIN       "PA9"
+#define BSP_UART1_RX_PIN       "PA10"
+
+# ESP8266
+#define BSP_USING_UART2
+#define BSP_UART2_TX_PIN       "PA2"
+#define BSP_UART2_RX_PIN       "PA3"
+
+# Kobuki Robot
+#define BSP_USING_UART3
+#define BSP_UART3_TX_PIN       "PB10"
+#define BSP_UART3_RX_PIN       "PB11"
+</code></pre><p>接下来在 RT-Thread Studio 里面添加 AT_Device 软件包：</p><p><img src="https://doc.wuhanstudio.cc/micro_ros/rtt_at.jpg" alt=""></p><p>并且双击软件包修改配置选项，选择自己的 wifi 模块，配置 WIFI SSID 和密码，选择 UART2 作为通信接口：</p><p><img src="https://doc.wuhanstudio.cc/micro_ros/rtt_at_conf.jpg" alt=""></p><p>保存配置编译，如果一切正常的话，RT-Thread 上电后会自动连接 WIFI，并且可以 ping 通外部主机：</p><pre><code> \ | /
+- RT -     Thread Operating System
+ / | \     4.0.2 build Jun 14 2021
+ 2006 - 2019 Copyright by rt-thread team
+[I/sal.skt] Socket Abstraction Layer initialize success.
+[I/at.clnt] AT client(V1.3.0) on device uart2 initialize success.
+msh &gt;[I/at.dev.esp] esp0 device wifi is connected.
+[I/at.dev.esp] esp0 device network initialize successfully.
+[E/at.clnt] execute command (AT+CIPDNS_CUR?) failed!
+[W/at.dev.esp] please check and update esp0 device firmware to support the "AT+CIPDNS_CUR?" cmd.
+[E/at.clnt] execute command (AT+CIPDNS_CUR?) failed!
+[W/at.dev.esp] please check and update esp0 device firmware to support the "AT+CIPDNS_CUR?" cmd.
+[E/at.skt] AT socket (0) receive timeout (2000)!
+
+msh &gt;ping rt-thread.org
+32 bytes from 118.31.15.152 icmp_seq=0 time=242 ms
+32 bytes from 118.31.15.152 icmp_seq=1 time=245 ms
+32 bytes from 118.31.15.152 icmp_seq=2 time=241 ms
+32 bytes from 118.31.15.152 icmp_seq=3 time=245 ms
+
+msh &gt;
+</code></pre><p>当然，这一部分联网的操作也可以参照 RT-Thread 官网的文档：</p><p><a href="https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/application-note/components/at/an0014-at-client" target="_blank" rel="noopener">https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/application-note/components/at/an0014-at-client</a></p><p>最后我们把 Kobuki 机器人的串口和 RT-Thread 开发板的串口 (UART3) 接上，在 RTT Studio 软件包里添加 Kobuki：</p><p><img src="https://doc.wuhanstudio.cc/micro_ros/rtt_kobuki.jpg" alt=""></p><p>并双击软件包配置 Kobuki 通信接口为 uart3 就可以准备对接 ROS 了。</p><p><img src="https://doc.wuhanstudio.cc/micro_ros/rtt_kobuki_conf.jpg" alt=""></p><h2 id="ROS1-rosserial"><a class="anchor hidden-xs" href="#ROS1-rosserial" title="ROS1-rosserial"><i class="fa fa-link"></i></a>ROS1 (rosserial)</h2><p>第一代 ROS 支持 串口 和 TCP 通信，这里以 TCP 为例，在 RT-Thread Studio 先添加软件包：</p><p><img src="https://doc.wuhanstudio.cc/micro_ros/rtt_rosserial.jpg" alt=""></p><p>双击软件包后配置使用 TCP 连接并且添加 Kobuki 机器人的例程：</p><p><img src="https://doc.wuhanstudio.cc/micro_ros/rtt_rosserial_conf.jpg" alt=""></p><p>完整的代码在 Github 上面都有，所以这里主要解释 rosserial 的核心初始化代码。在 MCU 上的初始化和在 PC 上初始化几乎是一模一样的，就是首先 <code>setConnection()</code> 定义 ROS Master 的 IP 地址和端口，接下来 <code>initNode()</code> 初始化节点，最后订阅 <code>/cmd_vel</code> 用来接收电脑传过来的控制信息，并且设置 Kobuki 的速度。</p><pre><code>static ros::Subscriber&lt;geometry_msgs::Twist&gt; sub("cmd_vel", messageCb );
+
+static void rosserial_kobuki_thread_entry(void *parameter)
+{
+    // Please make sure you have network connection first
+    // Set ip address and port
+    nh.getHardware()-&gt;setConnection("192.168.199.100", 11411);
+
+    nh.initNode();
+    nh.subscribe(sub);
+    while (1)
+    {
+        nh.spinOnce();
+        rt_thread_mdelay(500);
+    }
+}
+</code></pre><p>一旦收到 PC 传来的控制信息，在回调函数里更新线性运动的速度，和旋转角速度：</p><pre><code>static void messageCb( const geometry_msgs::Twist&amp; twist_msg)
+{
+    linear_x  = twist_msg.linear.x;
+    angular_z = twist_msg.angular.z;
+}
+</code></pre><p>当然，Kobuki 线程里会不停地发送控制命令，因为<strong>Kobuki 底盘的特点是，一旦一段时间没有收到命令，机器人就会停止运动</strong>，所以我们需要不停地发送控制命令。</p><pre><code>static void kobuki_entry(void *parameter)
+{
+    kobuki_init(&amp;robot);
+    while(1)
+    {
+        rt_thread_mdelay(100);
+        kobuki_set_speed(linear_x, angular_z);
+    }
+    kobuki_close(&amp;robot);
+}
+</code></pre><p>当然，既然我们是远程控制，当然不可能用串口连到 RTT 控制台输入命令启动机器人，所以需要在 main.cpp 里面自动启动任务。</p><pre><code>#include &lt;rtthread.h&gt;
+#include &lt;ros.h&gt;
+
+int main(void)
+{
+    extern int rosserial_kobuki_control(int argc, char **argv);
+    rt_thread_mdelay(10000);
+    rosserial_kobuki_control(0, 0);
+}
+</code></pre><p>需要注意的是，这里主函数是 <strong>main.cpp</strong>，因为<strong>rosserial 只支持 C++</strong>。掐指一算，rosserial 相关的代码还不到 10 行，所以这也体现了 ROS 简单好用的特点。最后还有一点，<strong>之前 rosserial 有一个 1Hz 的 bug，导致系统响应非常缓慢，这里要感谢 zhengyangliu 的 PR， 现在已经修复了</strong>，整体 rosserial 使用 串口 和 TCP 都非常稳定（然而，ESP8266 本身不是很稳定）。</p><p>RT-Thread 相关的代码就结束了，当然我们还需要启动 ROS 主节点，这里我就用 docker 镜像了，把需要的端口映射出来：</p><pre><code>$ docker run -p 11411:11411 -it helloysd/rosserial:noetic /bin/bash
+</code></pre><p>在 <strong>docker 容器的 bash</strong> 里面安装相关软件包并启动 ROS Serial：</p><pre><code>$ apt update
+$ apt install curl
+$ curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+$ apt update
+$ apt install ros-noetic-teleop-twist-keyboard ros-noetic-rosserial-python
+$ rosrun rosserial_python serial_node.py tcp
+</code></pre><p>如果一切顺利的话会看到 RTT 节点连接上来：</p><pre><code>root@29bd821af356:/# rosrun rosserial_python serial_node.py tcp
+[INFO] [1624089042.689792]: ROS Serial Python Node
+[INFO] [1624089042.693095]: Fork_server is: False
+[INFO] [1624089042.693884]: Waiting for socket connections on port 11411
+[INFO] [1624089042.694750]: Waiting for socket connection
+[INFO] [1624089055.564072]: Established a socket connection from 172.17.0.1 on port 55784
+[INFO] [1624089055.565926]: calling startSerialClient
+[INFO] [1624089057.674819]: Requesting topics...
+[INFO] [1624089229.750517]: Note: subscribe buffer size is 512 bytes
+[INFO] [1624089229.751418]: Setup subscriber on cmd_vel [geometry_msgs/Twist]
+</code></pre><p>终于可以使用 ROS 的 teleop 软件包用键盘远程控制 Kobuki 机器人了：</p><pre><code>$ rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+</code></pre><p><img src="https://doc.wuhanstudio.cc/micro_ros/rtt_kobuki.gif" alt=""></p><h2 id="ROS2-micro_ros"><a class="anchor hidden-xs" href="#ROS2-micro_ros" title="ROS2-micro_ros"><i class="fa fa-link"></i></a>ROS2 (micro_ros)</h2><p>前面提到，第二代 ROS 主机之间的通信是建立在 DDS/RTPS 之上的，不过这些不需要自己实现，可以直接在 RT-Thread Studio 里面添加 micro_ros 软件包：</p><p><img src="https://doc.wuhanstudio.cc/micro_ros/rtt_microros.jpg" alt=""></p><p>几乎同样的流程，双击软件包之后选择通信方式为 UDP，根据自己的开发板选择不同的架构，因为 micro_ros 相关的库是预先编译好为 libmicroros.a 的，并且现在支持的有 Cortex M0，Cortex M3，Cortex M4，Cortex M7，如果是其他架构的话，就需要在 extras/library_generation 下添加相关的编译文件，重新编译对应架构的库文件。另一方面，默认编译库文件用的是 gcc 5.4.1，和 RTT Studio 的编译器版本一致也是嵌入式最常用的版本，如果是更新版本的 gcc 或者 Keil 等其他编译器，也需要重新生成 libmicroros.a。</p><p>当然，选择了 Kobuki 的例程之后，我们也需要指定 Kobuki 的串口 UART3。</p><p><img src="https://doc.wuhanstudio.cc/micro_ros/rtt_microros_conf.jpg" alt=""></p><p>同样的，例程默认是把相关的任务导出为命令，我们在机器人上电后不可能每次都连上串口在 RTT 控制台下面启动任务，所以需要在 main.c 里面自动启动相关的任务：</p><pre><code>#include &lt;rtthread.h&gt;
+
+int main(void)
+{
+    extern int microros_kobuki_control(int argc, char **argv);
+    rt_thread_mdelay(10000);
+    microros_kobuki_control(0, (void*)0);
+}
+</code></pre><p>这里介绍一下 micro_ros 的启动流程，先设置 micro_ros client 的 IP 地址，UPD 端口号，在启动注册相关的节点，最后订阅自己需要的话题 (topic)，启动 executor 设置相关的回调函数就可以了。</p><pre><code>set_microros_udp_transports("192.168.199.100", 9999);
+
+allocator = rcl_get_default_allocator();
+
+// create init_options
+if (rclc_support_init(&amp;support, 0, NULL, &amp;allocator) != RCL_RET_OK)
+{
+    rt_kprintf("[micro_ros] failed to initialize\n");
+    return;
+};
+
+// create node
+if (rclc_node_init_default(&amp;node, "micro_ros_rtt_sub_twist", "", &amp;support) != RCL_RET_OK)
+{
+    rt_kprintf("[micro_ros] failed to create node\n");
+    return;
+}
+
+// create subscriber
+rclc_subscription_init_default(
+  &amp;subscriber,
+  &amp;node,
+  ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, Twist),
+  "cmd_vel");
+
+// create executor
+rclc_executor_init(&amp;executor, &amp;support.context, 1, &amp;allocator);
+rclc_executor_add_subscription(&amp;executor, &amp;subscriber, &amp;msg, &amp;kobuki_callback, ON_NEW_DATA);
+</code></pre><p>每当收到新的消息时候，就会在回调函数里更新机器人的控制信息。</p><pre><code>//twist message cb
+static void kobuki_callback(const void *msgin) {
+    const geometry_msgs__msg__Twist * msg = (const geometry_msgs__msg__Twist *)msgin;
+    linear_x = msg-&gt;linear.x;
+    angular_z = msg-&gt;angular.z;
+}
+</code></pre><p>同样的，Kobuki 机器人需要不停地发送控制命令，一旦一段时间没有收到控制命令，Kobuki 就会自动停下来，这也是一种保护机制。</p><pre><code>static void kobuki_entry(void *parameter)
+{
+    kobuki_init(&amp;robot);
+    while(1)
+    {
+        rt_thread_mdelay(100);
+        kobuki_set_speed(linear_x, angular_z);
+    }
+    kobuki_close(&amp;robot);
+}
+
+static void microros_kobuki_entry(void *parameter)
+{
+    while(1)
+    {
+        rt_thread_mdelay(100);
+        rclc_executor_spin_some(&amp;executor, RCL_MS_TO_NS(100));
+    }
+}
+</code></pre><p>RT-Thread 开发完成之后，最后当然还是需要在电脑上启动 micro_ros client，这里我依旧使用 Docker：</p><pre><code>$ docker run -it -p 9999:9999/udp --privileged microros/micro-ros-agent:foxy udp4 -p 9999
+</code></pre><p>启动 client 之后我们就可以让 RTT 连接上了：</p><pre><code> \ | /
+- RT -     Thread Operating System
+ / | \     4.0.4 build Jun  9 2021
+ 2006 - 2021 Copyright by rt-thread team
+msh &gt;
+msh &gt;microros_pub_int32
+[micro_ros] node created
+[micro_ros] publisher created
+[micro_ros] timer created
+[micro_ros] executor created
+[micro_ros] New thread mr_pubint32
+</code></pre><p>如果一切正常，我们就可以在 client 的输出里看到客户端的连接信息：</p><pre><code>[1623057529.937043] info     | TermiosAgentLinux.cpp | init                     | running...             | fd: 4
+[1623057529.937150] info     | Root.cpp           | set_verbose_level        | logger setup           | verbose_level: 4
+[1623057541.764331] info     | Root.cpp           | create_client            | create                 | client_key: 0x6F7B427A, session_id: 0x81
+[1623057541.764507] info     | SessionManager.hpp | establish_session        | session established    | client_key: 0x1870348922, address: 0
+</code></pre><p>最后当然也还是启动 teleop 用键盘来控制 Kobuki 机器人：</p><pre><code>$ rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+</code></pre><h1 id="总结"><a class="anchor hidden-xs" href="#总结" title="总结"><i class="fa fa-link"></i></a>总结</h1><p>总的来看，不得不说 ROS1 的 rosserial 初始化过程还是更加简单一些。</p><p>另一方面，如果希望能在 RT-Thread 上直接运行 ROS Master 节点，还要期待 RT-Thread Smart。</p><h1 id="References"><a class="anchor hidden-xs" href="#References" title="References"><i class="fa fa-link"></i></a>References</h1><p>[1] Gazebo 模拟器: <a href="https://www.youtube.com/watch?v=JMVGSxT79rk&amp;t=120s" target="_blank" rel="noopener">https://www.youtube.com/watch?v=JMVGSxT79rk&amp;t=120s</a><br>
+[2] MicroROS 和 rosseiral 区别: <a href="https://micro.ros.org/docs/concepts/middleware/rosserial/" target="_blank" rel="noopener">https://micro.ros.org/docs/concepts/middleware/rosserial/</a><br>
+[3] rosserial 软件包: <a href="https://github.com/wuhanstudio/rosserial" target="_blank" rel="noopener">https://github.com/wuhanstudio/rosserial</a><br>
+[4] micro_ros 软件包: <a href="https://github.com/wuhanstudio/micro_ros" target="_blank" rel="noopener">https://github.com/wuhanstudio/micro_ros</a><br>
+[5] kobuki 软件包: <a href="https://github.com/wuhanstudio/kobuki" target="_blank" rel="noopener">https://github.com/wuhanstudio/kobuki</a><br>
+[6] rplidar 软件包: <a href="https://github.com/wuhanstudio/rplidar" target="_blank" rel="noopener">https://github.com/wuhanstudio/rplidar</a></p></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav">
+<li class=""><a href="#MicroROS-on-RT-Thread" title="MicroROS on RT-Thread">MicroROS on RT-Thread</a></li>
+<li><a href="#前言" title="前言">前言</a><ul class="nav">
+<li><a href="#ROS-简介" title="ROS 简介">ROS 简介</a></li>
+<li><a href="#RT-Thread-与-ROS" title="RT-Thread 与 ROS">RT-Thread 与 ROS</a></li>
+<li><a href="#rosserial-和-micro_ros-的区别" title="rosserial 和 micro_ros 的区别">rosserial 和 micro_ros 的区别</a></li>
+</ul>
+</li>
+<li><a href="#RT-Thread-控制-Kobuki-机器人" title="RT-Thread 控制 Kobuki 机器人">RT-Thread 控制 Kobuki 机器人</a><ul class="nav">
+<li><a href="#RT-Thread-使用-ESP8266-联网" title="RT-Thread 使用 ESP8266 联网">RT-Thread 使用 ESP8266 联网</a></li>
+<li><a href="#ROS1-rosserial" title="ROS1 (rosserial)">ROS1 (rosserial)</a></li>
+<li><a href="#ROS2-micro_ros" title="ROS2 (micro_ros)">ROS2 (micro_ros)</a></li>
+</ul>
+</li>
+<li><a href="#总结" title="总结">总结</a></li>
+<li><a href="#References" title="References">References</a></li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
+        <div class="toc"><ul class="nav">
+<li class=""><a href="#MicroROS-on-RT-Thread" title="MicroROS on RT-Thread">MicroROS on RT-Thread</a></li>
+<li><a href="#前言" title="前言">前言</a><ul class="nav">
+<li><a href="#ROS-简介" title="ROS 简介">ROS 简介</a></li>
+<li><a href="#RT-Thread-与-ROS" title="RT-Thread 与 ROS">RT-Thread 与 ROS</a></li>
+<li><a href="#rosserial-和-micro_ros-的区别" title="rosserial 和 micro_ros 的区别">rosserial 和 micro_ros 的区别</a></li>
+</ul>
+</li>
+<li><a href="#RT-Thread-控制-Kobuki-机器人" title="RT-Thread 控制 Kobuki 机器人">RT-Thread 控制 Kobuki 机器人</a><ul class="nav">
+<li><a href="#RT-Thread-使用-ESP8266-联网" title="RT-Thread 使用 ESP8266 联网">RT-Thread 使用 ESP8266 联网</a></li>
+<li><a href="#ROS1-rosserial" title="ROS1 (rosserial)">ROS1 (rosserial)</a></li>
+<li><a href="#ROS2-micro_ros" title="ROS2 (micro_ros)">ROS2 (micro_ros)</a></li>
+</ul>
+</li>
+<li><a href="#总结" title="总结">总结</a></li>
+<li><a href="#References" title="References">References</a></li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/js/bootstrap.min.js" integrity="sha256-kJrlY+s09+QoWjpkOrXXwhxeaoDz9FW5SaxF8I0DibQ=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Embedded GUI</title>
+    <style>
+      html, body {
+        font-family: 'Lato', 'Arial', 'sans-serif';
+        font-size:16px;
+        height: 100%;
+        width: 100%;
+        background-color: #FFF;
+      }
+
+      body {
+        position: relative;
+        min-height: 100vh;
+      }
+
+      /*-------- Seperator --------*/
+      .separator {
+          display: flex;
+          align-items: center;
+          text-align: center;
+          color: #000;
+          align-self: flex-end;
+      }
+
+      .separator::before, .separator::after {
+          content: '';
+          flex: 1;
+          border-bottom: 2px solid #000;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3 class="display-5 text-center mt-3 mb-3">Embedded GUI</h3>
+
+        <h3 class="text-left mt-3">Impressing</h3>
+        <hr class="separator" />
+        <p><strong>这些是我第一眼看过去，印象比较深的项目。因为都是解决身边的问题，非常实在，会认真完成项目的可能性比较高，不像很多项目话题太大，给人一种做也行，不做其实也行的感觉。</strong></p>
+
+        <div class="row mt-3 mb-3">
+            <div class="col col-3">
+              <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#16 Sören Urch</h5>
+                    <p class="card-text">Toastmasters 的成员，club 成员经常一起练习演讲，现在都是笔纸记录很麻烦，希望有个屏幕给出 speech 安排，计时，如果效果好说不定也能推荐给全球 Toastmaster 的成员。</p>
+                    <a href="#" class="btn btn-primary">Pass</a>
+                </div>
+              </div>
+            </div>
+            <div class="col col-3">
+              <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#27 Ashraf Kamel Rashad Masood</h5>
+                    <p class="card-text">穆斯林每天都会在非常精确的时间祷告5次，现在身边的 mosque 每次都需要人工开关很多设备，希望能有个控制面板精确控制每次祷告需要控制的设备。</p>
+                    <a href="#" class="btn btn-primary">Pass</a>
+                </div>
+              </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#72 Leandro Perez</h5>
+                        <p class="card-text">作为父母，孩子每天要带到学校交作业的材料太多了，经常忘记，希望能在冰箱上放一个控制面板，提醒自己每天需要给孩子准备的东西。</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#74 Karan Sanghavi</h5>
+                        <p class="card-text">Aunt 生病了，每天3次药，每次吃的药都不一样很苦恼，希望给 aunt 做一个屏幕每次到时间自动显示需要吃什么药，希望 aunt 早日康复</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="text-left mt-5">Success</h3>
+        <hr class="separator" />
+        <p><strong>这些是把现有的项目移植到新的开发板，可行度比较高</strong></p>
+        <div class="row mt-3 mb-3">
+            <div class="col col-3">
+              <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#20 Victor Asanza</h5>
+                    <p class="card-text">脑电波控制机械臂，已经有硬件系统了，刚好差一个 GUI 界面</p>
+                    <a href="#" class="btn btn-primary">Pass</a>
+                </div>
+              </div>
+            </div>
+            <div class="col col-3">
+              <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#25 Majed Abouhatab</h5>
+                    <p class="card-text">广播节目 GUI，已经有完整的 Arduino 项目，移植到 RT-Thread 和 LVGL</p>
+                    <a href="#" class="btn btn-primary">Pass</a>
+                </div>
+              </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#66 Erhan Namlı</h5>
+                        <p class="card-text">开源游戏机，已经有完整的 ESP32 项目，移植到 RT-Thread 和 LVGL</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#85 张怀喜</h5>
+                        <p class="card-text">消融仪用户界面，感觉是把现有成熟的医疗器械项目移植到 RT-Thread 和 LVGL</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3 mb-3">
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#86 乔季军</h5>
+                        <p class="card-text">DIY 电子桌面相册，我之前好像就看见过这个项目</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#80 Zdzislawa Sokalska</h5>
+                        <p class="card-text">便携式的健康监控和示波器，之前已经有相关项目了，主要是用 RTT 和 LVGL 实现屏幕</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <h3 class="text-left mt-5">Good</h3>
+        <hr class="separator" />
+        <p><strong>一般般，总体有点意思。</strong></p>
+
+        <div class="row mt-3 mb-3">
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#4 #5 Muhammad Usman Awan, Ismat Saira Gillani</h5>
+                        <p class="card-text">比较完整的农业大棚监控，2人组队，项目描述得比较详细</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#11 Viet Nam</h5>
+                        <p class="card-text">温室种植监控界面，3个大四学生组队，感觉是参加其他比赛可能已经做了一些东西</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#12 #61 NEUBER JOSE DE SOUSA</h5>
+                        <p class="card-text">两人组队，机器视觉看天气要下雨，就自动关窗，感觉有点意思，项目描述非常详细，以前经验也很丰富。</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                  <div class="card-body">
+                      <h5 class="card-title">#60 Roger Schluep</h5>
+                      <p class="card-text">植物监控，项目描述得不是很清楚</p>
+                      <a href="#" class="btn btn-primary">Pass</a>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3 mb-3">
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#23 Lakshya Sharma</h5>
+                        <p class="card-text">便携式的心电图，项目描述得比较详细，经验也很丰富</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#7 Aakash Goel</h5>
+                        <p class="card-text">汽车驾驶面板，几个车载相关的项目中他的经验最丰富</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#78 Erhan</h5>
+                        <p class="card-text">智能家居，几个相关项目里面介绍得最详细，以前项目也很丰富</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                  <div class="card-body">
+                      <h5 class="card-title">#59 Théo Meyer</h5>
+                      <p class="card-text">便携式的电源测量，曾经给 LVGL 贡献过代码，感觉比较靠谱</p>
+                      <a href="#" class="btn btn-primary">Pass</a>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3 mb-3">
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#55 Muhammad Minhaj</h5>
+                        <p class="card-text">便携式的示波器，经验比较丰富，感觉也很靠谱，不过和 #80 几乎重复了</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#52 Chamal Ayesh Wickramanayaka</h5>
+                        <p class="card-text">便携式的温度气象站显示器，可以离线天气预报</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                    <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#48 Dahmani Abdelmadjid</h5>
+                        <p class="card-text">打印机的 GUI，感觉挺实用的，经验也很丰富</p>
+                        <a href="#" class="btn btn-primary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#33 Fenil Ladani</h5>
+                    <p class="card-text">智能家居，描述得比较详细，对 RT-Thread 感兴趣</p>
+                    <a href="#" class="btn btn-primary">Pass</a>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <h3 class="text-left mt-5">Normal</h3>
+        <hr class="separator" />
+        <p><strong>一般般，项目写得不算详细，总体就是一般般。</strong></p>
+
+        <div class="row mt-5">
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#2 Eden Ben Abu</h5>
+                    <p class="card-text">帮助老人拨打紧急电话</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#3 dali</h5>
+                    <p class="card-text">餐馆点菜系统</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#6 Mahendar Birru</h5>
+                        <p class="card-text">智能家居，植物浇水，有项目经验</p>
+                        <a href="#" class="btn btn-secondary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#65 Sebastian Viviani</h5>
+                        <p class="card-text">便携式的计分器，已有项目，但是只显示数字，感觉比较简单</p>
+                        <a href="#" class="btn btn-secondary">Pass</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row mt-5">
+            <div class="col col-3">
+              <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#8 Lakshay Negi</h5>
+                    <p class="card-text">餐馆点菜系统</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+              </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#13 Zhanghailiang</h5>
+                    <p class="card-text">一个屏幕显示天气和今天要做的事情</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#22 Manyam Brahmananda Chowdary</h5>
+                    <p class="card-text">医疗注射泵，和 GUI 关系不太大</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#24 Ishan Acharyya</h5>
+                    <p class="card-text">手动控制轮椅，没怎么描述 GUI 相关的</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col col-3">
+              <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#26 Ridwanullahi O. Abdulrauf</h5>
+                    <p class="card-text">运动提示小助手，坐久了提醒运动，没怎么描述 GUI 相关的</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+              </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                  <div class="card-body">
+                      <h5 class="card-title">#79 Ankur Verma</h5>
+                      <p class="card-text">电动汽车充电，没怎么写 GUI 相关的</p>
+                      <a href="#" class="btn btn-secondary">Pass</a>
+                  </div>
+                </div>
+              </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#77 Flávio Ipiranga de Araújo Júnior</h5>
+                    <p class="card-text">教学用的，显示 MCU 里面的组件状态，GUI 相关不是很清楚</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#76 Michał Sobczuk</h5>
+                    <p class="card-text">家里植物管理，没怎么描述 GUI 相关的</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col col-3">
+              <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#79 Ankur Verma</h5>
+                    <p class="card-text">电动汽车充电，没怎么写 GUI 相关的</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+              </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#75 Michał Sobczuk</h5>
+                    <p class="card-text">便携式的 DC 电源，描述得不是很清楚，前面也有类似的项目了</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#69 Almir Augusto Braggio</h5>
+                    <p class="card-text">自动橙汁机，主要关注点不是 GUI</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#68 Md. Khairul Alam</h5>
+                    <p class="card-text">智能家居， 描述得不是很清楚</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col col-3">
+              <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#64 Sashavalli Maniyar</h5>
+                    <p class="card-text">显示服装，商品的价格，描述过于简洁，不清楚具体设计</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+              </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#56</h5>
+                    <p class="card-text">一个小车的显示界面，整体感觉和 GUI 关系不太大</p>
+                    <a href="#" class="btn btn-secondary">Pass</a>
+                </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#53 Dinesh Damodar</h5>
+                        <p class="card-text">远程病人监控，项目描述里大部分是蓝牙通信相关</p>
+                        <a href="#" class="btn btn-secondary">Pass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#50 Itamar Cohen</h5>
+                        <p class="card-text"> electric oven controller，偏控制，对 GUI 需求不算大</p>
+                        <a href="#" class="btn btn-secondary">Pass</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <h3 class="text-left mt-5">Absolute Fail</h3>
+        <hr class="separator" />
+        <p><strong>这些都是几乎什么也没写，不知道具体做什么，毫无疑问地 Fail</strong></p>
+
+        <div class="row">
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#9 Norik Badalyan</h5>
+                        <p class="card-text">声音检测，不清楚项目具体做什么，也没有描述 GUI 界面</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#10 Kathirvel</h5>
+                        <p class="card-text">只写了2个字：Lora 通信， 不知道项目做什么</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#14 Mohamed CHOUATI</h5>
+                        <p class="card-text">FOTA 固件更新，和 GUI 没有联系</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#17 Gaurav Soni</h5>
+                        <p class="card-text">天气监控，自动灌溉，没有描述 GUI 相关内容，也没有项目经验</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row mt-5">
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#18 hrvoje</h5>
+                        <p class="card-text">CAN/BLE 控制器，和 GUI 无关，没有项目经验</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#21 jose inacio serafini</h5>
+                        <p class="card-text">项目是为了学习 lvgl，写 tutorial，不知道具体做什么</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#28 Sudarshan R Iyengar</h5>
+                        <p class="card-text">几乎什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#29 Hussamaldean</h5>
+                        <p class="card-text">CAN 总线控制温度，其他什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row mt-5">
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#30 K Shreenath Bohra</h5>
+                        <p class="card-text">帮助手部受伤病人恢复，和 GUI 无关</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#31 jose inacio serafini</h5>
+                        <p class="card-text">Lora IoT，几乎什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#32 Eslam Fayad</h5>
+                        <p class="card-text">智能家居，几乎什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#35 Hardipbhai ghanshyambhai Jasani</h5>
+                        <p class="card-text">创建 DIY 项目，完全没说具体做什么</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#39 khaled gharbi</h5>
+                        <p class="card-text">飞控，和 GUI 无关，也没具体说做什么</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#46 Vitali Filinkoui</h5>
+                        <p class="card-text">自动喂宠物，和 GUI 无关，几乎什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#49 Sascha Streiber</h5>
+                        <p class="card-text">媒体播放器，几乎什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#51 Murat Kaplan</h5>
+                        <p class="card-text">智能家居，几乎什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#54 Holger Baxmann</h5>
+                        <p class="card-text">智能机器人，没说具体说做什么</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#57 Matt Mink</h5>
+                        <p class="card-text">物联网，几乎什么也没写，不知道具体做什么</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#58 Nawaz Awan</h5>
+                        <p class="card-text">自动填充液体，和 GUI 无关</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#67 Nikhil Gayke</h5>
+                        <p class="card-text">汽车面板，几乎什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#70 Usman U V</h5>
+                        <p class="card-text">远程监控，几乎什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#71 JongOk Baek</h5>
+                        <p class="card-text">数据记录，几乎什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#81 Abdulmumin Abdusattorov</h5>
+                        <p class="card-text">机械臂，几乎什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#73 Amit Kumar</h5>
+                        <p class="card-text">天气预测，和 GUI 没什么关系</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#63 suleyman yalcinkaya</h5>
+                        <p class="card-text">车载显示，没有描述个人项目经验</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#71 JongOk Baek</h5>
+                        <p class="card-text">数据记录，几乎什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#81 Abdulmumin Abdusattorov</h5>
+                        <p class="card-text">机械臂，几乎什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#73 Amit Kumar</h5>
+                        <p class="card-text">天气预测，和 GUI 没什么关系</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#47 Nguyen Anh Tu</h5>
+                        <p class="card-text">MP3 几乎什么也没写</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#37 Oscar Duran</h5>
+                        <p class="card-text">温室大棚控制器，和 GUI 联系不大</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#36 Umit KAYACIK</h5>
+                        <p class="card-text">水质监控面板，描述得很简单，不太清楚具体内容</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">#34</h5>
+                        <p class="card-text">COVID 温度检测，没怎么描述 GUI</p>
+                        <a href="#" class="btn btn-danger">Fail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col col-3">
+              <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">#38 #40 #41 #42 #43 #44 #45 Volodymyr Petrushak</h5>
+                    <p class="card-text">同一个人提交了7个项目，一个人恐怕也做不完，而且每个描述的都不详细</p>
+                    <a href="#" class="btn btn-danger">Pass</a>
+                </div>
+              </div>
+            </div>
+            <div class="col col-3">
+                <div class="card mr-5" style="width: 18rem;">
+                  <div class="card-body">
+                      <h5 class="card-title">#15 Usman UV</h5>
+                      <p class="card-text">电动汽车，什么也没写</p>
+                      <a href="#" class="btn btn-danger">Pass</a>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+</body>
+</html>
