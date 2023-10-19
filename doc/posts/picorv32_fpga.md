@@ -12,7 +12,7 @@
 
 首先介绍一下我用的 FPGA 开发板，也就是荔枝糖 (EG4S20)，这块开发板性价比应当算是很高了，100RMB有20K逻辑单元(LUT4/LUT5混合架构)，130KB SRAM，32bit 位宽 64MBit SDRAM，用来跑 RISC-V 的软核相当合适了。
 
-![img](picorv32_fpga/eg4s20.jpeg)
+![img](https://doc.wuhanstudio.cc/posts/picorv32_fpga/eg4s20.jpeg)
 
 
 
@@ -20,7 +20,7 @@
 
 添加图片注释，不超过 140 字（可选）
 
-![img](picorv32_fpga/lichee_tang.jpeg)
+![img](https://doc.wuhanstudio.cc/posts/picorv32_fpga/lichee_tang.jpeg)
 
 
 
@@ -53,7 +53,7 @@ $ git submodule update
 
 接下来用 TD 软件打开源码 Tang_E203_Mini/project/e203egmini_new.al 下的项目，可以直接点 Generate Bitstream 生成比特流上传，当然上传之前也可以在左下角 User Constraints 里面检查一下引脚分配是对的。
 
-![img](picorv32_fpga/td_dl.png)
+![img](https://doc.wuhanstudio.cc/posts/picorv32_fpga/td_dl.png)
 
 
 
@@ -63,7 +63,7 @@ $ git submodule update
 
 Bitstream 上传成功之后，这块 FPGA 开发板就是一个 RISC-V 单片机了，可以对照下面的引脚图把 JTAG 连接好，就可以上传 RT-Thread 固件了。
 
-![img](picorv32_fpga/lichee_tang_pin.jpeg)
+![img](https://doc.wuhanstudio.cc/posts/picorv32_fpga/lichee_tang_pin.jpeg)
 
 
 
@@ -180,7 +180,7 @@ $ cp bin2mif/rt-thread.mif picorv32_EG4S20/firmware/
 
 我们用 TD 打开源码 picorv32_EG4S20/RISC_V/RISC_V.al 下的项目文件，就可以生成比特流了。
 
-![img](picorv32_fpga/td_dl.png)
+![img](https://doc.wuhanstudio.cc/posts/picorv32_fpga/td_dl.png)
 
 
 
