@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        如何 伪造/篡改 USB 摄像头 - CodiMD
+    </title>
+    <link rel="icon" type="image/png" href="https://codimd.wuhanstudio.cc/favicon.png">
+    <link rel="apple-touch-icon" href="https://codimd.wuhanstudio.cc/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha256-H0KfTigpUV+0/5tn2HXC0CPwhhDhWgSawJdnFd0CGCo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fork-awesome/1.1.3/css/fork-awesome.min.css" integrity="sha256-ZhApazu+kejqTYhMF+1DzNKjIzP7KXu6AzyXcC1gMus=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github-gist.min.css" integrity="sha256-tAflq+ymku3Khs+I/WcAneIlafYgDiOQ9stIHH985Wo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,300italic,300|Source+Serif+Pro|Source+Code+Pro:400,300,500&subset=latin,latin-ext);.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{padding:0 1em;color:#777;border-left:.25em solid #ddd}.night .markdown-body blockquote{color:#bcbcbc}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.night .markdown-body h1,.night .markdown-body h2,.night .markdown-body h3,.night .markdown-body h4,.night .markdown-body h5,.night .markdown-body h6{color:#ddd}.markdown-body h1 .fa-link,.markdown-body h2 .fa-link,.markdown-body h3 .fa-link,.markdown-body h4 .fa-link,.markdown-body h5 .fa-link,.markdown-body h6 .fa-link{color:#000;vertical-align:middle;visibility:hidden;font-size:16px}.night .markdown-body h1 .fa-link,.night .markdown-body h2 .fa-link,.night .markdown-body h3 .fa-link,.night .markdown-body h4 .fa-link,.night .markdown-body h5 .fa-link,.night .markdown-body h6 .fa-link{color:#fff}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .fa-link,.markdown-body h2:hover .anchor .fa-link,.markdown-body h3:hover .anchor .fa-link,.markdown-body h4:hover .anchor .fa-link,.markdown-body h5:hover .anchor .fa-link,.markdown-body h6:hover .anchor .fa-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{margin-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.night .markdown-body table tr{background-color:#5f5f5f}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.night .markdown-body table tr:nth-child(2n){background-color:#4f4f4f}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:.2em 0;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.night .markdown-body code,.night .markdown-body tt{color:#eee;background-color:hsla(0,0%,90.2%,.36)}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\A0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.markdown-body kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid;border-color:#ccc #ccc #bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important}.markdown-body pre{border:inherit!important}.night .markdown-body pre{filter:invert(100%)}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-webkit-inline-flex;display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.night .markdown-body .gist table tr:nth-child(2n){background-color:#ddd}.markdown-body code[data-gist-id]{background:none;padding:0;filter:invert(100%)}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram,.markdown-body pre.vega{text-align:center;background-color:inherit;border-radius:0;white-space:inherit}.night .markdown-body pre.graphviz .graph>polygon{fill:#333}.night .markdown-body pre.mermaid .sectionTitle,.night .markdown-body pre.mermaid .titleText,.night .markdown-body pre.mermaid text{fill:#fff}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code,.markdown-body pre.vega>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg,.markdown-body pre.vega>svg{max-width:100%;height:100%}.night .markdown-body .abc path{fill:#eee}.night .markdown-body .abc path.note_selected{fill:##4DD0E1}.night tspan{fill:#fefefe}.night pre rect{fill:transparent}.night pre.flow-chart path,.night pre.flow-chart rect{stroke:#fff}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p,.markdown-body .alert>ul{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body img{background-color:transparent}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;-webkit-transition:opacity .2s;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;-webkit-transition:opacity .2s;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.MJX_Assistive_MathML{display:none}.ui-infobar{position:relative;z-index:2;max-width:758px;margin-top:25px;margin-bottom:-25px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:10000}.ui-toc-label{opacity:.3;background-color:#ccc;border:none}.ui-toc-label,.ui-toc .open .ui-toc-label{-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc-dropdown{margin-top:23px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child>ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.night .ui-toc-dropdown .nav>li>a:focus,.night .ui-toc-dropdown .nav>li>a:hover{color:#fff;border-left-color:#fff}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.night .ui-toc-dropdown .nav>.active:focus>a,.night .ui-toc-dropdown .nav>.active:hover>a,.night .ui-toc-dropdown .nav>.active>a{color:#fff;border-left:2px solid #fff}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.night .ui-toc-dropdown .nav>li>a{color:#aaa}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,"\30D2\30E9\30AE\30CE\89D2\30B4   Pro W3",Osaka,Meiryo,"\30E1\30A4\30EA\30AA",MS Gothic,"\FF2D\FF33   \30B4\30B7\30C3\30AF",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,"\FF2D\FF33   \FF30\30B4\30B7\30C3\30AF",sans-serif}.markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang TC,Microsoft JhengHei,"\5FAE\8EDF\6B63\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,"\5FAE\8EDF\6B63\9ED1UI",sans-serif}.markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang SC,Microsoft YaHei,"\5FAE\8F6F\96C5\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,"\5FAE\8F6F\96C5\9ED1UI",sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:3px;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:contain}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}small span{line-height:22px}small .dropdown{display:inline-block}small .dropdown a:focus,small .dropdown a:hover{text-decoration:none}.unselectable{-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}.night .navbar{background:#333;border-bottom-color:#333;color:#eee}.night .navbar a{color:#eee}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;font-family:Source Sans Pro,Helvetica,Arial,sans-serif;letter-spacing:.025em}.focus,:focus{outline:none!important}::-moz-focus-inner{border:0!important}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid"><h1 id="如何-伪造篡改-USB-摄像头" style=""><a class="anchor hidden-xs" href="#如何-伪造篡改-USB-摄像头" title="如何-伪造篡改-USB-摄像头"><i class="fa fa-link"></i></a>如何 伪造/篡改 USB 摄像头</h1><h2 id="0-Introduction" style=""><a class="anchor hidden-xs" href="#0-Introduction" title="0-Introduction"><i class="fa fa-link"></i></a>0. Introduction</h2><blockquote>
+<p>为什么要做这样魔幻的事情呢？因为我在想，<strong>深度学习到底能不能安全地部署</strong>？会不会有人能很轻易地攻击部署好的深度学习模型？</p>
+</blockquote><p><img src="https://wuhanstudio.nyc3.cdn.digitaloceanspaces.com/doc/usb_cam/usb_cam_demo.gif" alt=""></p><blockquote>
+<p>除了科普性的介绍，这篇文章后面也会介绍如何用 Buildroot 构建 bootloader，定制 Linux 内核，根文件系统，如何用 C 读取 /dev/video0 的数据，并且把 YUYV422 格式转换成 OpenCV 的 YV12，RGB，最终 JPEG 编码实时推送 MJPEG 视频流。项目源码放在了 github 上，可以在最后的参考文献找到链接。</p>
+</blockquote><p>30 年前 (1989) 深度学习还只能费力地部署在台式机上，最终却也只能做个手写体识别；</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/mnist.gif" alt="img"></p><p>大约 15 年前 NVIDIA 发布了 <strong>cudnn</strong> (2007) 从此开启了在 <strong>GPU</strong> 上训练模型的时代；</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/cudnn.jpg" alt="img"></p><p>随后 Intel 也发布了 <strong>AVX-256</strong> 指令集 (2008) ，帮助加速深度学习在 <strong>CPU</strong> 上的训练、部署；</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/avx512.jpg" alt="img"></p><p>大概 10 年前 Xilinx 发布了 <strong>ZYNQ</strong> 多核异构 ARM + FPGA 系列 (2011)，帮助深度学习走向<strong>低功耗</strong>；</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/zynq.jpg" alt="img"></p><p>到了 2015 年，<strong>Tensorflow</strong> (Google) 和 <strong>Pytorch</strong> (Facebook) 陆续发布，从此深度学习的门槛极大地降低，各行各业都开始学习深度学习。</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/tf_torch.jpg" alt="img"></p><p>4 年前 ST 发布了 <strong>STM32 Cube AI</strong> (2018)，随后 Google 又发布了 <strong>Tensorflow Lite</strong> (2019)，大家又开始热衷于在内存、存储、算力都很有限的 <strong>MCU</strong> 上部署深度学习；</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/tf_lite.jpg" alt="img"></p><p>到了 2021 年，国内又掀起了一股<strong>无人驾驶</strong>造车的浪潮，突然深度学习开始大面积地部署。</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/driving.jpg" alt="img"></p><p>那么问题来了，深度学习是不是真的已经安全稳定到，可以部署在无人驾驶这样非常注重安全，几乎不允许出错的领域呢？以目标检测系统为例，我是不是可以在不被发现的情况下恶意篡改模型的输出，让它检测出本不存在的物体，或者让它没法检测现实存在的物体 (e.g. 路人，红绿灯) ?</p><p>当然，这个问题并不是没有人考虑过，从 2015 年第一个针对图像分类模型的攻击开始 (FGSM)，接下来的 6-7 年，陆续有1万多篇 paper 尝试去改变输入的图像，在不被人察觉到原始图像被篡改的情况下，恶意修改模型的输出。</p><p>比如下面的经典非法案例，下面左边的大熊猫，加上了中间肉眼看不出来的干扰，右边还是一只大熊猫，然而深度学习会把它识别为长臂猿。</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/fgsm.png" alt="img"></p><p>但是过了这么多年，如今深度学习大量被部署的时代，我们有几千上万种攻击深度学习的方式，却几乎没有看到现实生活中，因为被人恶意攻击而造成模型失效的例子，这是为什么呢？</p><ul>
+<li>大部分攻击方式需要获取被攻击模型的<strong>训练集</strong>，而现实应用中，在连拿到别人的模型都很困难的情况下，更别谈要获取别人的数据集了；</li>
+<li>很多攻击没法实现<strong>实时性</strong>，攻击前需要在 GPU 上经过一段很长时间的优化，然而现实世界模型大都是实时运行的，等到在 GPU 上跑出来攻击结果，早已物是人非；</li>
+<li>一些勉强能实现接近实时的攻击方式依赖于<strong>梯度 (Gradients)</strong>，而只有在模型训练的时候会计算梯度，部署运行 (Inference) 的时候不会计算梯度；</li>
+<li>即使，假设我们很幸运能拿到别人的数据集，又很巧妙的实现了实时的攻击，甚至还不需要梯度，又会发现真的有这个必要吗？</li>
+</ul><p>如果我们能直接干扰实际系统的输入图像，通常意味着我们已经获得别人操作系统的访问权限，既然已经可以访问别人的系统了，何必费劲心力去增加干扰，直接 <strong>sudo halt</strong> (关机) 不是就解决问题了吗？</p><p>很多 paper 中的攻击方式，通常是自己的电脑上有一个模型，然后想办法自己攻击自己，但是在面临残酷的现实的时候，很多条件都没法实际实现。<strong>于是我在思考一个问题，如果我们没有别人的数据集，没有办法访问别人的系统，没法根据梯度实时更新攻击，是不是还能实时地攻击深度学习模型，并且不被人发现呢？</strong></p><p>最终我得到了下面的这个结论：</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/adv_cam.jpg" alt="img"></p><p><strong>我们其实是可以把攻击放到传感器端的，终于说到了文章标题，例如直接伪造、篡改摄像头数据。虽然深度学习训练集、模型、操作系统都是几乎无法访问的，但是传感器通常是直接暴露在外的，因为需要采集外界信息。</strong></p><p>如同密码学领域经典的中间人攻击 (Man-in-the-Middle Attack)，我们能不能在摄像头和系统的中间连接处施加干扰？答案是可以的，比如下面 Windows 识别到了一个普普通通的摄像头，但是其实这个摄像头本身就是一个已经被恶意攻击的摄像头。我们不需要拿到操作系统的访问权限，就可以攻击深度学习模型，因为我们的攻击是针对传感器 (摄像头) 的。</p><p><img src="https://wuhanstudio.nyc3.cdn.digitaloceanspaces.com/doc/usb_cam/usb_cam_demo.gif" alt=""></p><p>科普性质的介绍就到此结束了，面临严苛的现实，却还希望能实时攻击实际系统，接下来就是需要经历曲折的 Engineering。</p><p><strong>大概思路是这样的</strong>：我们需要一块 Linux 开发板，一端 USB Host 连接摄像头，拿到原始摄像头的数据，另一端 USB OTG 模拟一个摄像头，把篡改后的数据再转发出去。这样从 PC 上看，它只检测到有一个 USB 摄像头连接上来了，却没法分辨图像输入是不是收到了篡改。</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/struct.png" alt="img"></p><p>添加图片注释，不超过 140 字（可选）</p><h2 id="1-读取-Linux-摄像头数据-V4L2" style=""><a class="anchor hidden-xs" href="#1-读取-Linux-摄像头数据-V4L2" title="1-读取-Linux-摄像头数据-V4L2"><i class="fa fa-link"></i></a>1. 读取 Linux 摄像头数据 (V4L2)</h2><p>首先，我们需要读取原始摄像头的数据。常见的摄像头数据包格式有2种 (MJPEG 和 YUYV 422)，我们可以用 v4l2-ctl 命令看看自己的摄像头支持哪些格式：</p><pre><code>$ v4l2-ctl --list-formats -d /dev/video0
+ioctl: VIDIOC_ENUM_FMT
+	Type: Video Capture
+
+	[0]: 'MJPG' (Motion-JPEG, compressed)
+	[1]: 'YUYV' (YUYV 4:2:2)
+</code></pre><p><strong>现在的 USB 摄像头一般是 2 种都支持的，其中 YUYV 422 是没有经过压缩的数据</strong>，所以视频的质量通常都不是特别高 (360p)，毕竟要传输实时、高清、未压缩的视频流，可能超过了 USB 的最大传输速率 (USB2.0 High Speed 480Mbps)；<strong>MJPEG 从名字也可以看出来，自然就是经过 JPEG 压缩后的图像</strong>，压缩后数据量大大减少，所以可以用来传输高清视频流 (720p, 1080p)。</p><h3 id="11-YUYV422-图像格式" style=""><a class="anchor hidden-xs" href="#11-YUYV422-图像格式" title="11-YUYV422-图像格式"><i class="fa fa-link"></i></a>1.1 YUYV422 图像格式</h3><p>这里简单解释一下 YUV 颜色空间，通常我们熟悉的是 RGB (红绿蓝)，那么为什么摄像头用的是 YUV 呢？因为人的眼睛对亮度变化 (Y) 比较敏感，但是对色度变化 (U, V) 却不是那么敏感 ，所以为了节省视频传输空间，从 YUYV 422 命名也可以看出来，我们对亮度 (Y4) 进行了 2 倍的采样，而色度 (U2 V2) 采样虽然少一些，人眼是看不出来区别的。</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/yuv422.jpg" alt="img"></p><p>下面就是 YUYV 422 的格式，可以看到 Y 出现了 4 次 (Y0, Y1, Y2, Y3)，U 出现了 2 次 (U0, U1)，V 出现了 2 次 (V0, V1)，这也就是命名里面 422 的由来。不过下面其实是 4 个像素点的数据，所以 4 个像素点一共花费了 (4 +2+2) = 8 byte 的数据，平均每个像素点就花费了 8 / 4 = 2 byte 数据，相比 RGB 一个像素点需要3个字节 (RGB 各一个)，YUYV 只需要 2 个字节，节省了 1 /3 空间。知道了 USB 摄像头的像素格式，接下来就是读取摄像头的图片数据了。</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/yuyv.png" alt="img"></p><p>在 linux 系统，视频设备都是以 /dev/video 的形似挂载的，我们需要用 V4L2 (<strong>Video for Linux</strong> version 2) 驱动读取里面的图像，这里我主要参考下面的链接，并在其基础上支持了 YUYV422，RGB888，MJPEG 格式：</p><h3 id="12-V4L2-读取图像" style=""><a class="anchor hidden-xs" href="#12-V4L2-读取图像" title="12-V4L2-读取图像"><i class="fa fa-link"></i></a>1.2 V4L2 读取图像</h3><p>大致分为3个部分：打开摄像头，配置摄像头，内存映射，读取图像数据。</p><p>首先，我们可以打开摄像头，获取一个文件描述符 (file descriptor)，因为 Linux 设备都是以文件的形式挂载的，所以这和打开一个文件几乎是一样的。</p><pre><code>fd = open(v4l2_devname, O_RDWR);
+if (fd == -1)
+{
+    perror("Opening video device");
+    return 1;
+}
+</code></pre><p>接下来我们需要配置摄像头的像素格式，分辨率，像素的格式我们需要用到的是 YUYV 和 MJPEG。当然，如果使用 OpenCV 写出 RGB888 的格式到 v4l2loopback 虚拟设备，也是可以读取的。</p><pre><code>struct v4l2_format fmt = {0};
+fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+fmt.fmt.pix.width = 1280;
+fmt.fmt.pix.height = 720;
+
+fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_YUYV;
+// fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_MJPEG;
+// fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_RGB24;
+
+fmt.fmt.pix.field = V4L2_FIELD_NONE;
+    
+if (-1 == xioctl(fd, VIDIOC_S_FMT, &amp;fmt))
+{
+    perror("Setting Pixel Format");
+    return 1;
+}
+</code></pre><p>配置好摄像头格式之后，我们需要做内存映射，把摄像头的图像内存映射到指针，这样我们后面就可以读取数据了，比如下面把摄像头的内存映射到一个 uint8_t* 的 buffer 里面：</p><pre><code>uint8_t *buffer;
+
+struct v4l2_requestbuffers req = {0};
+req.count = 1;
+req.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+req.memory = V4L2_MEMORY_MMAP;
+ 
+if (-1 == xioctl(fd, VIDIOC_REQBUFS, &amp;req))
+{
+    perror("Requesting Buffer");
+    return 1;
+}
+ 
+struct v4l2_buffer buf = {0};
+buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+buf.memory = V4L2_MEMORY_MMAP;
+buf.index = 0;
+if(-1 == xioctl(fd, VIDIOC_QUERYBUF, &amp;buf))
+{
+    perror("Querying Buffer");
+    return 1;
+}
+ 
+buffer = mmap (NULL, buf.length, PROT_READ | PROT_WRITE, MAP_SHARED, fd, buf.m.offset);
+</code></pre><p>最后，我们就可以读取摄像头的数据了：</p><pre><code>struct v4l2_buffer buf = {0};
+buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+buf.memory = V4L2_MEMORY_MMAP;
+buf.index = 0;
+
+if(-1 == xioctl(fd, VIDIOC_QBUF, &amp;buf))
+{
+    perror("Query Buffer");
+    return 1;
+}
+ 
+if(-1 == xioctl(fd, VIDIOC_STREAMON, &amp;buf.type))
+{
+    perror("Start Capture");
+    return 1;
+}
+ 
+fd_set fds;
+FD_ZERO(&amp;fds);
+FD_SET(fd, &amp;fds);
+struct timeval tv = {0};
+tv.tv_sec = 2;
+
+int r = select(fd+1, &amp;fds, NULL, NULL, &amp;tv);
+if(-1 == r)
+{
+    perror("Waiting for Frame");
+    return 1;
+}
+ 
+if(-1 == xioctl(fd, VIDIOC_DQBUF, &amp;buf))
+{
+    perror("Retrieving Frame");
+    return 1;
+}
+</code></pre><p>但是读出来的数据在 uint8_t* buffer 的指针里，我们还需要把它转换为 OpenCV 的矩阵，方便之后做图像处理：</p><pre><code>cv::Mat cv_img;
+
+if (format == 0 ){
+    // Decode YUYV
+    cv::Mat img = cv::Mat(cv::Size(image_width, image_height), CV_8UC2, buffer);
+    cv::cvtColor(img, cv_img, cv::COLOR_YUV2RGB_YVYU);
+}
+
+if (format == 1) {
+    // Decode MJPEG
+    cv::_InputArray pic_arr(buffer, image_width * image_height * 3);
+    cv_img = cv::imdecode(pic_arr, cv::IMREAD_UNCHANGED);
+}
+
+if (format == 2) {
+    // Decode RGB3
+    cv_img = cv::Mat(cv::Size(image_width, image_height), CV_8UC3, buffer);
+}
+
+cv::imshow("view", cv_img);
+</code></pre><p>这样我们就顺利读取到 /dev/video 的数据，并且转换成 OpenCV 的格式了，剩下的就是把图像编码转发到虚拟摄像头了。完整代码可以在 Github 上找到：</p><h2 id="2-USB-Gadget-虚拟摄像头" style=""><a class="anchor hidden-xs" href="#2-USB-Gadget-虚拟摄像头" title="2-USB-Gadget-虚拟摄像头"><i class="fa fa-link"></i></a>2. USB Gadget 虚拟摄像头</h2><p>我们需要一个支持 USB Gadget 模拟摄像头设备的 Linux 内核。如果是树莓派4的话，内核默认是支持的，其他的开发版可能就需要重新编译 Linux 内核了。</p><h3 id="21-Buildroot-构建-Linux-内核、根文件系统" style=""><a class="anchor hidden-xs" href="#21-Buildroot-构建-Linux-内核、根文件系统" title="21-Buildroot-构建-Linux-内核、根文件系统"><i class="fa fa-link"></i></a>2.1 Buildroot 构建 Linux 内核、根文件系统</h3><p>Buildroot 可以帮我们快速构建引导 (u-boot)，Linix 内核，和根文件系统。如果是使用 buildroot 编译内核的话，需要打开  UVC V4L2 摄像头支持：</p><pre><code>$ make linux-menuconfig
+
+--&gt; Device Drivers
+  Multimedia Support --&gt;
+    Media USB Adapters --&gt;
+      [M] USB Video Class
+      V4L platform devices --&gt;
+</code></pre><p>其次，我们需要打开 USB Gadget Configfs，这样就可以配置 USB 模拟摄像头了 （g_webcam 已经被淘汰了，不建议使用）：</p><pre><code>-&gt; Device Drivers
+  -&gt; USB support (USB_SUPPORT [=y])
+    -&gt; USB Gadget Support (USB_GADGET [=m])
+      -&gt; USB Gadget functions configurable through configfs (USB_CONFIGFS [=m])
+</code></pre><p>这样我们就可以在 linux 启动后加载内核模块了：</p><pre><code># modprobe libcomposite dwc2
+
+# mount | grep configfs
+configfs on /sys/kernel/config type configfs (rw,relatime) 
+</code></pre><p>当然，如果是想完全伪造一个不存在的设备，也可以使用 v4l2loopback，不过这个是在 buildroot 的根文件系统里选择：</p><pre><code>$ make menuconfig
+
+-&gt; Target packages
+    -&gt; Audio and video applications
+        -&gt; v4l2loopback (BR2_PACKAGE_V4L2LOOPBACK [=y])
+</code></pre><p>配置编译好 Linux 内核之后，接下来就可以启动 linux 进行后续的配置了。当然，不要忘了在 Linux 设备树里打开USB OTG：</p><pre><code>/*
+ *usb_port_type: usb mode. 0-device, 1-host, 2-otg.
+ *usb_detect_type: usb hotplug detect mode. 0-none, 1-vbus/id detect, 2-id/dpdm detect.
+ *usb_detect_mode: 0-thread scan, 1-id gpio interrupt.
+ *usb_id_gpio: gpio for id detect.
+ *usb_det_vbus_gpio: gpio for id detect. gpio or "axp_ctrl";
+ *usb_wakeup_suspend：0-SUPER_STANDBY, 1-USB_STANDBY.
+ */
+
+
+&amp;usbc0 {
+        device_type = "usbc0";
+        usb_port_type = &lt;0x2&gt;;
+        usb_detect_type = &lt;0x1&gt;;
+        usb_detect_mode = &lt;0&gt;;
+        usb_id_gpio = &lt;&amp;pio PB 8 GPIO_ACTIVE_HIGH&gt;; /*unused */
+        enable-active-high;
+        usb_det_vbus_gpio = &lt;&amp;pio PB 9 GPIO_ACTIVE_HIGH&gt;;/*unused */
+        usb_wakeup_suspend = &lt;0&gt;;
+        usb_serial_unique = &lt;0&gt;;
+        usb_serial_number = "20080411";
+        rndis_wceis = &lt;1&gt;;
+        status = "okay";
+};
+</code></pre><h3 id="22-Configfs-配置虚拟摄像头" style=""><a class="anchor hidden-xs" href="#22-Configfs-配置虚拟摄像头" title="22-Configfs-配置虚拟摄像头"><i class="fa fa-link"></i></a><strong>2.2 Configfs 配置虚拟摄像头</strong></h3><p>Configfs 可以让我们在用户态 (userspace) 配置 linux 内核驱动，比如我们可以配置 USB OTG 成串口，访问 linux 控制台；或者配制成以太网口，利用 USB OTG 共享网络，当然，接下来要做的是配置成 USB 摄像头，这部分只要照着文档配置就可以了。</p><p>比如我们可以任意改变 USB 的厂家，设备名：</p><pre><code>echo 0x1d6b &gt; /sys/kernel/config/usb_gadget/pi4/idVendor
+echo 0x0104 &gt; /sys/kernel/config/usb_gadget/pi4/idProduct
+echo 0x0100 &gt; /sys/kernel/config/usb_gadget/pi4/bcdDevice
+echo 0x0200 &gt; /sys/kernel/config/usb_gadget/pi4/bcdUSB
+
+echo 0xEF &gt; /sys/kernel/config/usb_gadget/pi4/bDeviceClass
+echo 0x02 &gt; /sys/kernel/config/usb_gadget/pi4/bDeviceSubClass
+echo 0x01 &gt; /sys/kernel/config/usb_gadget/pi4/bDeviceProtocol
+
+mkdir /sys/kernel/config/usb_gadget/pi4/strings/0x409
+echo 100000000d2386db &gt; /sys/kernel/config/usb_gadget/pi4/strings/0x409/serialnumber
+echo "Samsung" &gt; /sys/kernel/config/usb_gadget/pi4/strings/0x409/manufacturer
+echo "Fake Camera" &gt; /sys/kernel/config/usb_gadget/pi4/strings/0x409/product
+mkdir /sys/kernel/config/usb_gadget/pi4/configs/c.2
+mkdir /sys/kernel/config/usb_gadget/pi4/configs/c.2/strings/0x409
+echo 500 &gt; /sys/kernel/config/usb_gadget/pi4/configs/c.2/MaxPower
+echo "UVC" &gt; /sys/kernel/config/usb_gadget/pi4/configs/c.2/strings/0x409/configuration
+
+mkdir /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0
+mkdir -p /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/control/header/h
+ln -s /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/control/header/h /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/control/class/fs
+</code></pre><p>当然，也可以设置虚拟摄像头的数据格式，这里主要有2个，也就是前面提到的：未压缩的 (uncompressed) 和压缩的（MJPEG）：</p><pre><code># MJPEG 720p
+
+mkdir -p /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/720p
+cat &lt;&lt;EOF &gt; /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/720p/dwFrameInterval
+5000000
+EOF
+cat &lt;&lt;EOF &gt; /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/720p/wWidth
+1280
+EOF
+cat &lt;&lt;EOF &gt; /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/720p/wHeight
+720
+EOF
+cat &lt;&lt;EOF &gt; /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/720p/dwMinBitRate
+29491200
+EOF
+cat &lt;&lt;EOF &gt; /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/720p/dwMaxBitRate
+29491200
+EOF
+cat &lt;&lt;EOF &gt; /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/720p/dwMaxVideoFrameBufferSize
+1843200
+EOF
+</code></pre><p>未压缩的 YUYV（低分辨率）：</p><pre><code># YUYV 360p
+
+# mkdir -p /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/uncompressed/u/360p
+# cat &lt;&lt;EOF &gt; /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/uncompressed/u/360p/dwFrameInterval
+# 666666
+# 1000000
+# 5000000
+# EOF
+# cat &lt;&lt;EOF &gt; /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/uncompressed/u/360p/wWidth
+# 1280
+# EOF
+# cat &lt;&lt;EOF &gt; /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/uncompressed/u/360p/wHeight
+# 720
+# EOF
+# cat &lt;&lt;EOF &gt; /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/uncompressed/u/360p/dwMinBitRate
+# 29491200
+# EOF
+# cat &lt;&lt;EOF &gt; /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/uncompressed/u/360p/dwMaxBitRate
+# 29491200
+# EOF
+# cat &lt;&lt;EOF &gt; /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/uncompressed/u/360p/dwMaxVideoFrameBufferSize
+# 1843200
+# EOF
+</code></pre><p>完整的配置可以在这里找到：</p><h2 id="3-YUV-转码-MJPEG-推流" style=""><a class="anchor hidden-xs" href="#3-YUV-转码-MJPEG-推流" title="3-YUV-转码-MJPEG-推流"><i class="fa fa-link"></i></a>3. YUV 转码 MJPEG 推流</h2><p>现在，我们可以读取 /dev/video0 的图像数据，也定制了一个 Linux 内核可以模拟 USB 摄像头，最后一步当然就是修改视频流了，为了实现实时的性能，这里需要手动转码。这里有2条路径：</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/yuv_jpg.jpg" alt="img"></p><p>不做图像处理直接编码转发视频流 YUYV — YUV3 — JPEG</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/yuv_rgb_jpg.jpg" alt="img"></p><p>OpenCV 图像处理后编码转发视频流 YUYV — RGB888 — YV12 — YUV3 — JPEG</p><p>有些我们可以用 OpenCV 和 libJPEG 转换，但图上虚线部分是需要我们手写转换格式的，因为 libJPEG 的输入要求是 YUV3 的格式，而 OpenCV 输出是 YV12，所以需要实现 <strong>YUYV --&gt; YUV3</strong> 和 <strong>YV12 --&gt; YUV3</strong>。</p><h3 id="31-YUYV-to-YUV3" style=""><a class="anchor hidden-xs" href="#31-YUYV-to-YUV3" title="31-YUYV-to-YUV3"><i class="fa fa-link"></i></a>3.1 YUYV to YUV3</h3><p>前面提到，YUYV 422 是因为人眼对色度不那么敏感，所以为了节省带宽，UV 只用了一半的存储空间；而 YUV3 其实数据内容是一模一样的，只是为了方便处理，把 YUV 做成了等长，大致看起来格式是这样的：</p><pre><code>// YUV422 (2 pixels)
+| Y0 U0 Y1 V0 | Y2 U1 Y3 V1 |
+
+// YUV 3  (2 pixels)
+| Y0 U0 V0 | Y1 U0 V0 | Y2 U1 V1 | Y3 U1 V1 |
+</code></pre><p>可以看到，YUV3 其实就是为了让  YUV 等长，而把 UV 重复了一遍，所以当我们转换图片的一行可以这么操作：</p><pre><code>for (i = 0, j = 0; i &lt; cinfo.image_width * 2; i += 4, j += 6) { 
+    //input strides by 4 bytes, output strides by 6 (2 pixels)
+    tmprowbuf[j + 0] = input[offset + i + 0]; // Y (unique to this pixel)
+    tmprowbuf[j + 1] = input[offset + i + 1]; // U (shared between pixels)
+    tmprowbuf[j + 2] = input[offset + i + 3]; // V (shared between pixels)
+    tmprowbuf[j + 3] = input[offset + i + 2]; // Y (unique to this pixel)
+    tmprowbuf[j + 4] = input[offset + i + 1]; // U (shared between pixels)
+    tmprowbuf[j + 5] = input[offset + i + 3]; // V (shared between pixels)
+}
+</code></pre><p>也就是浪费一些存储空间，把 Y1 U1 Y2 V1 重新排序成 Y1 U1 V1 | Y2 U2 V2 的格式。</p><h3 id="32-YV12-to-YUV3" style=""><a class="anchor hidden-xs" href="#32-YV12-to-YUV3" title="32-YV12-to-YUV3"><i class="fa fa-link"></i></a>3.2 YV12 to YUV3</h3><p>这两个格式之间的转换就略微有些麻烦了，前面 YUYV 到 YUV3 的转换其实只是做了个冗余的重新排序，因为它俩一张图片的内存排布方式是一样的，都是按顺序存储 YUV，然而 YV12 就略微复杂，它是先存储所有的 Y，然后再存储所有的 U，最后再存储所有的 V，在内存里的排布看起来是这样的：</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/yuv3.jpg" alt="img"></p><p>这有点类似于图片在 CPU 和 GPU 的 Channel 排布不同，从 NWHC 转换到 NCWH。</p><pre><code>for (i = 0, j = 0; i &lt; cinfo.image_width; i += 1, j += 3) { 
+    //input strides by 3 bytes, output strides by 1 (2 pixels)
+    tmprowbuf[j + 0] = input[i + cinfo.image_width * cinfo.next_scanline];
+    // Jump through all Y (cinfo.image_width * cinfo.image_height)
+    tmprowbuf[j + 1] = input[i / 2 + cinfo.image_width * cinfo.image_height + (cinfo.image_width / 2) * (cinfo.next_scanline / 2)];
+    // Jump through all Y and U ((cinfo.image_width / 2) * (cinfo.image_height / 2))
+    tmprowbuf[j + 2] = input[i / 2 + cinfo.image_width * cinfo.image_height + (cinfo.image_width / 2) * (cinfo.image_height / 2) + (cinfo.image_width / 2) * (cinfo.next_scanline / 2)];
+}
+</code></pre><p>上面宽高分别除以了2是因为前面提到，人眼对色度 (UV) 不敏感，所以一个 2x2 的 4 个像素点，其实用的同一个 1 个 U 来存储，所以 UV 在内存宽高的占用，各是 Y 的 1/2。</p><h3 id="33-JPEG-编码" style=""><a class="anchor hidden-xs" href="#33-JPEG-编码" title="33-JPEG-编码"><i class="fa fa-link"></i></a><strong>3.3 JPEG 编码</strong></h3><p>当然，如果是简单的图片叠加，其实我们也可以不解码，直接做图像处理，但是这对原始图片的尺寸有一些要求，后期优化性能可以考虑直接对 JPEG 做图像处理。这里简单介绍一下 JPEG 编码，使用 libjpeg 编码。</p><p>其实 JPEG 的编码还是比较简单的，对原始图片首先进行 离散余弦变换 (Discrete Cosine Transform)，然后进行量化，损失一部分信息，但是图像尺寸得到减少，最后进行霍夫曼编码。而解码就是完全相反的过程，先霍夫曼解码，去除量化，最后做个 DCT  反变换就得到原始图像了。</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/jpg_encoding.jpg" alt="img"></p><p>为什么要进行 DCT 变换呢？这也是为了方便后面进行量化，一张图片其实可以表示为下面的 64 种分量组合：</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/dct.png" alt="img"></p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/dct_img.png" alt="img"></p><p>当然，一张图片里并不会同时包含所有的分量，例如纯色背景图左上角的低频分量就会比较多，而右下角的高频分量就会比较少，所以我们在后一步量化的时候，可以量化掉掉图片里的一部分信息，但是图片整体看起来不会有明显的区别。</p><p>最后的霍夫曼编码，其实是为了压缩存储空间，前面经过量化之后，一张图片的 RGB 值可能性大大减少，比如一张 8x8 纯黑的背景，所有的值都是0，那么我们其实并不需要存储 64 个 0，只要存储 64，0，后面只要按照规则知道这代表 64 个 0 进行解码就可以了。</p><p>下面这张图就是霍夫曼编码的直观表示，例如一个字节 a, b, c, d 占的存储空间都是 1 个字节，8 bit，但是一个文件内并不一定会出现 ASCII 码表里所有的字符，经过霍夫曼编码之后，a 可以只用1个 bit 0 表示，b 用 111 一共 3 个 bit 表示，就节省了大量的存储空间。</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/hoffman.jpg" alt="img"></p><h2 id="4-总结" style=""><a class="anchor hidden-xs" href="#4-总结" title="4-总结"><i class="fa fa-link"></i></a>4. 总结</h2><p>于是到此为止，介绍了 USB 摄像头的 2 种常见格式 (YUYV 和 MJPEG)，前者 YUYV 是未压缩的低分辨率图像，后者 MJPEG 可以实时传输高分辨率的压缩后图像，并说明了如何从 V4L2 文件 /dev/video0 里面读取数据，并进行转码 (YUYV --&gt; YUV3) (YV12 --&gt; YUV3)，利用 OpenCV 进行图像处理，随后 JPEG 编码 (DCT 变换 --&gt; 量化 --&gt; Huffman 编码)，最后利用定制的 Linux 内核，初始化 USB OTG 为摄像头设备，实时传递篡改后的视频流数据到 PC 端。</p><p><img src="https://doc.wuhanstudio.cc/posts/usb_cam/adv_cam.jpg" alt="img"></p><h2 id="5-References" style=""><a class="anchor hidden-xs" href="#5-References" title="5-References"><i class="fa fa-link"></i></a>5. References</h2><p>[1] <a href="https://github.com/wuhanstudio/capturev4l2" target="_blank" rel="noopener">https://github.com/wuhanstudio/capturev4l2</a></p><p>[2] <a href="https://github.com/wuhanstudio/adversarial-camera" target="_blank" rel="noopener">https://github.com/wuhanstudio/adversarial-camera</a></p></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav">
+<li class=""><a href="#如何-伪造篡改-USB-摄像头" title="如何 伪造/篡改 USB 摄像头">如何 伪造/篡改 USB 摄像头</a><ul class="nav">
+<li><a href="#0-Introduction" title="0. Introduction">0. Introduction</a></li>
+<li><a href="#1-读取-Linux-摄像头数据-V4L2" title="1. 读取 Linux 摄像头数据 (V4L2)">1. 读取 Linux 摄像头数据 (V4L2)</a><ul class="nav">
+<li><a href="#11-YUYV422-图像格式" title="1.1 YUYV422 图像格式">1.1 YUYV422 图像格式</a></li>
+<li><a href="#12-V4L2-读取图像" title="1.2 V4L2 读取图像">1.2 V4L2 读取图像</a></li>
+</ul>
+</li>
+<li><a href="#2-USB-Gadget-虚拟摄像头" title="2. USB Gadget 虚拟摄像头">2. USB Gadget 虚拟摄像头</a><ul class="nav">
+<li><a href="#21-Buildroot-构建-Linux-内核、根文件系统" title="2.1 Buildroot 构建 Linux 内核、根文件系统">2.1 Buildroot 构建 Linux 内核、根文件系统</a></li>
+<li><a href="#22-Configfs-配置虚拟摄像头" title="2.2 Configfs 配置虚拟摄像头">2.2 Configfs 配置虚拟摄像头</a></li>
+</ul>
+</li>
+<li class=""><a href="#3-YUV-转码-MJPEG-推流" title="3. YUV 转码 MJPEG 推流">3. YUV 转码 MJPEG 推流</a><ul class="nav">
+<li><a href="#31-YUYV-to-YUV3" title="3.1 YUYV to YUV3">3.1 YUYV to YUV3</a></li>
+<li><a href="#32-YV12-to-YUV3" title="3.2 YV12 to YUV3">3.2 YV12 to YUV3</a></li>
+<li class=""><a href="#33-JPEG-编码" title="3.3 JPEG 编码">3.3 JPEG 编码</a></li>
+</ul>
+</li>
+<li><a href="#4-总结" title="4. 总结">4. 总结</a></li>
+<li class=""><a href="#5-References" title="5. References">5. References</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
+        <div class="toc"><ul class="nav">
+<li class=""><a href="#如何-伪造篡改-USB-摄像头" title="如何 伪造/篡改 USB 摄像头">如何 伪造/篡改 USB 摄像头</a><ul class="nav">
+<li><a href="#0-Introduction" title="0. Introduction">0. Introduction</a></li>
+<li><a href="#1-读取-Linux-摄像头数据-V4L2" title="1. 读取 Linux 摄像头数据 (V4L2)">1. 读取 Linux 摄像头数据 (V4L2)</a><ul class="nav">
+<li><a href="#11-YUYV422-图像格式" title="1.1 YUYV422 图像格式">1.1 YUYV422 图像格式</a></li>
+<li><a href="#12-V4L2-读取图像" title="1.2 V4L2 读取图像">1.2 V4L2 读取图像</a></li>
+</ul>
+</li>
+<li><a href="#2-USB-Gadget-虚拟摄像头" title="2. USB Gadget 虚拟摄像头">2. USB Gadget 虚拟摄像头</a><ul class="nav">
+<li><a href="#21-Buildroot-构建-Linux-内核、根文件系统" title="2.1 Buildroot 构建 Linux 内核、根文件系统">2.1 Buildroot 构建 Linux 内核、根文件系统</a></li>
+<li><a href="#22-Configfs-配置虚拟摄像头" title="2.2 Configfs 配置虚拟摄像头">2.2 Configfs 配置虚拟摄像头</a></li>
+</ul>
+</li>
+<li class=""><a href="#3-YUV-转码-MJPEG-推流" title="3. YUV 转码 MJPEG 推流">3. YUV 转码 MJPEG 推流</a><ul class="nav">
+<li><a href="#31-YUYV-to-YUV3" title="3.1 YUYV to YUV3">3.1 YUYV to YUV3</a></li>
+<li><a href="#32-YV12-to-YUV3" title="3.2 YV12 to YUV3">3.2 YV12 to YUV3</a></li>
+<li class=""><a href="#33-JPEG-编码" title="3.3 JPEG 编码">3.3 JPEG 编码</a></li>
+</ul>
+</li>
+<li><a href="#4-总结" title="4. 总结">4. 总结</a></li>
+<li class=""><a href="#5-References" title="5. References">5. References</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/js/bootstrap.min.js" integrity="sha256-kJrlY+s09+QoWjpkOrXXwhxeaoDz9FW5SaxF8I0DibQ=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>
