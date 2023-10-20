@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        在 RTOS 上移植 MicroROS (ROS2) - CodiMD
+    </title>
+    <link rel="icon" type="image/png" href="https://codimd.wuhanstudio.cc/favicon.png">
+    <link rel="apple-touch-icon" href="https://codimd.wuhanstudio.cc/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha256-H0KfTigpUV+0/5tn2HXC0CPwhhDhWgSawJdnFd0CGCo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fork-awesome/1.1.3/css/fork-awesome.min.css" integrity="sha256-ZhApazu+kejqTYhMF+1DzNKjIzP7KXu6AzyXcC1gMus=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github-gist.min.css" integrity="sha256-tAflq+ymku3Khs+I/WcAneIlafYgDiOQ9stIHH985Wo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,300italic,300|Source+Serif+Pro|Source+Code+Pro:400,300,500&subset=latin,latin-ext);.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{padding:0 1em;color:#777;border-left:.25em solid #ddd}.night .markdown-body blockquote{color:#bcbcbc}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.night .markdown-body h1,.night .markdown-body h2,.night .markdown-body h3,.night .markdown-body h4,.night .markdown-body h5,.night .markdown-body h6{color:#ddd}.markdown-body h1 .fa-link,.markdown-body h2 .fa-link,.markdown-body h3 .fa-link,.markdown-body h4 .fa-link,.markdown-body h5 .fa-link,.markdown-body h6 .fa-link{color:#000;vertical-align:middle;visibility:hidden;font-size:16px}.night .markdown-body h1 .fa-link,.night .markdown-body h2 .fa-link,.night .markdown-body h3 .fa-link,.night .markdown-body h4 .fa-link,.night .markdown-body h5 .fa-link,.night .markdown-body h6 .fa-link{color:#fff}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .fa-link,.markdown-body h2:hover .anchor .fa-link,.markdown-body h3:hover .anchor .fa-link,.markdown-body h4:hover .anchor .fa-link,.markdown-body h5:hover .anchor .fa-link,.markdown-body h6:hover .anchor .fa-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{margin-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.night .markdown-body table tr{background-color:#5f5f5f}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.night .markdown-body table tr:nth-child(2n){background-color:#4f4f4f}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:.2em 0;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.night .markdown-body code,.night .markdown-body tt{color:#eee;background-color:hsla(0,0%,90.2%,.36)}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\A0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.markdown-body kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid;border-color:#ccc #ccc #bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important}.markdown-body pre{border:inherit!important}.night .markdown-body pre{filter:invert(100%)}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-webkit-inline-flex;display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.night .markdown-body .gist table tr:nth-child(2n){background-color:#ddd}.markdown-body code[data-gist-id]{background:none;padding:0;filter:invert(100%)}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram,.markdown-body pre.vega{text-align:center;background-color:inherit;border-radius:0;white-space:inherit}.night .markdown-body pre.graphviz .graph>polygon{fill:#333}.night .markdown-body pre.mermaid .sectionTitle,.night .markdown-body pre.mermaid .titleText,.night .markdown-body pre.mermaid text{fill:#fff}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code,.markdown-body pre.vega>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg,.markdown-body pre.vega>svg{max-width:100%;height:100%}.night .markdown-body .abc path{fill:#eee}.night .markdown-body .abc path.note_selected{fill:##4DD0E1}.night tspan{fill:#fefefe}.night pre rect{fill:transparent}.night pre.flow-chart path,.night pre.flow-chart rect{stroke:#fff}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p,.markdown-body .alert>ul{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body img{background-color:transparent}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;-webkit-transition:opacity .2s;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;-webkit-transition:opacity .2s;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.MJX_Assistive_MathML{display:none}.ui-infobar{position:relative;z-index:2;max-width:758px;margin-top:25px;margin-bottom:-25px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:10000}.ui-toc-label{opacity:.3;background-color:#ccc;border:none}.ui-toc-label,.ui-toc .open .ui-toc-label{-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc-dropdown{margin-top:23px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child>ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.night .ui-toc-dropdown .nav>li>a:focus,.night .ui-toc-dropdown .nav>li>a:hover{color:#fff;border-left-color:#fff}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.night .ui-toc-dropdown .nav>.active:focus>a,.night .ui-toc-dropdown .nav>.active:hover>a,.night .ui-toc-dropdown .nav>.active>a{color:#fff;border-left:2px solid #fff}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.night .ui-toc-dropdown .nav>li>a{color:#aaa}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,"\30D2\30E9\30AE\30CE\89D2\30B4   Pro W3",Osaka,Meiryo,"\30E1\30A4\30EA\30AA",MS Gothic,"\FF2D\FF33   \30B4\30B7\30C3\30AF",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,"\FF2D\FF33   \FF30\30B4\30B7\30C3\30AF",sans-serif}.markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang TC,Microsoft JhengHei,"\5FAE\8EDF\6B63\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,"\5FAE\8EDF\6B63\9ED1UI",sans-serif}.markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang SC,Microsoft YaHei,"\5FAE\8F6F\96C5\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,"\5FAE\8F6F\96C5\9ED1UI",sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:3px;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:contain}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}small span{line-height:22px}small .dropdown{display:inline-block}small .dropdown a:focus,small .dropdown a:hover{text-decoration:none}.unselectable{-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}.night .navbar{background:#333;border-bottom-color:#333;color:#eee}.night .navbar a{color:#eee}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;font-family:Source Sans Pro,Helvetica,Arial,sans-serif;letter-spacing:.025em}.focus,:focus{outline:none!important}::-moz-focus-inner{border:0!important}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid"><h1 id="在-RTOS-上移植-MicroROS-ROS2" style=""><a class="anchor hidden-xs" href="#在-RTOS-上移植-MicroROS-ROS2" title="在-RTOS-上移植-MicroROS-ROS2"><i class="fa fa-link"></i></a>在 RTOS 上移植 MicroROS (ROS2)</h1><blockquote>
+<p>这篇文章会先介绍一下 ROS2 的架构，接下来以 Arduino 和 RT-Thread 为例，介绍如何移植 MicroROS 到嵌入式平台，这样就可以在 MCU 上使用 ROS2 的 API，例如发布 (publish)、订阅 (subscribe) 相关的话题 (topic)，调用服务 (service) 等等。</p>
+</blockquote><h2 id="Introduction" style=""><a class="anchor hidden-xs" href="#Introduction" title="Introduction"><i class="fa fa-link"></i></a>Introduction</h2><p>第一代 ROS 在各种型号的机器人上得到广泛应用之后，为什么要发布第二代 ROS 呢？在 ROS2 Design [1] 这篇文章里有详细介绍，这里我总结一下我比较感兴趣的几点：</p><ul>
+<li><strong>多机器人协作</strong>：第一代 ROS 设计主要针对的是单个机器人，这一点从 ROS1 只有一个 master 节点也可以看出来，而 ROS2 希望考虑到多个机器人之间的协同设计、通信，逐渐走向一个分布式的架构。</li>
+<li><strong>嵌入式平台</strong>：最初的 ROS 只支持 Debian / Ubuntu，虽然有 rosserial 可以让单片机 (MCU) 和 ROS master 通信，但整体 ROS 是不考虑嵌入式平台的。毕竟 ROS 最早是 2007 年发布的，当时的 MCU 太慢了 (主频 16MHz - 72MHz)，那个年代才刚刚推出 ST32F1 (Cortex M3) 系列，而现在一些 MCU 主频都突破 1GHz 了，例如 <a href="http://i.MX" target="_blank" rel="noopener">i.MX</a> RT Cortex-M7 系列。于是 ROS2 也开始针对中高端的嵌入式平台。</li>
+<li><strong>生产环境</strong>：ROS 最早是由斯坦福的 2 个博士生设计的，当时设计 ROS 主要也是方便实验室科研，并没有考虑部署到实际的生产环境。</li>
+</ul><p>总体来看，就是从 2007 到 2022，这 15 年间时代发生了巨大的改变，从单个机器人设计到如今的机器人集群，MCU 从 72MHz 到突破 1GHz。另一方面，曾经的 ROS1 在十多年的应用中也暴露出了很多设计上的不合理，如果要继续修改 ROS1 满足当前时代的需求，会引入大量的修改，甚至导致与以前的 ROS 不兼容。最终 Open Source Robotics Foundation 决定设计全新的 ROS2，而以前的  ROS1 也会继续维护，只不过 ROS1 和 ROS2 现在是分开维护的，并不保证两者完全兼容。</p><h2 id="ROS2-Stack" style=""><a class="anchor hidden-xs" href="#ROS2-Stack" title="ROS2-Stack"><i class="fa fa-link"></i></a>ROS2 Stack</h2><p>在详细介绍 MicroROS 的移植过程之前，简单介绍一下全新的 ROS2 架构，因为 MicroROS 也用到了不少 ROS2 的抽象层源码。</p><p>ROS2 和 ROS1 最大的区别就是引入了 DDS (Data Distribution Service) [2]，前面提到 ROS1 需要在 master 节点启动之后，其他节点才能陆续加入，而其他节点和主节点的通信是依赖 XML-RPC，如果要在嵌入式设备上实现 XML-RPC 会引入相当多的软件包依赖，这也是 ROS1 无法直接支持嵌入式 MCU 的最大原因，所以像 rosserial 是自定义了一套更加轻量级的通信协议帮助 MCU 和 PC Ubuntu 上的 master 节点通信。ROS2 则引入了工业界非常成熟的 DDS 作为节点间的通信、发现 (discovery) 协议，DDS 已经在军工，航天，金融系统领域证明了它的稳定性 [3].</p><p>这里顺便一提，DDS 只是一个标准，不同公司有不同的代码实现，例如有 Cyclone DDS (Eclipse)，Fast DDS (eProsima)，Micro XRCE-DDS (eProsima) 等等，所以一套 ROS2 Stack 底层的 DDS 其实是可以替换的，为了保证替换不同厂家的 DDS，上层 ROS2 代码不需要改变，ROS2 也重新定义了一些抽象层，例如 RCL (ROS Client Library) 和 RMW (ROS Middleware)。</p><p>这样底层不同的 DDS 实现，都提供了相同的 RMW (ROS Middleware) 接口。在 RMW 之上，则定义了 RCL (ROS Client Library)，RCL 是由 C 实现的，这样也可以向上提供不同编程语言的支持，例如 C++，Python，Java。</p><p>这样看来，要想移植 ROS2，最重要的是 RTOS 需要支持一个具体的 DDS 实现，和对应的 RMW，这样上层的 RCL 和 ROS Application 的代码就是可以不需要任何修改的。</p><p><img src="https://doc.wuhanstudio.cc/posts/uros_rtt/ros2_stack.png" alt="img"></p><p>最后顺便一提，<strong>ROS2 提供了 C 的支持，而 ROS1 是只支持 C++ 的</strong>。</p><h2 id="MicroROS" style=""><a class="anchor hidden-xs" href="#MicroROS" title="MicroROS"><i class="fa fa-link"></i></a>MicroROS</h2><p>现在我们知道 ROS2 主要由 RCL，RMW，DDS 组成，如果要移植 ROS2 就需要实现一套 RMW + DDS 组合，上层的 RCL 不需要修改，而 MicroROS 则是提供了这样一套组合。</p><p>MicroROS 采用的是 DDS 是自己专门针对嵌入式设备实现的 <a href="https://github.com/eProsima/Micro-XRCE-DDS" target="_blank" rel="noopener">Micro XRCE DDS</a> (e<strong>X</strong>tremely <strong>R</strong>esource <strong>C</strong>onstrained <strong>E</strong>nvironment standard)，以及自己对接的 <a href="https://github.com/micro-ROS/rmw_microxrcedds" target="_blank" rel="noopener">RMW</a>。</p><p>这样看来，要<strong>移植 MicroROS 其实就是需要对接 Arduino / RT-Thread 和不同平台的通信，例如 UART 和 UDP</strong>。</p><p><img src="https://doc.wuhanstudio.cc/posts/uros_rtt/uros_stack.png" alt="img"></p><h2 id="Arduino" style=""><a class="anchor hidden-xs" href="#Arduino" title="Arduino"><i class="fa fa-link"></i></a>Arduino</h2><p>这里 MicroROS 在 Arduino 上的移植已经有<a href="https://github.com/micro-ROS/micro_ros_arduino" target="_blank" rel="noopener">官方维护</a>了 [4]，后面我们也是参考 Arduino 的移植，实现对 RT-Thread 的支持。</p><p>MicroROS 的移植主要有 2 个部分：</p><ol>
+<li>对接 UART / UDP 通信和时钟，也就是实现 default_transport.cpp 里面的 5 个函数。</li>
+<li>打包 DDS + RMW + RCL 生成 libmicroros.a 静态库。</li>
+</ol><pre><code>int clock_gettime(clockid_t unused, struct timespec *tp) __attribute__ ((weak));
+
+bool arduino_transport_open(struct uxrCustomTransport * transport) __attribute__ ((weak));
+bool arduino_transport_close(struct uxrCustomTransport * transport) __attribute__ ((weak));
+
+size_t arduino_transport_write(struct uxrCustomTransport * transport, uint8_t *buf, size_t len, uint8_t *errcode) __attribute__ ((weak));
+size_t arduino_transport_read(struct uxrCustomTransport * transport, uint8_t *buf, size_t len, int timeout, uint8_t *errcode) __attribute__ ((weak));
+</code></pre><p>如果大家熟悉 Arduino 的话，会发现第一步对接驱动，其实非常非常简单：</p><pre><code>bool arduino_transport_open(struct uxrCustomTransport * transport)
+{
+  Serial.begin(115200);
+  return true;
+}
+
+bool arduino_transport_close(struct uxrCustomTransport * transport)
+{
+  Serial.end();
+  return true;
+}
+
+size_t arduino_transport_write(struct uxrCustomTransport * transport, uint8_t *buf, size_t len, uint8_t *errcode)
+{
+  (void)errcode;
+  size_t sent = Serial.write(buf, len);
+  return sent;
+}
+
+size_t arduino_transport_read(struct uxrCustomTransport * transport, uint8_t *buf, size_t len, int timeout, uint8_t *errcode)
+{
+  (void)errcode;
+  Serial.setTimeout(timeout);
+  return Serial.readBytes((char *)buf, len);
+}
+</code></pre><p>至于第二步打包 DDS + RMW + RCL 生成 libmicroros.a 静态库，需要针对不同的硬件修改编译选项，Arduino 已经支持的硬件可以使用 docker 完成，当然我们也需要区分不同的 ROS2 版本 (Foxy，Galactic，Humble)。</p><pre><code>git clone https://github.com/micro-ROS/micro_ros_arduino &amp;&amp; cd micro_ros_arduino
+docker pull microros/micro_ros_static_library_builder:galactic
+docker run -it --rm -v $(pwd):/project --env MICROROS_LIBRARY_FOLDER=extras microros/micro_ros_static_library_builder:galactic
+</code></pre><p>这里需要注意的是，静态库生成过程会从 github clone 大量的仓库，可能需要 VPN 才能顺利拉下来全部的仓库，最终使用的仓库索引会保存在 <strong>built_packages</strong> 文件。我们可以看到，主要包含的源码仓库有 ROS2 的编译系统 ament ( 对应 ROS1 catkin)，前面提到的 MicroROS-XRCE-DDS-Client，RCL，RMW，以及 ROS2 定义的标准 micro_ros_msgs 和 msgs 的依赖 ROS IDL 和 libyaml。</p><pre><code>https://github.com/ament/ament_cmake.git 65a3ad5f128e4b727187fa38c10af2fc6d4f9d53
+https://github.com/ament/ament_index.git 496403d0865866041d7ce9a95172a6b0e186c812
+https://github.com/ament/ament_lint.git 96d9ca4fd32b18a1e083b9e952930c93251be4f4
+https://github.com/ament/ament_package.git 6098894352c478eb65de3fe70b46730cf30b8c5c
+https://github.com/ament/googletest.git f544da397da024f876d0094461a0e167ad293f63
+https://github.com/ament/uncrustify_vendor.git 0aa3bf65f5b2093aea09f83d89e86eeff129a019
+https://github.com/eProsima/Micro-CDR.git cb4403a8780095df94a7b1936b1e00153c90070d
+https://github.com/eProsima/Micro-XRCE-DDS-Client.git 88bb91044c0bc58ba39828973f5dfd2b13feb8d6
+https://github.com/micro-ROS/micro_ros_msgs.git e3664463e78ae5d0c34d86be92d707b3d9dfd27d
+https://github.com/micro-ROS/micro_ros_utilities 31e017dc06e2ab4c9f0822100638cd919dbb7872
+https://github.com/micro-ROS/rcl 98bb690e17b147f194bd2c92786784814539702e
+https://github.com/micro-ROS/rcutils 0c380197594b56142e157b8f565f3879c617f02e
+https://github.com/micro-ROS/rmw-microxrcedds.git 7505d97111f30de8258dcba8c479603d5b6d97b0
+https://github.com/micro-ROS/rosidl_typesupport.git d21bde140e1a4b413f6725888470b758a739171d
+https://github.com/micro-ROS/rosidl_typesupport_microxrcedds.git 106fda6a43a912e09480d7b705f3ca4a31a1803c
+https://github.com/ros-controls/control_msgs a555c37f1a3536bb452ea555c58fdd9344d87614
+https://github.com/ros2/ament_cmake_ros.git 3dcf062187223efba18a10a30faff209da0bfc52
+https://github.com/ros2/common_interfaces.git 8584562aa9de9ea042c3fbc87020f7352729a396
+https://github.com/ros2/example_interfaces.git 489b7c12071ddbd1d0d0bb1a161387324f76f0d5
+https://github.com/ros2/libyaml_vendor.git 5ae991d39c36583fc295c819ba3370aa0d7b3672
+https://github.com/ros2/rcl.git 191b13bc2eb8578e40799eb6b50c74b885e7066e
+https://github.com/ros2/rcl_interfaces.git 3d1255ce8f651df40ae2186406ac3cfe68dbca3c
+https://github.com/ros2/rcl_logging.git 8b31efe346611d67a3f3fa3649a7b29f34f156b3
+https://github.com/ros2/rclc 7a856162fda90ebbe405225cfe4ec1163d5c855a
+https://github.com/ros2/rcpputils.git 8a94c1c189561bfd8115e1cbdd2c94f5706ef323
+https://github.com/ros2/rmw.git 2259c3f6f3de8c479a9d5c74cdcd03d0010413cd
+https://github.com/ros2/rmw_implementation.git 1809f1491b27cce9b0de49fa152ed233a2be21f4
+https://github.com/ros2/rosidl.git 51811962c832745f531968d351af3d1af45cd238
+https://github.com/ros2/rosidl_dds.git 1d2019eb1af73af444d698381128a3b5de50d8da
+https://github.com/ros2/rosidl_defaults.git e6e56c2bae30d4694a0bf0d74937917283564b8c
+https://github.com/ros2/test_interface_files.git e0db71e2916b244a8e218bd3fbc1a6d7c18f2b3e
+https://github.com/ros2/unique_identifier_msgs.git ba3a672c6f5b071490a659f8a0b7019c6a32d7b8
+https://github.com/yaml/libyaml.git 2c891fc7a770e8ba2fec34fc6b545c672beb37e6
+https://gitlab.com/micro-ROS/ros_tracing/ros2_tracing.git/ 638fa0ab095ae1e941b05187418f0089c431e8d9
+</code></pre><p>最后生成的 libmicroros.a 可以在下面的目录里找到：</p><pre><code>~/micro_ros$ find ./ -name *.a
+
+./src/cortex-m4/fpv4-sp-d16-softfp/libmicroros.a
+./src/cortex-m0plus/libmicroros.a
+./src/cortex-m3/libmicroros.a
+./src/mk20dx256/libmicroros.a
+./src/mk64fx512/fpv4-sp-d16-hard/libmicroros.a
+./src/imxrt1062/fpv5-d16-hard/libmicroros.a
+./src/cortex-m7/fpv5-d16-softfp/libmicroros.a
+./src/cortex-m7/fpv5-sp-d16-softfp/libmicroros.a
+</code></pre><p>可以看到，默认会生成所有支持平台的 libmicroros.a，我们可能只希望生成自己开发板的静态库，例如我们可以指定只生成 Cortex-M3 的静态库：</p><pre><code>cd micro_ros_arduino
+docker run -it --rm -v $(pwd):/project --env MICROROS_LIBRARY_FOLDER=extras microros/micro_ros_static_library_builder:galactic -p cortex_m3
+</code></pre><p>如果很不幸，自己的开发板不在支持列表，我们也可以添加自己的平台。假如我们希望添加 Turtlebot 的 OpenCR 开发板，我们需要先添加一个 CMake 文件指定编译选项，例如 <strong>opencr_toolchain.cmake</strong>，在这里面指定硬件相关的编译选项，例如 FPU：</p><pre><code>SET(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_CROSSCOMPILING 1)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
+set(CMAKE_C_COMPILER $ENV{TOOLCHAIN_PREFIX}gcc)
+set(CMAKE_CXX_COMPILER $ENV{TOOLCHAIN_PREFIX}g++)
+
+SET(CMAKE_C_COMPILER_WORKS 1 CACHE INTERNAL "")
+SET(CMAKE_CXX_COMPILER_WORKS 1 CACHE INTERNAL "")
+
+set(FLAGS "-O2 -mfloat-abi=softfp -mfpu=fpv5-sp-d16 -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -fno-exceptions -mcpu=cortex-m7 -DF_CPU=216000000L -DARDUINO=10813 -mthumb -DSTM32F746xx" CACHE STRING "" FORCE)
+
+set(CMAKE_C_FLAGS_INIT "-std=c11 ${FLAGS} -DCLOCK_MONOTONIC=0 -D'__attribute__(x)='" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_INIT "-std=c++14 ${FLAGS} -fno-rtti -DCLOCK_MONOTONIC=0 -D'__attribute__(x)='" CACHE STRING "" FORCE)
+
+set(__BIG_ENDIAN__ 0)
+</code></pre><p>接下来在 <strong>library_generation.sh</strong> 文件里增加新建的编译选项：</p><pre><code>if [ $OPTIND -eq 1 ]; then
+    PLATFORMS+=("opencr1")
+    PLATFORMS+=("teensy4")
+    PLATFORMS+=("teensy32")
+    PLATFORMS+=("teensy35")
+    PLATFORMS+=("teensy36")
+    PLATFORMS+=("cortex_m0")
+    PLATFORMS+=("cortex_m3")
+    PLATFORMS+=("cortex_m4")
+    # PLATFORMS+=("portenta-m4")
+    PLATFORMS+=("portenta-m7")
+    PLATFORMS+=("kakutef7-m7")
+    PLATFORMS+=("esp32")
+fi
+</code></pre><p>这样我们就可以针对自己新加的平台生成静态库了。</p><pre><code>docker run -it --rm -v $(pwd):/project --env MICROROS_LIBRARY_FOLDER=extras microros/micro_ros_static_library_builder:galactic -p opencr1
+</code></pre><p>到这里，我们对接好了 UART / UDP 通信和时钟，也生成了 libmicroros.a 静态库，就可以运行 MicroROS 了。</p><h2 id="RT-Thread" style=""><a class="anchor hidden-xs" href="#RT-Thread" title="RT-Thread"><i class="fa fa-link"></i></a>RT-Thread</h2><p>在 RT-Thread 上的移植也是类似的过程，需要先对接 RTT 的 UART / UDP 驱动和时钟，再生成对应平台的静态库。下面是对接 RT-Thread 串口的代码，RT-Thread 现在同时支持 UART 和 UDP 通信。</p><pre><code>int clock_gettime(clockid_t unused, struct timespec *tp)
+{
+    (void)unused;
+
+    uint64_t m = rt_tick_get() * 1000 / RT_TICK_PER_SECOND * 1000;
+    tp-&gt;tv_sec = m / 1000000;
+    tp-&gt;tv_nsec = (m % 1000000) * 1000;
+
+    return 0;
+}
+
+static rt_err_t uart_input(rt_device_t dev, rt_size_t size)
+{
+    rt_sem_release(&amp;rx_sem);
+
+    return RT_EOK;
+}
+
+bool rtt_transport_open(struct uxrCustomTransport * transport)
+{
+    micro_ros_serial = rt_device_find(MICRO_ROS_SERIAL_NAME);
+    if (!micro_ros_serial)
+    {
+        LOG_E("Failed to open device %s", MICRO_ROS_SERIAL_NAME);
+        return 0;
+    }
+    if(sem_initialized == 0)
+    {
+        rt_sem_init(&amp;rx_sem, "micro_ros_rx_sem", 0, RT_IPC_FLAG_FIFO);
+        sem_initialized = 1;
+    }
+    rt_device_open(micro_ros_serial, RT_DEVICE_FLAG_INT_RX);
+    rt_device_set_rx_indicate(micro_ros_serial, uart_input);
+    return 1;
+}
+
+bool rtt_transport_close(struct uxrCustomTransport * transport)
+{
+    rt_device_close(micro_ros_serial);
+    rt_sem_detach(&amp;rx_sem);
+    sem_initialized = 0;
+    return 1;
+}
+
+size_t rtt_transport_write(struct uxrCustomTransport * transport, const uint8_t *buf, size_t len, uint8_t *errcode)
+{
+    return rt_device_write(micro_ros_serial, 0, buf, len);
+}
+
+size_t rtt_transport_read(struct uxrCustomTransport * transport, uint8_t *buf, size_t len, int timeout, uint8_t *errcode)
+{
+    int tick = rt_tick_get();
+    for (int i = 0; i &lt; len; ++i)
+    {
+        if(sem_initialized == 0)
+        {
+            rt_sem_init(&amp;rx_sem, "micro_ros_rx_sem", 0, RT_IPC_FLAG_FIFO);
+            sem_initialized = 1;
+        }
+        while (rt_device_read(micro_ros_serial, -1, &amp;buf[i], 1) != 1)
+        {
+            rt_sem_take(&amp;rx_sem, timeout / 4);
+            if( (rt_tick_get() - tick) &gt; timeout )
+            {
+                // LOG_E("Read timeout");
+                return i;
+            }
+        }
+    }
+    return len;
+}
+</code></pre><p>当然，不论是 Arduino 还是 RT-Thread 的 <a href="https://github.com/wuhanstudio/micro_ros" target="_blank" rel="noopener">micro_ros</a> 软件包，都已经提供有一系列预生成的静态库，只有在自己的硬件没有预先支持，或者编译选项和自己希望的不一样的时候，才需要自己生成 libmicroros.a。</p><p><img src="https://doc.wuhanstudio.cc/posts/uros_rtt/uros_rtt.png" alt="img"></p><p>添加图片注释，不超过 140 字（可选）</p><p>顺便一提，在 RT-Thread 上移植的时候，还会出现编译器版本不一样，造成 <strong>ctype_ptr</strong> 未定义的错误，默认是使用 gcc 5.4.1 生成的静态库，和 RT-Thread Studio 使用的相同版本的编译器。</p><p>现在 RT-Thread 的软件包 micro_ros 也是以预生成的静态库 libmicroros.a 链接的形式发布的，未来当然是希望能完全以源码的形式发布，这样就不需要针对新的硬件重新生成静态库了。</p><p>不幸的是，MicroROS 在 RT-Thread 上的移植大概是我一年前做的，最近一年 (2022) RT-Thread 的 libc 做了重大改变，而 MicroROS 也做了不少更新，因此最新版本的 RTT + MicroROS 还有很多问题需要修复；幸运的是，这个项目成为了<a href="https://summer-ospp.ac.cn/#/org/orgdetail/f338e884-b285-4c7c-b908-f931ba7dba82/" target="_blank" rel="noopener">中科院开源之夏</a>的项目之一，现在由杜海军同学在积极维护；另一方面同时进行的也有 Cyclone DDS 在 RT Smart 上的移植，希望不久之后能有一套完整的 ROS2 Stack 实现。</p><h2 id="总结" style=""><a class="anchor hidden-xs" href="#总结" title="总结"><i class="fa fa-link"></i></a>总结</h2><p>这篇文章介绍了为什么要设计 ROS2，以及 ROS2 的架构 (RCL + RMW + DDS)，最后以 Arduino 和 RT-Thread 为例介绍如何移植 MicroROS 和 libmicroros.a 静态库的生成，希望未来 ROS2 能早日在 RTOS 嵌入式平台上有原生的全面支持。</p><h2 id="References" style=""><a class="anchor hidden-xs" href="#References" title="References"><i class="fa fa-link"></i></a>References</h2><ul>
+<li>[1] <a href="https://design.ros2.org/articles/why_ros2.html" target="_blank" rel="noopener">Why ROS 2?</a></li>
+<li>[2] <a href="https://design.ros2.org/articles/changes.html" target="_blank" rel="noopener">Changes between ROS 1 and ROS 2</a></li>
+<li>[3] <a href="https://www.science.org/doi/10.1126/scirobotics.abm6074" target="_blank" rel="noopener">Robot Operating System 2: Design, architecture, and uses in the wild</a></li>
+<li>[4] <a href="https://github.com/micro-ROS/micro_ros_arduino" target="_blank" rel="noopener">GitHub - micro-ROS/micro_ros_arduino: micro-ROS library for Arduino</a></li>
+</ul></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav">
+<li class=""><a href="#在-RTOS-上移植-MicroROS-ROS2" title="在 RTOS 上移植 MicroROS (ROS2)">在 RTOS 上移植 MicroROS (ROS2)</a><ul class="nav">
+<li><a href="#Introduction" title="Introduction">Introduction</a></li>
+<li><a href="#ROS2-Stack" title="ROS2 Stack">ROS2 Stack</a></li>
+<li><a href="#MicroROS" title="MicroROS">MicroROS</a></li>
+<li><a href="#Arduino" title="Arduino">Arduino</a></li>
+<li class=""><a href="#RT-Thread" title="RT-Thread">RT-Thread</a></li>
+<li><a href="#总结" title="总结">总结</a></li>
+<li class=""><a href="#References" title="References">References</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
+        <div class="toc"><ul class="nav">
+<li class=""><a href="#在-RTOS-上移植-MicroROS-ROS2" title="在 RTOS 上移植 MicroROS (ROS2)">在 RTOS 上移植 MicroROS (ROS2)</a><ul class="nav">
+<li><a href="#Introduction" title="Introduction">Introduction</a></li>
+<li><a href="#ROS2-Stack" title="ROS2 Stack">ROS2 Stack</a></li>
+<li><a href="#MicroROS" title="MicroROS">MicroROS</a></li>
+<li><a href="#Arduino" title="Arduino">Arduino</a></li>
+<li class=""><a href="#RT-Thread" title="RT-Thread">RT-Thread</a></li>
+<li><a href="#总结" title="总结">总结</a></li>
+<li class=""><a href="#References" title="References">References</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/js/bootstrap.min.js" integrity="sha256-kJrlY+s09+QoWjpkOrXXwhxeaoDz9FW5SaxF8I0DibQ=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>
