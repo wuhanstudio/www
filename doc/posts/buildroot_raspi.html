@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        Buildroot 定制嵌入式 Linux (树莓派 4) - CodiMD
+    </title>
+    <link rel="icon" type="image/png" href="https://codimd.wuhanstudio.cc/favicon.png">
+    <link rel="apple-touch-icon" href="https://codimd.wuhanstudio.cc/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha256-H0KfTigpUV+0/5tn2HXC0CPwhhDhWgSawJdnFd0CGCo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fork-awesome/1.1.3/css/fork-awesome.min.css" integrity="sha256-ZhApazu+kejqTYhMF+1DzNKjIzP7KXu6AzyXcC1gMus=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github-gist.min.css" integrity="sha256-tAflq+ymku3Khs+I/WcAneIlafYgDiOQ9stIHH985Wo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,300italic,300|Source+Serif+Pro|Source+Code+Pro:400,300,500&subset=latin,latin-ext);.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{padding:0 1em;color:#777;border-left:.25em solid #ddd}.night .markdown-body blockquote{color:#bcbcbc}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.night .markdown-body h1,.night .markdown-body h2,.night .markdown-body h3,.night .markdown-body h4,.night .markdown-body h5,.night .markdown-body h6{color:#ddd}.markdown-body h1 .fa-link,.markdown-body h2 .fa-link,.markdown-body h3 .fa-link,.markdown-body h4 .fa-link,.markdown-body h5 .fa-link,.markdown-body h6 .fa-link{color:#000;vertical-align:middle;visibility:hidden;font-size:16px}.night .markdown-body h1 .fa-link,.night .markdown-body h2 .fa-link,.night .markdown-body h3 .fa-link,.night .markdown-body h4 .fa-link,.night .markdown-body h5 .fa-link,.night .markdown-body h6 .fa-link{color:#fff}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .fa-link,.markdown-body h2:hover .anchor .fa-link,.markdown-body h3:hover .anchor .fa-link,.markdown-body h4:hover .anchor .fa-link,.markdown-body h5:hover .anchor .fa-link,.markdown-body h6:hover .anchor .fa-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{margin-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.night .markdown-body table tr{background-color:#5f5f5f}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.night .markdown-body table tr:nth-child(2n){background-color:#4f4f4f}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:.2em 0;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.night .markdown-body code,.night .markdown-body tt{color:#eee;background-color:hsla(0,0%,90.2%,.36)}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\A0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.markdown-body kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid;border-color:#ccc #ccc #bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important}.markdown-body pre{border:inherit!important}.night .markdown-body pre{filter:invert(100%)}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-webkit-inline-flex;display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.night .markdown-body .gist table tr:nth-child(2n){background-color:#ddd}.markdown-body code[data-gist-id]{background:none;padding:0;filter:invert(100%)}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram,.markdown-body pre.vega{text-align:center;background-color:inherit;border-radius:0;white-space:inherit}.night .markdown-body pre.graphviz .graph>polygon{fill:#333}.night .markdown-body pre.mermaid .sectionTitle,.night .markdown-body pre.mermaid .titleText,.night .markdown-body pre.mermaid text{fill:#fff}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code,.markdown-body pre.vega>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg,.markdown-body pre.vega>svg{max-width:100%;height:100%}.night .markdown-body .abc path{fill:#eee}.night .markdown-body .abc path.note_selected{fill:##4DD0E1}.night tspan{fill:#fefefe}.night pre rect{fill:transparent}.night pre.flow-chart path,.night pre.flow-chart rect{stroke:#fff}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p,.markdown-body .alert>ul{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body img{background-color:transparent}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;-webkit-transition:opacity .2s;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;-webkit-transition:opacity .2s;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.MJX_Assistive_MathML{display:none}.ui-infobar{position:relative;z-index:2;max-width:758px;margin-top:25px;margin-bottom:-25px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:10000}.ui-toc-label{opacity:.3;background-color:#ccc;border:none}.ui-toc-label,.ui-toc .open .ui-toc-label{-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc-dropdown{margin-top:23px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child>ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.night .ui-toc-dropdown .nav>li>a:focus,.night .ui-toc-dropdown .nav>li>a:hover{color:#fff;border-left-color:#fff}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.night .ui-toc-dropdown .nav>.active:focus>a,.night .ui-toc-dropdown .nav>.active:hover>a,.night .ui-toc-dropdown .nav>.active>a{color:#fff;border-left:2px solid #fff}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.night .ui-toc-dropdown .nav>li>a{color:#aaa}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,"\30D2\30E9\30AE\30CE\89D2\30B4   Pro W3",Osaka,Meiryo,"\30E1\30A4\30EA\30AA",MS Gothic,"\FF2D\FF33   \30B4\30B7\30C3\30AF",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,"\FF2D\FF33   \FF30\30B4\30B7\30C3\30AF",sans-serif}.markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang TC,Microsoft JhengHei,"\5FAE\8EDF\6B63\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,"\5FAE\8EDF\6B63\9ED1UI",sans-serif}.markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang SC,Microsoft YaHei,"\5FAE\8F6F\96C5\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,"\5FAE\8F6F\96C5\9ED1UI",sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:3px;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:contain}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}small span{line-height:22px}small .dropdown{display:inline-block}small .dropdown a:focus,small .dropdown a:hover{text-decoration:none}.unselectable{-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}.night .navbar{background:#333;border-bottom-color:#333;color:#eee}.night .navbar a{color:#eee}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;font-family:Source Sans Pro,Helvetica,Arial,sans-serif;letter-spacing:.025em}.focus,:focus{outline:none!important}::-moz-focus-inner{border:0!important}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid"><h1 id="Buildroot-定制嵌入式-Linux-树莓派-4" style=""><a class="anchor hidden-xs" href="#Buildroot-定制嵌入式-Linux-树莓派-4" title="Buildroot-定制嵌入式-Linux-树莓派-4"><i class="fa fa-link"></i></a>Buildroot 定制嵌入式 Linux (树莓派 4)</h1><blockquote>
+<p>Buildroot 定制 Linux 内核固件，添加自己的软件包，以及自动初始化程序</p>
+</blockquote><h2 id="0-为什么需要-树莓派-4" style=""><a class="anchor hidden-xs" href="#0-为什么需要-树莓派-4" title="0-为什么需要-树莓派-4"><i class="fa fa-link"></i></a>0. 为什么需要 树莓派 4</h2><p>作为各种 Linux Pi 开发板 （Nano Pi，香蕉派，香橙派，芒果派，荔枝派）的始祖，树莓派一直以来都是以简单好用、性能强大，以及<strong>供电不足</strong>而闻名。</p><p>即使是完全不了解 Linux 的人，也可以把 树莓派4 当作一个便携式电脑使用。然而，树莓派的芯片是 Broadcom 定制的，只能用作生产树莓派，所以不像 Arduino 那样出现了各种山寨版，树莓派非常成功地保留了正版，只是催生了各种其他水果派：水果的名字如今都快被用完了。</p><p><img src="https://doc.wuhanstudio.cc/posts/buildroot_raspi/intro.png" alt="img"></p><p>最近需要 树莓派4 是因为之前一个科研项目，用 <a href="https://github.com/wuhanstudio/adversarial-camera" target="_blank" rel="noopener"><strong>树莓派4 攻击目标识别</strong></a>，需要读取 V4L2 的视频流，用 OpenCV 解码、篡改、编码、转发，再利用 USB Gadget 模拟一个虚拟摄像头。这些代码是用 C/C++ 访问的底层硬件，在 Linux 内核的 DWC3 驱动做了一些改动后，原来的程序无法使用了，而相关的 Linux 驱动还在更新中，所以决定先固定 Linux Kernel v5.10。</p><p>这个项目没有用其他开发板，是因为模拟摄像头需要用到 Linux 的内核驱动 UVC Gadget，虽然 Allwinner 的 Linux 开发板性价比很高，但是 Allwinner 的 H2，H3，H5+ 芯片内部的 USB IP 似乎是精简的，不支持 UVC Gadget。之后又陆续尝试了 RockPi，Zynq，<a href="http://i.mx/" target="_blank" rel="noopener">i.MX</a> 6，树莓派 0/3/4，只有 树莓派 0/4 和 <a href="http://i.mx/" target="_blank" rel="noopener">I.MX</a> 6 的 UVC Gadget 是可以使用的。考虑到实时攻击的性能，也为了方便其他人重复实验，最终选择了树莓派 4。</p><h2 id="0-为什么需要-Buildroot" style=""><a class="anchor hidden-xs" href="#0-为什么需要-Buildroot" title="0-为什么需要-Buildroot"><i class="fa fa-link"></i></a>0. 为什么需要 Buildroot</h2><p>虽然树莓派官方的 Raspberry Pi OS (Raspbian) 很好地支持了定制芯片，但树莓派芯片的一些非常规操作，<strong>例如上电先由 GPU 初始化系统</strong>，由 GPU 从 ROM 读取系统引导，再把所有权交给 CPU，给硬件开源移植带来了一些麻烦。</p><p>另一方面，我需要固定 Linux Kernel v5.10，不幸的是，树莓派官方的 Raspi OS 内核、固件更新还算挺快的，最新的 Raspi OS 已经紧随 Linux Kernel v6.1 的步伐了，定期适配不同驱动版本还是挺头疼的，于是打算定制一个可以自己控制的轻量级嵌入式 Linux。</p><p>当然，除了官方的 Raspbian，我们也可以用嵌入式 Linux 非常好用的 <a href="https://www.armbian.com/" target="_blank" rel="noopener"><strong>Armbian</strong></a>，但是他俩系统镜像都需要几个GB，如果我们需要更加轻量级的 Linux 系统，还得依赖 <strong>Buildroot / Yocto</strong>。</p><p><img src="https://doc.wuhanstudio.cc/posts/buildroot_raspi/buildroot.png" alt="img"></p><p>一个完整的嵌入式 Linux 需要包括 <strong>Bootloader (引导)，Kernel (内核) 和 rootfs (根文件系统)</strong>，如果自己从头编译所有部件再组合，还是挺麻烦的。Buildroot 可以用一行命令 make 自动完成编译，并打包成一个 sdcard.img，非常方便。</p><p>接下来会介绍，如何用 Buildroot 定制一个轻量级的 Linux，选择自己需要的 Linux Kernel 版本，并且修改根文件系统 (rootfs)，集成自己的软件到 Buildroot 软件包，并且开机自动启动。</p><h2 id="1-安装-Buildroot" style=""><a class="anchor hidden-xs" href="#1-安装-Buildroot" title="1-安装-Buildroot"><i class="fa fa-link"></i></a>1. 安装 Buildroot</h2><p>首先，Buildroot 本身已经支持 树莓派4 了，我们需要做的是在这个基础上定制。</p><pre><code>$ git clone https://git.buildroot.net/buildroot
+</code></pre><p>一般来讲，不建议使用 latest 源码，而是用一个 release 版本，所以我们切换到 2023.02 分支:</p><pre><code>$ cd buildroot
+$ git checkout 2023.02
+</code></pre><p>在 buildroot 的 configs 目录里，我们可以看到所有已经支持的开发板，这里我们使用 树莓派4 的默认配置：</p><pre><code>$ make raspberrypi4_64_defconfig
+</code></pre><p>接下来就可以一行命令编译，通常会花费 30-60 分钟：</p><pre><code>$ make
+</code></pre><p>这样我们就可以看到在 output/images/ 目录下有一个 sdcard.img 可以烧录到 SD 卡启动。</p><pre><code>sudo dd if=output/images/sdcard.img of=/dev/sdb
+</code></pre><p>到这里为止，我们就用 Buildroot 给 树莓派4 构建了一个完整的嵌入式 Linux (≈150MB)，接下来介绍如何开始自己的定制。</p><h2 id="2-修改-Linux-内核" style=""><a class="anchor hidden-xs" href="#2-修改-Linux-内核" title="2-修改-Linux-内核"><i class="fa fa-link"></i></a>2. 修改 Linux 内核</h2><p>Buildroot 提供经典的 menuconfig 图形界面：</p><pre><code>$ make menuconfig
+</code></pre><p>在 Kernel 选项里，我们可以指定 Linux Kernel 的版本。</p><p><img src="https://doc.wuhanstudio.cc/posts/buildroot_raspi/linux_kernel.png" alt="img"></p><p>比如，我们可以指定 Linux 某个 Git Commit 的 hash，这样 Buildroot 就会下载编译对应的内核源码。</p><p><img src="https://doc.wuhanstudio.cc/posts/buildroot_raspi/kernel_hash.png" alt="img"></p><p>如果需要进一步配置 Linux 内核，例如添加对 USB Gadget 的支持，我们可以使用 linux-menuconfig 命令：</p><pre><code>$ make linux-menuconfig
+</code></pre><p><img src="https://doc.wuhanstudio.cc/posts/buildroot_raspi/menuconfig.png" alt="img"></p><p>这样，我们就可以详细配置 Linux 内核。</p><p>到这里为止，其实都算比较轻松，因为我们并没有修改任何 Buildroot 的源码，只是利用别人现成的工具，修改配置而已。接下来会介绍，如何在不需要大量改动 Buildroot 源码的情况下，更加优雅地集成自己的软件包。</p><h2 id="3-修改默认软件包版本" style=""><a class="anchor hidden-xs" href="#3-修改默认软件包版本" title="3-修改默认软件包版本"><i class="fa fa-link"></i></a>3. 修改默认软件包版本</h2><p>我的项目需要 OpenCV 4.5.3 和 rpi-firmware 软件包的特定版本，但是 Buildroot 并不可以选择软件包的版本，我们需要修改 buildroot/package 目录下对应软件包的配置源码，来切换软件包版本，好在这也并不复杂。</p><p>例如 OpenCV4 目录下有3个文件：</p><pre><code>package/opencv4/
+├── Config.in       # menuconfig 图形界面配置，类似 KConfig
+├── opencv4.hash    # 保存软件包源码 tar.gz 的 hash，用于下载校验
+└── opencv4.mk      # 定义软件包版本，一些编译选项和宏定义
+</code></pre><p>好在 OpenCV4 相近版本的编译系统差距并不大，我们可以直接修改 <a href="http://opencv4.mk/" target="_blank" rel="noopener">opencv4.mk</a> 里的软件包版本：</p><pre><code>OPENCV4_VERSION = 4.5.3
+OPENCV4_SITE = $(call github,opencv,opencv,$(OPENCV4_VERSION))
+OPENCV4_INSTALL_STAGING = YES
+</code></pre><p>这样 Buildroot 就会自动从 github 上面拉取对应版本的源码包进行编译。当然，我们也需要添加对应版本源码的 hash 到 opencv4.hash 文件里，用于文件校验:</p><pre><code># Locally calculated
+sha256  77f616ae4bea416674d8c373984b20c8bd55e7db887fd38c6df73463a0647bab  opencv4-4.5.3.tar.gz
+sha256  cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  LICENSE
+</code></pre><p>上面的 sha256 其实可以自己下载对应的源码，然后在自己本地电脑上计算出来：</p><pre><code>$ sha256sum ~/Downloads/opencv-4.5.3.tar.gz
+</code></pre><p>同样，我们也可以修改 rpi-firmware 的软件包版本，不过区别是，除了可以用 tag 的版本号，我们也可以直接指定对应 commit 的 hash：</p><pre><code>RPI_FIRMWARE_VERSION = e2bab29767e51c683a312df20014e3277275b8a6
+RPI_FIRMWARE_SITE = $(call github,raspberrypi,firmware,$(RPI_FIRMWARE_VERSION))
+RPI_FIRMWARE_LICENSE = BSD-3-Clause
+</code></pre><p>这样 Buildroot 编译出来的系统就会带有指定版本的软件包。</p><p>虽然我们这一步修改了 Buildroot 的源码，但是修改其实并不多，所以我选择用 patch 的形式保存修改，以后下载 Buildroot 源码后，apply 对应的 patch 就可以了。</p><pre><code>$ git diff &gt; ../buildroot_rpi_firmware_opencv4.patch
+$ git apply ../buildroot_rpi_firmware_opencv4.patch
+</code></pre><p>Buildroot 修改内核配置，和修改已有软件包的版本，需要做的修改并不多，我们只需要保存 menuconfig 配置文件，和一个小 patch 就可以了。</p><p>但是，接下来需要修改 rootfs 和添加新的软件包，就需要做比较大的改动。我们并不希望因为这些改动就在 Github 仓库里保存整个 Buildroot 的源码，一个比较优雅的做法就是在单独的目录里维护自己项目的配置，称之为 Buildroot External Tree。</p><h2 id="4-定制开发板-External-Tree" style=""><a class="anchor hidden-xs" href="#4-定制开发板-External-Tree" title="4-定制开发板-External-Tree"><i class="fa fa-link"></i></a>4. 定制开发板 External Tree</h2><p>在 Buildroot 的官方文档里也有介绍，如何自定义自己的 Buildroot 项目，只要对 Linux 构成比较熟悉，实际操作起来也并不复杂。</p><h3 id="41-文件结构" style=""><a class="anchor hidden-xs" href="#41-文件结构" title="41-文件结构"><i class="fa fa-link"></i></a>4.1 文件结构</h3><p>我们可以在 Buildroot 文件夹外面，建立一个单独的文件夹，用 Git 管理自己项目相关的配置，而不需要保存整个 Buildroot 源码，这是我们需要建立的文件结构：</p><pre><code>/my_br2_tree/
+  +-- board/
+  |   +-- &lt;company&gt;/
+  |       +-- &lt;boardname&gt;/
+  |
+  +-- configs/
+  |   +-- &lt;boardname&gt;_defconfig
+  |
+  +-- Config.in
+  +-- external.mk
+  +-- external.desc
+</code></pre><ul>
+<li>board: 修改根文件系统的配置 (overlay)，例如添加一些开机启动的 service</li>
+<li>configs: 保存修改了 Linux Kernel 的配置文件为 <a href="https://github.com/wuhanstudio/adversarial-camera/blob/master/hardware/buildroot-external-raspi4/configs/raspi4_minm_attack_defconfig" target="_blank" rel="noopener">raspi4_minm_attack_defconfig</a></li>
+</ul><pre><code># 创建项目文件夹
+$ mkdir buildroot-external-raspi4
+$ cd buildroot-external-raspi4
+
+$ mkdir configs         # 项目配置列表
+$ touch Config.in       # menuconfig 配置选项
+$ touch external.mk     # 项目编译选项
+$ touch external.desc   # 项目介绍
+</code></pre><p>在 external.desc 里面保存项目相关的介绍，其中 name 是区分大小写的，一般都用大写。：</p><pre><code>name: RASPI4_MINM_ATTACK
+desc: A buildroot external tree for the Man-in-the-Middle Attack.
+</code></pre><p>添加软件包需要用到 <a href="http://external.mk/" target="_blank" rel="noopener">external.mk</a> 和 <a href="http://config.in/" target="_blank" rel="noopener">Config.in</a>，我们可以先使用空白文件，后面需要添加自己的软件包了再配置。</p><h3 id="42-默认配置-defconfig" style=""><a class="anchor hidden-xs" href="#42-默认配置-defconfig" title="42-默认配置-defconfig"><i class="fa fa-link"></i></a>4.2 默认配置 defconfig</h3><p>这样，我们就可以保存自己前面 menuconfig 手动配置的文件到刚刚创建的 configs 目录。</p><pre><code>mcake savedefconfig BR2_DEFCONFIG=../buildroot-external-raspi4/configs/raspi4_minm_attack_defconfig
+</code></pre><p>以后就不需要每次都手动配置 Linux Kernel 版本之类的，可以直接使用保存的默认配置：</p><pre><code># 调用默认配置
+make BR2_EXTERNAL=../buildroot-external-raspi4/ raspi4_minm_attack_defconfig
+
+# 编译系统
+make BR2_EXTERNAL=../buildroot-external-raspi4/ 
+</code></pre><p>其实这样我们就已经有了一个最小的 Buildroot External Tree，尽管它只保存了我们的配置文件。</p><h3 id="43-修改根文件系统配置" style=""><a class="anchor hidden-xs" href="#43-修改根文件系统配置" title="43-修改根文件系统配置"><i class="fa fa-link"></i></a>4.3 修改根文件系统配置</h3><p>通常我们不光需要保存配置文件，还需要对跟文件系统做一些修改，比如添加一些系统初始化的配置。</p><p>我们可以把 board/company/overlay/ 目录当作 Linux 根文件系统，在这里做的修改都会被覆盖到编译生成的 rootfs 里。比如下面我们创建了 /etc/systemd/system/piwebcam.service 文件，这样编译输出的根文件系统里，也会有对应的 piwebcam.service 文件，用于配置开机自启动的 service。</p><p>当然，我们使用 /etc/systemd/system/ 配置 service 是因为我们在 menuconfig 的 System Configuration / Init system 里面选择了 systemd 初始化系统，如果是使用 busybox 则是修改 etc/init.d 目录。</p><pre><code>board/
+└── wuhanstudio/
+        └── raspi4b/
+            └── overlay/
+                 └── etc/
+                      ├── piwebcam/
+                      │   ├── init.sh
+                      │   ├── noise.npy
+                      │   └── usb-gadget.sh
+                      └── systemd/
+                              └── system/
+                                      └── piwebcam.service
+</code></pre><p>到这里为止，我们不光保存了自己的 defconfig，还修改了根文件系统，最后需要做的就是添加新的软件包了。</p><h2 id="5-添加新软件包" style=""><a class="anchor hidden-xs" href="#5-添加新软件包" title="5-添加新软件包"><i class="fa fa-link"></i></a>5. 添加新软件包</h2><p>前面我们把 <a href="http://config.in/" target="_blank" rel="noopener">Config.in</a> 和 <a href="http://external.mk/" target="_blank" rel="noopener">external.mk</a> 文件留空了，接下来就会以添加 uvc-gadget 软件包为例添加配置。</p><p>首先，我们为新创建的软件包添加目录：</p><pre><code>$ mkdir package/uvc-gadget/src/
+$ touch package/uvc-gadget/Config.in
+$ package/uvc-gadget/uvc-gadget.mk
+</code></pre><p>在 buildroot-external-raspi4/Config.in 文件里，我们可以引用软件包的 <a href="http://Config.in" target="_blank" rel="noopener">Config.in</a>，这样就可以在 meuconfig 界面看到我们的软件包了：</p><pre><code>source "$BR2_EXTERNAL_RASPI4_MINM_ATTACK_PATH/package/uvc-gadget/Config.in"
+</code></pre><p>当然，我们还需要在 package/uvc-gadget/Config.in 文件里定义软件包的配置和依赖：</p><pre><code>config BR2_PACKAGE_UVC_GADGET
+    bool "uvc-gadget"
+    select BR2_PACKAGE_JPEG
+    select BR2_PACKAGE_OPENCV4
+    select BR2_PACKAGE_OPENCV4_LIB_HIGHGUI
+    help
+        Adversarial Camera package.
+
+        https://github.com/wuhanstudio/adversarial-camera
+</code></pre><p><img src="https://doc.wuhanstudio.cc/posts/buildroot_raspi/new_package.png" alt="img"></p><p><img src="https://doc.wuhanstudio.cc/posts/buildroot_raspi/uvc-gadget.png" alt="img"></p><p>接下来在 <a href="http://external.mk/" target="_blank" rel="noopener">external.mk</a> 里面定义项目编译的一些配置，这样就会遍历所有 package 的 *.mk 配置。</p><pre><code>include $(sort $(wildcard $(BR2_EXTERNAL_RASPI4_MINM_ATTACK_PATH)/package/*/*.mk))
+</code></pre><p>值得注意的是，上面的变量 $(BR2_EXTERNAL_<strong>RASPI4_MINM_ATTACK</strong>_PATH) 指向我们的项目根目录 这是 buildroot 自动给我们设置的变量名，因为我们在 external.desc 文件里指定了 name。</p><p>最后就是在 package/uvc-gadget/external.mk 里指定自己软件包的编译选项了，主要也是定义软件包版本、依赖和软件源码的位置，下面我们选择了 local 是因为源码保存在本地文件夹，我们也可以设置成从 Github 上拉取源码：</p><pre><code>################################################################################
+#
+# uvc-gadget package
+#
+################################################################################
+
+UVC_GADGET_VERSION = 1.0
+UVC_GADGET_SITE = $(BR2_EXTERNAL_RASPI4_MINM_ATTACK_PATH)/package/uvc-gadget/src
+UVC_GADGET_SITE_METHOD = local
+UVC_GADGET_DEPENDENCIES = opencv4 jpeg
+
+define UVC_GADGET_BUILD_CMDS
+    $(MAKE) CC="$(TARGET_CC)" CXX="$(TARGET_CXX)" LD="$(TARGET_LD)" -C $(@D)
+endef
+
+define UVC_GADGET_INSTALL_TARGET_CMDS
+    $(INSTALL) -D -m 0755 $(@D)/uvc-gadget  $(TARGET_DIR)/usr/bin
+endef
+
+$(eval $(generic-package))
+</code></pre><p>上面的配置里，Buildroot 会通过变量 $(CC) 和 <span class="mathjax"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-1-Frame" tabindex="0" style="position: relative;" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mo stretchy=&quot;false&quot;>(</mo><mi>C</mi><mi>X</mi><mi>X</mi><mo stretchy=&quot;false&quot;>)</mo><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x4EA4;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x53C9;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x7F16;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x8BD1;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x7684;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x5DE5;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x5177;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x94FE;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x3002;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#xFF0C;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x5982;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x679C;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x81EA;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x5DF1;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x7684;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x9879;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x76EE;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x7528;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x5230;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x4E86;</mo></mrow><mi>g</mi><mo>+</mo><mo>+</mo><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#xFF0C;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x5343;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x4E07;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x4E0D;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x8981;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x5FD8;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x4E86;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x914D;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x7F6E;</mo></mrow><mi>C</mi><mi>X</mi><mi>X</mi><mo>=&amp;quot;</mo></math>" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-1" style="width: 40.197em; display: inline-block;"><span style="display: inline-block; position: relative; width: 34.647em; height: 0px; font-size: 116%;"><span style="position: absolute; clip: rect(1.404em, 1034.54em, 2.804em, -999.997em); top: -2.368em; left: 0em;"><span class="mrow" id="MathJax-Span-2"><span class="mo" id="MathJax-Span-3" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-4" style="font-family: MathJax_Math-italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.057em;"></span></span><span class="mi" id="MathJax-Span-5" style="font-family: MathJax_Math-italic;">X<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-6" style="font-family: MathJax_Math-italic;">X<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mo" id="MathJax-Span-7" style="font-family: MathJax_Main;">)</span><span class="texatom" id="MathJax-Span-8"><span class="mrow" id="MathJax-Span-9"><span class="mo" id="MathJax-Span-10"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">交</span></span></span></span><span class="texatom" id="MathJax-Span-11"><span class="mrow" id="MathJax-Span-12"><span class="mo" id="MathJax-Span-13"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">叉</span></span></span></span><span class="texatom" id="MathJax-Span-14"><span class="mrow" id="MathJax-Span-15"><span class="mo" id="MathJax-Span-16"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">编</span></span></span></span><span class="texatom" id="MathJax-Span-17"><span class="mrow" id="MathJax-Span-18"><span class="mo" id="MathJax-Span-19"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">译</span></span></span></span><span class="texatom" id="MathJax-Span-20"><span class="mrow" id="MathJax-Span-21"><span class="mo" id="MathJax-Span-22"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">的</span></span></span></span><span class="texatom" id="MathJax-Span-23"><span class="mrow" id="MathJax-Span-24"><span class="mo" id="MathJax-Span-25"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">工</span></span></span></span><span class="texatom" id="MathJax-Span-26"><span class="mrow" id="MathJax-Span-27"><span class="mo" id="MathJax-Span-28"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">具</span></span></span></span><span class="texatom" id="MathJax-Span-29"><span class="mrow" id="MathJax-Span-30"><span class="mo" id="MathJax-Span-31"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">链</span></span></span></span><span class="texatom" id="MathJax-Span-32"><span class="mrow" id="MathJax-Span-33"><span class="mo" id="MathJax-Span-34"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">。</span></span></span></span><span class="texatom" id="MathJax-Span-35"><span class="mrow" id="MathJax-Span-36"><span class="mo" id="MathJax-Span-37"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">，</span></span></span></span><span class="texatom" id="MathJax-Span-38"><span class="mrow" id="MathJax-Span-39"><span class="mo" id="MathJax-Span-40"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">如</span></span></span></span><span class="texatom" id="MathJax-Span-41"><span class="mrow" id="MathJax-Span-42"><span class="mo" id="MathJax-Span-43"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">果</span></span></span></span><span class="texatom" id="MathJax-Span-44"><span class="mrow" id="MathJax-Span-45"><span class="mo" id="MathJax-Span-46"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">自</span></span></span></span><span class="texatom" id="MathJax-Span-47"><span class="mrow" id="MathJax-Span-48"><span class="mo" id="MathJax-Span-49"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">己</span></span></span></span><span class="texatom" id="MathJax-Span-50"><span class="mrow" id="MathJax-Span-51"><span class="mo" id="MathJax-Span-52"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">的</span></span></span></span><span class="texatom" id="MathJax-Span-53"><span class="mrow" id="MathJax-Span-54"><span class="mo" id="MathJax-Span-55"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">项</span></span></span></span><span class="texatom" id="MathJax-Span-56"><span class="mrow" id="MathJax-Span-57"><span class="mo" id="MathJax-Span-58"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">目</span></span></span></span><span class="texatom" id="MathJax-Span-59"><span class="mrow" id="MathJax-Span-60"><span class="mo" id="MathJax-Span-61"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">用</span></span></span></span><span class="texatom" id="MathJax-Span-62"><span class="mrow" id="MathJax-Span-63"><span class="mo" id="MathJax-Span-64"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">到</span></span></span></span><span class="texatom" id="MathJax-Span-65"><span class="mrow" id="MathJax-Span-66"><span class="mo" id="MathJax-Span-67"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">了</span></span></span></span><span class="mi" id="MathJax-Span-68" style="font-family: MathJax_Math-italic;">g<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mo" id="MathJax-Span-69" style="font-family: MathJax_Main; padding-left: 0.218em;">+</span><span class="mo" id="MathJax-Span-70" style="font-family: MathJax_Main; padding-left: 0.218em;">+</span><span class="texatom" id="MathJax-Span-71"><span class="mrow" id="MathJax-Span-72"><span class="mo" id="MathJax-Span-73"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">，</span></span></span></span><span class="texatom" id="MathJax-Span-74"><span class="mrow" id="MathJax-Span-75"><span class="mo" id="MathJax-Span-76"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">千</span></span></span></span><span class="texatom" id="MathJax-Span-77"><span class="mrow" id="MathJax-Span-78"><span class="mo" id="MathJax-Span-79"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">万</span></span></span></span><span class="texatom" id="MathJax-Span-80"><span class="mrow" id="MathJax-Span-81"><span class="mo" id="MathJax-Span-82"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">不</span></span></span></span><span class="texatom" id="MathJax-Span-83"><span class="mrow" id="MathJax-Span-84"><span class="mo" id="MathJax-Span-85"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">要</span></span></span></span><span class="texatom" id="MathJax-Span-86"><span class="mrow" id="MathJax-Span-87"><span class="mo" id="MathJax-Span-88"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">忘</span></span></span></span><span class="texatom" id="MathJax-Span-89"><span class="mrow" id="MathJax-Span-90"><span class="mo" id="MathJax-Span-91"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">了</span></span></span></span><span class="texatom" id="MathJax-Span-92"><span class="mrow" id="MathJax-Span-93"><span class="mo" id="MathJax-Span-94"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">配</span></span></span></span><span class="texatom" id="MathJax-Span-95"><span class="mrow" id="MathJax-Span-96"><span class="mo" id="MathJax-Span-97"><span style="font-family: STIXGeneral, &quot;Arial Unicode MS&quot;, serif; font-size: 86%; font-style: normal; font-weight: normal;">置</span></span></span></span><span class="mi" id="MathJax-Span-98" style="font-family: MathJax_Math-italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.057em;"></span></span><span class="mi" id="MathJax-Span-99" style="font-family: MathJax_Math-italic;">X<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-100" style="font-family: MathJax_Math-italic;">X<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mo" id="MathJax-Span-101" style="font-family: MathJax_Main; padding-left: 0.272em;">=<span style="font-family: MathJax_Main;">"</span></span></span><span style="display: inline-block; width: 0px; height: 2.373em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.372em; border-left: 0px solid; width: 0px; height: 1.316em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mo stretchy="false">(</mo><mi>C</mi><mi>X</mi><mi>X</mi><mo stretchy="false">)</mo><mrow class="MJX-TeXAtom-ORD"><mo>交</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>叉</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>编</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>译</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>的</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>工</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>具</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>链</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>。</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>，</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>如</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>果</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>自</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>己</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>的</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>项</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>目</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>用</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>到</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>了</mo></mrow><mi>g</mi><mo>+</mo><mo>+</mo><mrow class="MJX-TeXAtom-ORD"><mo>，</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>千</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>万</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>不</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>要</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>忘</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>了</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>配</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>置</mo></mrow><mi>C</mi><mi>X</mi><mi>X</mi><mo>="</mo></math></span></span><script type="math/tex" id="MathJax-Element-1">(CXX) 交叉编译的工具链。，如果自己的项目用到了 g++，千万不要忘了配置  CXX="</script></span>(TARGET_CXX)"。</p><p>当然，软件包编译系统的配置，例如 Makefile 和 CMake 是不由 Buildroot 管理的，例如我软件包的 Makefile 没有任何 Buildroot 相关的配置。</p><pre><code>CXXFLAGS		:= -fpermissive -Wno-write-strings -Ofast
+LDFLAGS			:= -g
+
+all: uvc-gadget
+
+%.o: %.cpp
+	$(CXX) -c $(CXXFLAGS) -o $@ $&lt; -I $(STAGING_DIR)/usr/include/opencv4
+
+uvc-gadget: uvc-gadget.o
+	$(CXX) $(LDFLAGS) -o $@ $^ -lopencv_videoio -lopencv_imgcodecs -lopencv_highgui -lopencv_imgproc -lopencv_core -ljpeg
+
+clean:
+	rm -f *.o
+	rm -f uvc-gadget
+</code></pre><p>这样我们在 menuconfig 里面选中自己的软件包， make 编译之后就会自动将我们的软件包安装到 Linux 文件系统：</p><pre><code># 修改配置
+make BR2_EXTERNAL=../buildroot-external-raspi4/ menuconfig
+
+# 编译系统
+make BR2_EXTERNAL=../buildroot-external-raspi4/ 
+</code></pre><p>最终的系统镜像依旧是输出到 output/images/sdcard.img 里。</p><h2 id="总结" style=""><a class="anchor hidden-xs" href="#总结" title="总结"><i class="fa fa-link"></i></a>总结</h2><p>这篇文章介绍了，如何下载使用 Buildroot，修改默认软件包版本，修改 Linux Kernel 版本和配置，以及自定义 Buildroot External Tree，和添加自己的软件包到 Buildroot。</p><ul>
+<li>A Man-in-the-Middle Attack against Object Detection: <a href="https://github.com/wuhanstudio/adversarial-camera" target="_blank" rel="noopener">https://github.com/wuhanstudio/adversarial-camera</a></li>
+</ul></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav">
+<li class=""><a href="#Buildroot-定制嵌入式-Linux-树莓派-4" title="Buildroot 定制嵌入式 Linux (树莓派 4)">Buildroot 定制嵌入式 Linux (树莓派 4)</a><ul class="nav">
+<li><a href="#0-为什么需要-树莓派-4" title="0. 为什么需要 树莓派 4">0. 为什么需要 树莓派 4</a></li>
+<li><a href="#0-为什么需要-Buildroot" title="0. 为什么需要 Buildroot">0. 为什么需要 Buildroot</a></li>
+<li><a href="#1-安装-Buildroot" title="1. 安装 Buildroot">1. 安装 Buildroot</a></li>
+<li><a href="#2-修改-Linux-内核" title="2. 修改 Linux 内核">2. 修改 Linux 内核</a></li>
+<li><a href="#3-修改默认软件包版本" title="3. 修改默认软件包版本">3. 修改默认软件包版本</a></li>
+<li><a href="#4-定制开发板-External-Tree" title="4. 定制开发板 External Tree">4. 定制开发板 External Tree</a><ul class="nav">
+<li><a href="#41-文件结构" title="4.1 文件结构">4.1 文件结构</a></li>
+<li><a href="#42-默认配置-defconfig" title="4.2 默认配置 defconfig">4.2 默认配置 defconfig</a></li>
+<li><a href="#43-修改根文件系统配置" title="4.3 修改根文件系统配置">4.3 修改根文件系统配置</a></li>
+</ul>
+</li>
+<li class=""><a href="#5-添加新软件包" title="5. 添加新软件包">5. 添加新软件包</a></li>
+<li class=""><a href="#总结" title="总结">总结</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
+        <div class="toc"><ul class="nav">
+<li class=""><a href="#Buildroot-定制嵌入式-Linux-树莓派-4" title="Buildroot 定制嵌入式 Linux (树莓派 4)">Buildroot 定制嵌入式 Linux (树莓派 4)</a><ul class="nav">
+<li><a href="#0-为什么需要-树莓派-4" title="0. 为什么需要 树莓派 4">0. 为什么需要 树莓派 4</a></li>
+<li><a href="#0-为什么需要-Buildroot" title="0. 为什么需要 Buildroot">0. 为什么需要 Buildroot</a></li>
+<li><a href="#1-安装-Buildroot" title="1. 安装 Buildroot">1. 安装 Buildroot</a></li>
+<li><a href="#2-修改-Linux-内核" title="2. 修改 Linux 内核">2. 修改 Linux 内核</a></li>
+<li><a href="#3-修改默认软件包版本" title="3. 修改默认软件包版本">3. 修改默认软件包版本</a></li>
+<li><a href="#4-定制开发板-External-Tree" title="4. 定制开发板 External Tree">4. 定制开发板 External Tree</a><ul class="nav">
+<li><a href="#41-文件结构" title="4.1 文件结构">4.1 文件结构</a></li>
+<li><a href="#42-默认配置-defconfig" title="4.2 默认配置 defconfig">4.2 默认配置 defconfig</a></li>
+<li><a href="#43-修改根文件系统配置" title="4.3 修改根文件系统配置">4.3 修改根文件系统配置</a></li>
+</ul>
+</li>
+<li class=""><a href="#5-添加新软件包" title="5. 添加新软件包">5. 添加新软件包</a></li>
+<li class=""><a href="#总结" title="总结">总结</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/js/bootstrap.min.js" integrity="sha256-kJrlY+s09+QoWjpkOrXXwhxeaoDz9FW5SaxF8I0DibQ=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>
