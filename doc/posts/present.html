@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        PRESENT: 密码学 Block Cipher - CodiMD
+    </title>
+    <link rel="icon" type="image/png" href="https://codimd.wuhanstudio.cc/favicon.png">
+    <link rel="apple-touch-icon" href="https://codimd.wuhanstudio.cc/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha256-H0KfTigpUV+0/5tn2HXC0CPwhhDhWgSawJdnFd0CGCo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fork-awesome/1.1.3/css/fork-awesome.min.css" integrity="sha256-ZhApazu+kejqTYhMF+1DzNKjIzP7KXu6AzyXcC1gMus=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github-gist.min.css" integrity="sha256-tAflq+ymku3Khs+I/WcAneIlafYgDiOQ9stIHH985Wo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,300italic,300|Source+Serif+Pro|Source+Code+Pro:400,300,500&subset=latin,latin-ext);.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{padding:0 1em;color:#777;border-left:.25em solid #ddd}.night .markdown-body blockquote{color:#bcbcbc}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.night .markdown-body h1,.night .markdown-body h2,.night .markdown-body h3,.night .markdown-body h4,.night .markdown-body h5,.night .markdown-body h6{color:#ddd}.markdown-body h1 .fa-link,.markdown-body h2 .fa-link,.markdown-body h3 .fa-link,.markdown-body h4 .fa-link,.markdown-body h5 .fa-link,.markdown-body h6 .fa-link{color:#000;vertical-align:middle;visibility:hidden;font-size:16px}.night .markdown-body h1 .fa-link,.night .markdown-body h2 .fa-link,.night .markdown-body h3 .fa-link,.night .markdown-body h4 .fa-link,.night .markdown-body h5 .fa-link,.night .markdown-body h6 .fa-link{color:#fff}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .fa-link,.markdown-body h2:hover .anchor .fa-link,.markdown-body h3:hover .anchor .fa-link,.markdown-body h4:hover .anchor .fa-link,.markdown-body h5:hover .anchor .fa-link,.markdown-body h6:hover .anchor .fa-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{margin-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.night .markdown-body table tr{background-color:#5f5f5f}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.night .markdown-body table tr:nth-child(2n){background-color:#4f4f4f}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:.2em 0;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.night .markdown-body code,.night .markdown-body tt{color:#eee;background-color:hsla(0,0%,90.2%,.36)}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\A0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.markdown-body kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid;border-color:#ccc #ccc #bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important}.markdown-body pre{border:inherit!important}.night .markdown-body pre{filter:invert(100%)}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-webkit-inline-flex;display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.night .markdown-body .gist table tr:nth-child(2n){background-color:#ddd}.markdown-body code[data-gist-id]{background:none;padding:0;filter:invert(100%)}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram,.markdown-body pre.vega{text-align:center;background-color:inherit;border-radius:0;white-space:inherit}.night .markdown-body pre.graphviz .graph>polygon{fill:#333}.night .markdown-body pre.mermaid .sectionTitle,.night .markdown-body pre.mermaid .titleText,.night .markdown-body pre.mermaid text{fill:#fff}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code,.markdown-body pre.vega>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg,.markdown-body pre.vega>svg{max-width:100%;height:100%}.night .markdown-body .abc path{fill:#eee}.night .markdown-body .abc path.note_selected{fill:##4DD0E1}.night tspan{fill:#fefefe}.night pre rect{fill:transparent}.night pre.flow-chart path,.night pre.flow-chart rect{stroke:#fff}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p,.markdown-body .alert>ul{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body img{background-color:transparent}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;-webkit-transition:opacity .2s;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;-webkit-transition:opacity .2s;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.MJX_Assistive_MathML{display:none}.ui-infobar{position:relative;z-index:2;max-width:758px;margin-top:25px;margin-bottom:-25px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:10000}.ui-toc-label{opacity:.3;background-color:#ccc;border:none}.ui-toc-label,.ui-toc .open .ui-toc-label{-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc-dropdown{margin-top:23px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child>ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.night .ui-toc-dropdown .nav>li>a:focus,.night .ui-toc-dropdown .nav>li>a:hover{color:#fff;border-left-color:#fff}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.night .ui-toc-dropdown .nav>.active:focus>a,.night .ui-toc-dropdown .nav>.active:hover>a,.night .ui-toc-dropdown .nav>.active>a{color:#fff;border-left:2px solid #fff}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.night .ui-toc-dropdown .nav>li>a{color:#aaa}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,"\30D2\30E9\30AE\30CE\89D2\30B4   Pro W3",Osaka,Meiryo,"\30E1\30A4\30EA\30AA",MS Gothic,"\FF2D\FF33   \30B4\30B7\30C3\30AF",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,"\FF2D\FF33   \FF30\30B4\30B7\30C3\30AF",sans-serif}.markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang TC,Microsoft JhengHei,"\5FAE\8EDF\6B63\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,"\5FAE\8EDF\6B63\9ED1UI",sans-serif}.markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang SC,Microsoft YaHei,"\5FAE\8F6F\96C5\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,"\5FAE\8F6F\96C5\9ED1UI",sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:3px;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:contain}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}small span{line-height:22px}small .dropdown{display:inline-block}small .dropdown a:focus,small .dropdown a:hover{text-decoration:none}.unselectable{-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}.night .navbar{background:#333;border-bottom-color:#333;color:#eee}.night .navbar a{color:#eee}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;font-family:Source Sans Pro,Helvetica,Arial,sans-serif;letter-spacing:.025em}.focus,:focus{outline:none!important}::-moz-focus-inner{border:0!important}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid"><h1 id="PRESENT-密码学-Block-Cipher" style=""><a class="anchor hidden-xs" href="#PRESENT-密码学-Block-Cipher" title="PRESENT-密码学-Block-Cipher"><i class="fa fa-link"></i></a>PRESENT: 密码学 Block Cipher</h1><blockquote>
+<p>Present 硬件实现远比软件实现简单、高效。</p>
+</blockquote><h2 id="Introduction" style=""><a class="anchor hidden-xs" href="#Introduction" title="Introduction"><i class="fa fa-link"></i></a>Introduction</h2><p>之前介绍了最近 50 年的 <strong>现代密码学：对称加密，非对称加密，和加密协议</strong>。</p><p>对于嵌入式设备而言，例如 RFID 卡的芯片，并没有足够的资源运行 <strong>非对称加密</strong> 来生成密钥对，所以都是在出厂的时候将密钥固化到芯片里，接下来使用更加轻量级、高效的 <strong>对称加密</strong> 来进行数据加密、解密。</p><p><img src="https://doc.wuhanstudio.cc/posts/present/crypto.png" alt="img"></p><p>对称加密又分为 <strong>流加密 (Stream Cipher)</strong> 和 **块加密 (Block Cipher)。**前者一个 bit 一个 bit 地加密数据的，后者则把数据分块，一块一块地加密的。之后打算分别以轻量级的 <strong>Trivium (流加密)</strong> 和 <strong>Present (块加密)</strong> 为例，分别介绍 Stream Cipher 和 Block Cipher。</p><p>这篇文章以 PRESENT 为例介绍 Block Cipher。后面介绍的 Present 软硬件实现 (Verilog / C / Python) 都放在了这个 GitHub 仓库里：</p><ul>
+<li><a href="https://github.com/wuhanstudio/present" target="_blank" rel="noopener">GitHub - Present Block Cipher</a></li>
+</ul><h2 id="Block-Cipher" style=""><a class="anchor hidden-xs" href="#Block-Cipher" title="Block-Cipher"><i class="fa fa-link"></i></a>Block Cipher</h2><p>这里先介绍一下什么是 Block Cipher，其实它非常简单，不是那么严格地来说，就是想办法调换文本 (数据) 的位置 (permutation p-layer)，或者按一张表改变文本 (数据) 的值 (S-Box)，加密之后让你无法猜出来原文本是什么。</p><p>另一方面，前面提到 Block Cipher 是一块一块加密数据的，例如你要加密字符串 “hello-world” 一共有 11 个字节 (byte)，或者加密字符串 “hi” 一共就 2 个字节 (byte)，不论要加密的字符串有多长，Block Cipher 始终是按照固定长度一个个块加密的，例如这篇文章主要介绍的 Present 算法一个块是 8 个字节 (64 bit)。</p><p>比如前面两个例子 “hello-world” 那么就是先加密前 8 个字节 “hello-wo”，再加密后 8 个字节，然而剩下的 “rld” 只有 3 个字节，那就给它补 5 个字节，凑满 8 个再一起加密。</p><p><img src="https://doc.wuhanstudio.cc/posts/present/single_block.png" alt="img"></p><p>上面就是加密一个 Block 的示意图，每次加密 8 个字节，再加密后面 8 个字节，不足 8 个字节 0 或 1 补足 8 个字节。</p><p>这样如果我们有很长一串文本，最自然想到的就是，老老实实地加密 8 个字节、输出 8 个字节，再加密后面 8 个字节、输出 8 个字节。</p><p><img src="https://doc.wuhanstudio.cc/posts/present/ecb.png" alt="img"></p><p>这种老实耿直的按顺序加密一块、输出一块的方式 (ECB 模式)，在加密图片的时候就会发现问题了。下面这张图，左边是原来的图片，右边是加密后的图片。虽然加密之后图片面目全非，但是因为数据块的顺序没有改变，所以我们仍能猜出来右边加密后的图片是个 Linux 企鹅 Logo。</p><p><img src="https://doc.wuhanstudio.cc/posts/present/ecb_linux.png" alt="img"></p><p>于是我们要想办法让前后的数据块产生关联，一个很直白的想法就是把前一个块加密后的输出，再作为后一个块的输入，把数据流像锁链一样串联在一起，又称之为 Blockchain，这样子加密后改变第一个数据块的内容，会导致后面数据块加密后的数据全部改变了，这也称之为 CBC 模式。</p><p><img src="https://doc.wuhanstudio.cc/posts/present%5CCBC.png" alt="img"></p><p>当然，还有很多其他模式，ECB，CBC，CFB，OFB 等等。不过这些都是如何连接不同 Block，这篇文章介绍的 Present 加密算法，先要解决一个单独的 Block 如何加密：给 8 个字节的输入，和 10 个字节的 Key，如何生成 8 个字节的密文。</p><h2 id="Present-Block-Cipher" style=""><a class="anchor hidden-xs" href="#Present-Block-Cipher" title="Present-Block-Cipher"><i class="fa fa-link"></i></a>Present Block Cipher</h2><p>于是我们专注于一个单独的 Block 是怎么加密的，其实 Present 的设计非常简单，下面这张图非常清晰地展示了 Present 加密流程，红色方框圈出来的部分就是 Present 的核心 3 个步骤 (addRoundKey，S-Box，p-Layer)。给一个输入数据，我们先生成 RoundKey，把这 3 个步骤重复 31 次，再来一步 addRoundKey，就完成了加密。</p><p>所以只要理解 addRoundKey，S-Box，p-Layer 这 3 步，就理解了 Present 加密流程。</p><p><img src="https://doc.wuhanstudio.cc/posts/present/present_enc.png" alt="img"></p><p>**这里你可能会问，同样的操作为什么要来 31 次 (Round) 呢？**一两次不行吗？如果看下面这张图，例如我们要加密 16 个字节 (64 bit) 的字符串 “0000 0000 0000 0000” (空格只是为了方便阅读)，密钥长度是 20 字节 (80 bit) 的字符串 “0000 0000 0000 0000 0000”，我们每增加一个回合，数据就会越混乱。这也就提高了加密的安全性。</p><p><img src="https://doc.wuhanstudio.cc/posts/present/present_round.png" alt="img"></p><p>下面我们依次解释 Present 最核心的 3 个步骤，每一步都意外地简单。</p><h3 id="Step-1-AddRoundKey" style=""><a class="anchor hidden-xs" href="#Step-1-AddRoundKey" title="Step-1-AddRoundKey"><i class="fa fa-link"></i></a>Step 1: AddRoundKey</h3><p>第一步就是做加法，毕竟是 <strong>Add</strong> Round Key 嘛，就是把 Present 模块内部的 64 个状态 (最初是输入) 和当前的 Round Key 做加法，更新后的状态 (64-bit state) 传给后一步就结束了，仅此而已。</p><p><img src="https://doc.wuhanstudio.cc/posts/present/present_add_round.png" alt="img"></p><p>当然，二进制的按位加法运算，也就是异或电路  ，0+0=0，0+1=1，1+0=1，1+1=0。</p><p>那么问题来了，Round Key 是怎么生成的呢？其实很简单，Present 的密钥长度是 80 bit，而 Round Key 的长度是 64 bit，第一轮的 Round Key 就是取 80 位的前 64 位就可以了。后面每一轮的 RoundKey 就是：1. 循环右移 20 位；2. 高四位输入 S-Box；3. 第 19… 15 位和当前 Round 做加法。所以其实我们在一开始就可以一次性生成 31 个 RoundKey。</p><p><img src="https://doc.wuhanstudio.cc/posts/present/present_round_key_init.png" alt="img"></p><p>你会注意到，这些操作都是对硬件非常友好的，都是非常简单的硬件电路。另一方面，生成 RoundKey 的时候需要用到 S-Box，下面我们就介绍 S-Box。</p><h3 id="Step-2-S-Box" style=""><a class="anchor hidden-xs" href="#Step-2-S-Box" title="Step-2-S-Box"><i class="fa fa-link"></i></a>Step 2: S-Box</h3><p>S-Box 也很简单，其实就是每 4 bit 的数据进行一次替换，比如我们这一轮有 64 bit 的数据 (8个字节)，01 23 45 67 89 AB CD EF （空格只是为了方便阅读），我们每 4 个 bit 按照下面的表替换一次。</p><p>比如下面这张表 0 替换为 C，1 替换为 5，2 替换为 6，就这么简单。</p><p>例如我们输入数据是 BAD0，那么替换后输出就是 B --&gt; 8，A --&gt; F，D --&gt; 7，0 --&gt; C，最后输出 8F7C。</p><p><img src="https://doc.wuhanstudio.cc/posts/present/present_sbox.png" alt="img"></p><h3 id="Step-3-p-Layer" style=""><a class="anchor hidden-xs" href="#Step-3-p-Layer" title="Step-3-p-Layer"><i class="fa fa-link"></i></a>Step 3: p-Layer</h3><p>最后的一步 p-Layer 也相当简单，p 代表 permutation 就是换个顺序，像洗牌一样。比如我们有 64 bit 的输入数据，下面这张表把 第0位 移动到 第0位，第1位 移动到 第16位，第2位 移动到 第32位 …</p><p>就是这么简单，排列位置换个顺序而已，如果用硬件电路实现的话，就是更换一下导线的顺序。</p><p><img src="https://doc.wuhanstudio.cc/posts/present/present_p_layer.png" alt="img"></p><p>最后我们再完整地看一下 Present 的加密流程，也就是把上面三个步骤，重复 31 次。</p><p><img src="https://doc.wuhanstudio.cc/posts/present/present_enc.png" alt="img"></p><p>至于 S-Box 和  p-Layer 为什么顺序要这么设计，这个涉及到破解的密码分析学，之后有机会再以 <strong>线性密码分析 (Linear Cryptanalysis)</strong> 和 <strong>差分密码分析 (Differential Cryptanalysis)</strong> 详细解释。</p><h2 id="硬件实现-Verilog" style=""><a class="anchor hidden-xs" href="#硬件实现-Verilog" title="硬件实现-Verilog"><i class="fa fa-link"></i></a>硬件实现 (Verilog)</h2><p>前面提到 Present 硬件实现非常简单，例如 S-Box 一个 多路复用器(multiplexer) 就实现了。</p><pre><code>module PRESENT_ENCRYPT_SBOX (
+   output reg [3:0] odat,
+   input      [3:0] idat
+);
+
+
+always @(idat)
+    case (idat)
+        4'h0 : odat = 4'hC;
+        4'h1 : odat = 4'h5;
+        4'h2 : odat = 4'h6;
+        4'h3 : odat = 4'hB;
+        4'h4 : odat = 4'h9;
+        4'h5 : odat = 4'h0;
+        4'h6 : odat = 4'hA;
+        4'h7 : odat = 4'hD;
+        4'h8 : odat = 4'h3;
+        4'h9 : odat = 4'hE;
+        4'hA : odat = 4'hF;
+        4'hB : odat = 4'h8;
+        4'hC : odat = 4'h4;
+        4'hD : odat = 4'h7;
+        4'hE : odat = 4'h1;
+        4'hF : odat = 4'h2;
+    endcase
+
+endmodule
+</code></pre><p>p-Layer 则更简单，就是导线的顺序互换。</p><pre><code>module PRESENT_ENCRYPT_PBOX(
+   output [63:0] odat,
+   input  [63:0] idat
+);
+
+assign odat[0 ] = idat[0 ];
+assign odat[16] = idat[1 ];
+assign odat[32] = idat[2 ];
+assign odat[48] = idat[3 ];
+assign odat[1 ] = idat[4 ];
+assign odat[17] = idat[5 ];
+assign odat[33] = idat[6 ];
+assign odat[49] = idat[7 ];
+assign odat[2 ] = idat[8 ];
+assign odat[18] = idat[9 ];
+assign odat[34] = idat[10];
+assign odat[50] = idat[11];
+assign odat[3 ] = idat[12];
+assign odat[19] = idat[13];
+assign odat[35] = idat[14];
+assign odat[51] = idat[15];
+
+assign odat[4 ] = idat[16];
+assign odat[20] = idat[17];
+assign odat[36] = idat[18];
+assign odat[52] = idat[19];
+assign odat[5 ] = idat[20];
+assign odat[21] = idat[21];
+assign odat[37] = idat[22];
+assign odat[53] = idat[23];
+assign odat[6 ] = idat[24];
+assign odat[22] = idat[25];
+assign odat[38] = idat[26];
+assign odat[54] = idat[27];
+assign odat[7 ] = idat[28];
+assign odat[23] = idat[29];
+assign odat[39] = idat[30];
+assign odat[55] = idat[31];
+
+assign odat[8 ] = idat[32];
+assign odat[24] = idat[33];
+assign odat[40] = idat[34];
+assign odat[56] = idat[35];
+assign odat[9 ] = idat[36];
+assign odat[25] = idat[37];
+assign odat[41] = idat[38];
+assign odat[57] = idat[39];
+assign odat[10] = idat[40];
+assign odat[26] = idat[41];
+assign odat[42] = idat[42];
+assign odat[58] = idat[43];
+assign odat[11] = idat[44];
+assign odat[27] = idat[45];
+assign odat[43] = idat[46];
+assign odat[59] = idat[47];
+
+assign odat[12] = idat[48];
+assign odat[28] = idat[49];
+assign odat[44] = idat[50];
+assign odat[60] = idat[51];
+assign odat[13] = idat[52];
+assign odat[29] = idat[53];
+assign odat[45] = idat[54];
+assign odat[61] = idat[55];
+assign odat[14] = idat[56];
+assign odat[30] = idat[57];
+assign odat[46] = idat[58];
+assign odat[62] = idat[59];
+assign odat[15] = idat[60];
+assign odat[31] = idat[61];
+assign odat[47] = idat[62];
+assign odat[63] = idat[63];
+
+endmodule
+</code></pre><p>当然还有每一轮的 RoundKKey 更新：</p><pre><code>assign dat1 = dreg ^ kreg[79:16];        // add round key
+assign odat = dat1;                      // output ciphertext
+
+// key update
+assign kdat1        = {kreg[18:0], kreg[79:19]}; // rotate key 61 bits to the left
+assign kdat2[14:0 ] = kdat1[14:0 ];
+assign kdat2[19:15] = kdat1[19:15] ^ round;  // xor key data and round counter
+assign kdat2[75:20] = kdat1[75:20];
+</code></pre><h2 id="软件实现-C--Python" style=""><a class="anchor hidden-xs" href="#软件实现-C--Python" title="软件实现-C--Python"><i class="fa fa-link"></i></a>软件实现 (C / Python)</h2><p>如果使用软件实现 Present 的话，就是巧妙使用数组了。</p><p>例如 S-Box 可以把查找表放一个数组里，需要的时候直接查表。</p><pre><code>// define the SBox
+uint8_t S[] = {0xC, 0x5, 0x6, 0xB, 0x9, 0x0, 0xA, 0xD, 0x3, 0xE, 0xF, 0x8, 0x4, 0x7, 0x1, 0x2};
+
+// function for converting a nibble using the SBox
+uint8_t Sbox(uint8_t input) {
+    return S[input];
+}
+</code></pre><p>p-Layer 则稍微麻烦一点，需要一位位地计算，不如硬件实现的导线连接那么优雅。</p><pre><code>// define the permutation table
+uint8_t P[] = {0, 16, 32, 48, 1, 17, 33, 49, 2, 18, 34, 50, 3, 19, 35, 51,
+                    4, 20, 36, 52, 5, 21, 37, 53, 6, 22, 38, 54, 7, 23, 39, 55,
+                    8, 24, 40, 56, 9, 25, 41, 57, 10, 26, 42, 58, 11, 27, 43, 59,
+                    12, 28, 44, 60, 13, 29, 45, 61, 14, 30, 46, 62, 15, 31, 47, 63};
+
+/*
+    function that performs the permutation according to the permutation table P
+    The permutation is done by adding one bit at a time from the source block to the appropriate location in the result.
+    In each iteration the following is performed:
+    1) calculate the distance of the bit that is supposed to be added next from the least significant bit (at position 63)
+    2) shift the source block to the right so that the bit becomes the least significant bit
+    3) separate this bit by masking by performing bitwise and with 1
+    4) calculate the new location (from right to left) of the bit (distance between the least significant bit and P[i])
+    5) shift the bit to the new location and add it to the permutation using bitwise OR
+*/
+uint64_t permute(uint64_t source) {
+    uint64_t permutation = 0;
+    int i;
+    for (i=0; i&lt;64; i++){
+        int distance = 63 - i;
+        permutation = permutation | ((source &gt;&gt; distance &amp; 0x1) &lt;&lt; 63 - P[i]);
+    }
+    return permutation;
+}
+</code></pre><p>Python 的实现也是大同小异，巧妙利用数组。</p><p>AddRoundKey 就是一个异或运算：</p><pre><code>def addRoundKey(state, roundkey):
+    return state ^ roundkey
+</code></pre><p>S-Box 也是预定义好数组，按位计算。</p><pre><code>#        0   1   2   3   4   5   6   7   8   9   a   b   c   d   e   f
+Sbox= [0xc,0x5,0x6,0xb,0x9,0x0,0xa,0xd,0x3,0xe,0xf,0x8,0x4,0x7,0x1,0x2]
+
+def sBoxLayer(state):
+    """SBox function for encryption
+    Input:  64-bit integer
+    Output: 64-bit integer"""
+
+    output = 0
+    for i in range(16):
+            output += Sbox[( state &gt;&gt; (i*4)) &amp; 0xF] &lt;&lt; (i*4)
+    return output
+</code></pre><p>p-Layer 同理，就不具体解释了。</p><pre><code>PBox = [0,16,32,48,1,17,33,49,2,18,34,50,3,19,35,51,
+        4,20,36,52,5,21,37,53,6,22,38,54,7,23,39,55,
+        8,24,40,56,9,25,41,57,10,26,42,58,11,27,43,59,
+        12,28,44,60,13,29,45,61,14,30,46,62,15,31,47,63]
+
+def pLayer(state):
+    """Permutation layer for encryption
+    Input:  64-bit integer
+    Output: 64-bit integer"""
+    output = 0
+    for i in range(64):
+            output += ((state &gt;&gt; i) &amp; 0x01) &lt;&lt; PBox[i]
+    return output
+</code></pre><h2 id="References" style=""><a class="anchor hidden-xs" href="#References" title="References"><i class="fa fa-link"></i></a>References</h2><ul>
+<li><a href="https://www.iacr.org/archive/ches2007/47270450/47270450.pdf" target="_blank" rel="noopener">PRESENT: An Ultra-Lightweight Block Cipher.</a></li>
+</ul></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav">
+<li class=""><a href="#PRESENT-密码学-Block-Cipher" title="PRESENT: 密码学 Block Cipher">PRESENT: 密码学 Block Cipher</a><ul class="nav">
+<li class=""><a href="#Introduction" title="Introduction">Introduction</a></li>
+<li class=""><a href="#Block-Cipher" title="Block Cipher">Block Cipher</a></li>
+<li class=""><a href="#Present-Block-Cipher" title="Present Block Cipher">Present Block Cipher</a><ul class="nav">
+<li class=""><a href="#Step-1-AddRoundKey" title="Step 1: AddRoundKey">Step 1: AddRoundKey</a></li>
+<li><a href="#Step-2-S-Box" title="Step 2: S-Box">Step 2: S-Box</a></li>
+<li class=""><a href="#Step-3-p-Layer" title="Step 3: p-Layer">Step 3: p-Layer</a></li>
+</ul>
+</li>
+<li class=""><a href="#硬件实现-Verilog" title="硬件实现 (Verilog)">硬件实现 (Verilog)</a></li>
+<li class=""><a href="#软件实现-C--Python" title="软件实现 (C / Python)">软件实现 (C / Python)</a></li>
+<li><a href="#References" title="References">References</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
+        <div class="toc"><ul class="nav">
+<li class=""><a href="#PRESENT-密码学-Block-Cipher" title="PRESENT: 密码学 Block Cipher">PRESENT: 密码学 Block Cipher</a><ul class="nav">
+<li class=""><a href="#Introduction" title="Introduction">Introduction</a></li>
+<li class=""><a href="#Block-Cipher" title="Block Cipher">Block Cipher</a></li>
+<li class=""><a href="#Present-Block-Cipher" title="Present Block Cipher">Present Block Cipher</a><ul class="nav">
+<li class=""><a href="#Step-1-AddRoundKey" title="Step 1: AddRoundKey">Step 1: AddRoundKey</a></li>
+<li><a href="#Step-2-S-Box" title="Step 2: S-Box">Step 2: S-Box</a></li>
+<li class=""><a href="#Step-3-p-Layer" title="Step 3: p-Layer">Step 3: p-Layer</a></li>
+</ul>
+</li>
+<li class=""><a href="#硬件实现-Verilog" title="硬件实现 (Verilog)">硬件实现 (Verilog)</a></li>
+<li class=""><a href="#软件实现-C--Python" title="软件实现 (C / Python)">软件实现 (C / Python)</a></li>
+<li><a href="#References" title="References">References</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/js/bootstrap.min.js" integrity="sha256-kJrlY+s09+QoWjpkOrXXwhxeaoDz9FW5SaxF8I0DibQ=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>
