@@ -5,7 +5,7 @@ CRYPTO1: 密码分析学 (门禁卡破解)
 
 从 2015 年开始，在国内读本科的时候就有不少同学破解、复制了门禁卡、校园卡。如今已经过去了 8 年，2023 年到英国读博了，不论是学校宿舍，还是市中心宿舍的门禁卡，依旧可以随意破解、复制，甚至伦敦地铁的 Oyster Card 也是同款不安全的设计。
 
-![img](F:\www\doc\posts\oyster.png)
+![img](https://doc.wuhanstudio.cc/posts/oyster.png)
 
 1994 年，NXP 发布了这款不安全的 NFC 卡（ MIFARE Classic EV11K 也称为 M1 卡），接下来风靡全球，公交卡、地铁卡、门禁卡、学生卡都得到了广泛的应用。当然，这张卡的认证、加密算法都是不对外公开的，当初并没有人知道它是不安全的。
 
@@ -23,7 +23,7 @@ NXP 的 M1 卡算是密码学应用一个非常有意思的反面教材了，这
 
 如果只是希望迅速实践，破解手边的一张门禁卡，有 2 个选择：一是买一个 PN532 模块，配合 Github 的 mfoc 程序，一行命令，一分钟就能破解复制。
 
-![img](F:\www\doc\posts\crypto1\pn532.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/pn532.png)
 
 - [GitHub: mfoc-hardnested](https://github.com/nfc-tools/mfoc-hardnested)
 
@@ -34,7 +34,7 @@ $ sudo mfoc-hardnested -O mycard.mfd
 
 或者买一个 Proxmark 3，也能在一分钟左右迅速破解 M1 卡。
 
-![img](F:\www\doc\posts\crypto1\proxmark.jpg)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/proxmark.jpg)
 
 - [GitHub: Proxmark3](https://github.com/RfidResearchGroup/proxmark3)
 
@@ -53,11 +53,11 @@ $ hf mf autopwn
 
 现在 M1 卡可以做得特别小，甚至可以像贴纸一样直接贴在手机背后。
 
-![img](F:\www\doc\posts\crypto1\sticker.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/sticker.png)
 
 如果我们看一下它的内部构造，其实就是一个线圈 + 芯片。当 NFC 卡接近读卡器的时候，读卡器就会通过线圈给卡片里的芯片供电，读取它的 ID 和数据。这里顺便一提，M1卡的工作频率是高频 13.56MHz，早期也有一些不带存储功能的卡，只能读全球唯一的 ID，那种卡的工作频率通常在低频 125KHz。 
 
-![img](F:\www\doc\posts\crypto1\coil.jpg)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/coil.jpg)
 
 例如可以用 proxmark 的命令读取 M1 卡的 ID：
 
@@ -65,17 +65,17 @@ $ hf mf autopwn
 $ hf search
 ```
 
-![img](F:\www\doc\posts\crypto1\hf-search.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/hf-search.png)
 
 可以看到这张卡的 UID  有 4 个字节： 0xDC 0x23 0xAB 0x11，同样我们也可以读取卡内 1K 的数据，当然卡内的数据是经过加密的，一共可以存储 1K = 1024 Byte。下面图上就是一张空卡的一个区块的数据 (64 Byte)：
 
-![img](F:\www\doc\posts\crypto1\mfc-block.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/mfc-block.png)
 
 例如，十六进制 FF 代表二进制 1111 (F) 1111 (F)， 一共有 8 位（bit），也就是 1 个 Byte。
 
 上面这张图，一行有 16 个 FF，也就是 16 个 Byte。图上一共有 4 行，也就是 16 x 4 = 64 Byte。前面我们提到，一张 M1 卡有 1024 Byte  的存储空间，1024 = 16 * 64，所以可以推出来，一张卡有 16 个上面这张图的区块，下面就是一张完整的卡的数据：
 
-![img](F:\www\doc\posts\crypto1\mfc-data.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/mfc-data.png)
 
 如果你耐心地数一数，一共有 64 行，每行 16 Byte  刚好是 64 x 16 = 1024 Byte，也就是 M1 卡的全部 1KB 数据。
 
@@ -89,13 +89,13 @@ M1 卡的 UID 是全球唯一，不可修改，不过没有经过加密，可以
 
 前面提到，1024 Byte 的数据分为 16 个区块，每个区块 64 个 Byte。这 16 个区块是分别加密的，也就是说可以分别为每个区块设置不同的密钥，M1 卡的密钥又分为 Key A 和 Key B。如果要完整读取一张卡的数据，需要知道全部的 16 组密钥。
 
-![img](https://picx.zhimg.com/80/v2-a29d8f163871010f44c2accc68545e26_1440w.png?source=d16d100b)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/mfc-block.png)
 
 有意思的是，密钥是直接存储在对应的区块 (Block) 里的，比如上面图里的最后一行，就是这个区块的密钥。
 
 最后一行有 16 Byte，前 6 个 Byte 是 Key A，后 6 个 Byte 是 Key B，中间的 4 个 Byte 的控制位，决定我们读写数据的权限。因此，这张默认白卡的 Key A 是前 6 个 Byte：FF FF FF FF FF FF，默认的 Key B 是后 6 个 Byte：FF FF FF FF FF FF。
 
-![img](F:\www\doc\posts\crypto1\mfc-key.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/mfc-key.png)
 
 > M1 卡完全破解需要 16 组 Key A 和 Key B
 
@@ -111,7 +111,7 @@ M1 卡的加密机制分为两个部分，认证 (Authentication) 和 加密 (En
 
 简而言之，NFC 卡发送 $n_T$ 收到 $a_R$ ，读卡器发送 $n_R$ 收到 $a_T$，互验身份。 
 
-![img](F:\www\doc\posts\crypto1\crypto1-auth.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/crypto1-auth.png)
 
 ### 2. Encryption
 
@@ -137,7 +137,7 @@ M1 卡则是出场默认密钥 Key A 和 Key B，后面也可以用默认的密�
 $ hf search
 ```
 
-![img](F:\www\doc\posts\crypto1\mfc-magic.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/mfc-magic.png)
 
 当然，并不是所有中国生产的 M1 卡都留有后门的，需要专门买可以修改 UID 的卡，最早不知道 M1 卡内部的加密算法的时候，就是通过中国特色后门来复制 UID 破解门禁的。
 
@@ -153,7 +153,7 @@ $ hf search
 
 这里再重复说明一下认证流程：**我们用 Tag (T) 表示 NFC 卡，用 Reader (R) 表示读卡器**。上电后先执行一些非加密通讯：例如读 UID，选择要读取的 Block。为了进行加密通讯，NFC 卡发送 $n_T$ 收到 $a_R$，读卡器发送 $n_R$ 收到 $a_T$，互验身份。 
 
-![img](https://pica.zhimg.com/80/v2-82002121129896b2a3a4dbc7be4cbec2_1440w.png?source=d16d100b)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/crypto1-auth.png)
 
 这个认证过程的漏洞在于，NFC 卡 PRNG (伪随机数发生器) 生成的 Nonce 是可以预测的，每次上电后只要经过的时间相同， 生成的 $n_T$ 都是固定的。于是我们就可以修改模拟卡的 UID，反复生成相同的 $n_T$ 来看读卡器的反应，并且 Garcia 发现，只要 $n_T  \oplus uid$ 的值相同，图上 09 行读卡器加密后的相应 $n_R\oplus ks_1$ 就是固定的。
 
@@ -179,7 +179,7 @@ $ hf search
 
 更让 NXP 绝望的是，在 2015 年，密码分析学快速发展多年后，Carlo Meijer 找到了 Crypto1 核心加密算法的漏洞 [2]，从此破解 M1 卡只需要一分钟左右 (mfoc-hardnested)，彻底宣告了 M1 卡的终结。 
 
-![img](F:\www\doc\posts\crypto1\crypto1-init.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/crypto1-init.png)
 
 上面这张图是 Crypto1 Stream Cipher 的初始化过程。在 Crypto1 加密细节公开后，对于一个 Stream Cipher 而言，只要能弄清内部状态是如何初始化的，我们就能生成一模一样的 keystream。
 
@@ -191,7 +191,7 @@ $ hf search
 
 假如在 CPU 上计算，尝试一种可能需要 5ms (实际会更快)， $1572864 * 5 = 7864320$ 毫秒，大约只需要 2 小时，这已经是可以接受的破解时间了。
 
-![img](F:\www\doc\posts\crypto1\crypto1-stream.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/crypto1-stream.png)
 
 然而，通过分析加密后的密文，可以进一步将搜寻空间从 $2^{20.58}$ 进一步减少，利用 Sum Property [2] 和 Filter Flip [3]，最终只需要1分钟内就能找到正确的密钥。
 
@@ -211,29 +211,29 @@ $ hf search
 
 每一个字节有 8 位，也就是 256 种可能性。如果我们在收集 Nonce 的过程中，收集到了  某一个字节的这 256 种可能性。我们把这一个字节按位进行 XOR $\oplus$ 运算，得到 1 位的输出，再和奇偶校验位 (Parity) 进行 XOR（注意这里的校验位 $p_i$ 是和 keystream 进行了 XOR 运算后加密的），最终得到 1位 (bit) 的输出。由于我们对 256 种可能性进行计算，每种可能性计算得到的 1 bit 结果只能是 0 或者 1， 所以 S 最大是 256，最小是 0。
 
-![img](F:\www\doc\posts\crypto1\sum-property.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/sum-property.png)
 
  我们可能以为 S 的分布是比较均衡的，实际上可以看到在统计了 8192 个 Crypto1 的状态后，发现 S 并不是 [0, 256] 每种可能性都存在，甚至有些值，例如下图的 128 概率异常地高，这也就告诉我们 Crypto1 输出的 keystream 是存在某种概率分布的，这样我们就可以用 Cryptanalysis 的一些方法进行分析，剔除掉可能性非常低的密钥 $K$，减少搜寻空间。
 
-![img](F:\www\doc\posts\crypto1\sum-property-value.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/sum-property-value.png)
 
 实际操作时，由于之前提到 Crypto1 的加密算法用到的 Filter Function 只利用了奇数位，我们可以把奇偶位的 Sum Property 分开计算。
 
-![img](F:\www\doc\posts\crypto1\filter-function.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/filter-function.png)
 
 只有满足下面公式 $s=p(16-q)+q(16-p)$ 的 Ctypto1 内部状态才是有效的，于是我们就可以剔除掉很大一部分搜寻空间。
 
-![img](F:\www\doc\posts\crypto1\lamma.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/lamma.png)
 
 ### 2. Filter Flip
 
 Crypto1 Stream Cipher 在生成最终用来加密的 keystream 前，需要把内部 48 位的状态通过一个非线性 Filter Function，也就是下面这张图定义的。
 
-![img](F:\www\doc\posts\crypto1\crpyto1-filter.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/crpyto1-filter.png)
 
 Garcia 发现，上面的 Filter Function 满足下面的特性：如果两个 32 位的 $n_T$ 和 $n_T^{'}$，如果前面 3 个字节 (byte) 都一样，只反转最后一位 (bit)，并且最终的奇偶校验位 $\{p_i\}$ 和 $\{p_i^{'}\}$ 也是一样的，那么它们经过 Filter Function 后的输出必然是不同的：$f(\alpha_{8i+8}) \neq f(\alpha_{8i+8} \oplus 1) $。 
 
-![img](F:\www\doc\posts\crypto1\lamma-5-10.png)
+![img](https://doc.wuhanstudio.cc/posts/crypto1/lamma-5-10.png)
 
 Garcia 通过实验表明，整个搜寻空间中，大约只有 9.4% 的输入有这个特性，于是每次观察到搜集的 Nonce 出现了 Filter Flip，我们就可以进一步缩小搜寻空间，只暴力破解满足这个特性的 9.4% 个输入。
 

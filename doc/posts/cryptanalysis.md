@@ -3,7 +3,7 @@ Cryptanalysis: 密码分析学
 
 > 密码分析学是一门非常年轻的学科，目的是为了分析 (破解) 现有的加密算法。
 
-![img](https:/doc.wuhanstudio.cc/cryptanalysis/cryptography.jpg)
+![img](https://doc.wuhanstudio.cc/posts/cryptanalysis/cryptography.jpg)
 
 ## 目录
 
@@ -128,9 +128,9 @@ $$
 
 如果形象一点来表示，格子 (Lattices) 就长这样，可以用一组基向量 (Basis Vector) 来表示一个点的集合：
 
-![img](https:/doc.wuhanstudio.cc/cryptanalysis/lattice.png)
+![img](https://doc.wuhanstudio.cc/posts/cryptanalysis/lattice.png)
 
-![img](https:/doc.wuhanstudio.cc/cryptanalysis/lattice_ax.png)
+![img](https://doc.wuhanstudio.cc/posts/cryptanalysis/lattice_ax.png)
 
 Lattice 可以构建非对称加密，也可以用来分析破解。
 
