@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        Proxmox 搭建 k3s 集群 (负载均衡) - CodiMD
+    </title>
+    <link rel="icon" type="image/png" href="https://codimd.wuhanstudio.cc/favicon.png">
+    <link rel="apple-touch-icon" href="https://codimd.wuhanstudio.cc/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha256-H0KfTigpUV+0/5tn2HXC0CPwhhDhWgSawJdnFd0CGCo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fork-awesome/1.1.3/css/fork-awesome.min.css" integrity="sha256-ZhApazu+kejqTYhMF+1DzNKjIzP7KXu6AzyXcC1gMus=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github-gist.min.css" integrity="sha256-tAflq+ymku3Khs+I/WcAneIlafYgDiOQ9stIHH985Wo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,300italic,300|Source+Serif+Pro|Source+Code+Pro:400,300,500&subset=latin,latin-ext);.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{padding:0 1em;color:#777;border-left:.25em solid #ddd}.night .markdown-body blockquote{color:#bcbcbc}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.night .markdown-body h1,.night .markdown-body h2,.night .markdown-body h3,.night .markdown-body h4,.night .markdown-body h5,.night .markdown-body h6{color:#ddd}.markdown-body h1 .fa-link,.markdown-body h2 .fa-link,.markdown-body h3 .fa-link,.markdown-body h4 .fa-link,.markdown-body h5 .fa-link,.markdown-body h6 .fa-link{color:#000;vertical-align:middle;visibility:hidden;font-size:16px}.night .markdown-body h1 .fa-link,.night .markdown-body h2 .fa-link,.night .markdown-body h3 .fa-link,.night .markdown-body h4 .fa-link,.night .markdown-body h5 .fa-link,.night .markdown-body h6 .fa-link{color:#fff}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .fa-link,.markdown-body h2:hover .anchor .fa-link,.markdown-body h3:hover .anchor .fa-link,.markdown-body h4:hover .anchor .fa-link,.markdown-body h5:hover .anchor .fa-link,.markdown-body h6:hover .anchor .fa-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{margin-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.night .markdown-body table tr{background-color:#5f5f5f}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.night .markdown-body table tr:nth-child(2n){background-color:#4f4f4f}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:.2em 0;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.night .markdown-body code,.night .markdown-body tt{color:#eee;background-color:hsla(0,0%,90.2%,.36)}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\A0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.markdown-body kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid;border-color:#ccc #ccc #bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important}.markdown-body pre{border:inherit!important}.night .markdown-body pre{filter:invert(100%)}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-webkit-inline-flex;display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.night .markdown-body .gist table tr:nth-child(2n){background-color:#ddd}.markdown-body code[data-gist-id]{background:none;padding:0;filter:invert(100%)}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram,.markdown-body pre.vega{text-align:center;background-color:inherit;border-radius:0;white-space:inherit}.night .markdown-body pre.graphviz .graph>polygon{fill:#333}.night .markdown-body pre.mermaid .sectionTitle,.night .markdown-body pre.mermaid .titleText,.night .markdown-body pre.mermaid text{fill:#fff}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code,.markdown-body pre.vega>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg,.markdown-body pre.vega>svg{max-width:100%;height:100%}.night .markdown-body .abc path{fill:#eee}.night .markdown-body .abc path.note_selected{fill:##4DD0E1}.night tspan{fill:#fefefe}.night pre rect{fill:transparent}.night pre.flow-chart path,.night pre.flow-chart rect{stroke:#fff}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p,.markdown-body .alert>ul{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body img{background-color:transparent}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;-webkit-transition:opacity .2s;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;-webkit-transition:opacity .2s;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.MJX_Assistive_MathML{display:none}.ui-infobar{position:relative;z-index:2;max-width:758px;margin-top:25px;margin-bottom:-25px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:10000}.ui-toc-label{opacity:.3;background-color:#ccc;border:none}.ui-toc-label,.ui-toc .open .ui-toc-label{-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc-dropdown{margin-top:23px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child>ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.night .ui-toc-dropdown .nav>li>a:focus,.night .ui-toc-dropdown .nav>li>a:hover{color:#fff;border-left-color:#fff}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.night .ui-toc-dropdown .nav>.active:focus>a,.night .ui-toc-dropdown .nav>.active:hover>a,.night .ui-toc-dropdown .nav>.active>a{color:#fff;border-left:2px solid #fff}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.night .ui-toc-dropdown .nav>li>a{color:#aaa}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,"\30D2\30E9\30AE\30CE\89D2\30B4   Pro W3",Osaka,Meiryo,"\30E1\30A4\30EA\30AA",MS Gothic,"\FF2D\FF33   \30B4\30B7\30C3\30AF",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,"\FF2D\FF33   \FF30\30B4\30B7\30C3\30AF",sans-serif}.markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang TC,Microsoft JhengHei,"\5FAE\8EDF\6B63\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,"\5FAE\8EDF\6B63\9ED1UI",sans-serif}.markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang SC,Microsoft YaHei,"\5FAE\8F6F\96C5\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,"\5FAE\8F6F\96C5\9ED1UI",sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:3px;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:contain}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}small span{line-height:22px}small .dropdown{display:inline-block}small .dropdown a:focus,small .dropdown a:hover{text-decoration:none}.unselectable{-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}.night .navbar{background:#333;border-bottom-color:#333;color:#eee}.night .navbar a{color:#eee}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;font-family:Source Sans Pro,Helvetica,Arial,sans-serif;letter-spacing:.025em}.focus,:focus{outline:none!important}::-moz-focus-inner{border:0!important}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid"><h1 id="Proxmox-搭建-k3s-集群-负载均衡" style=""><a class="anchor hidden-xs" href="#Proxmox-搭建-k3s-集群-负载均衡" title="Proxmox-搭建-k3s-集群-负载均衡"><i class="fa fa-link"></i></a>Proxmox 搭建 k3s 集群 (负载均衡)</h1><blockquote>
+<p>Proxmox 搭建轻量级的 Kubernetes (k8s) 集群 K3S。</p>
+</blockquote><p>二十多年前，网站服务器很多是裸搭的 LAMP 环境 (Linux，Apache，MySQL，PHP），需要自己维护升级各种软件和配置。一旦服务器需要升级，就得手动更新各种配置文件、迁移数据，非常头大。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_k3s/lamp.png" alt="img"></p><p>**2013 年出现了 Docker 容器，把软件和数据分开，从此软件升级不再那么头疼。**Docker 迅速席卷全球，很快几乎所有的云服务都进入了 Docker 的时代。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_k3s/docker.png" alt="img"></p><p>随着 Docker 时代的到来，大家也逐渐担心 Docker 作为一个商业公司，会不会就此垄断云服务，我们把整个世界都放在了一个篮子里，万一自己的公司和 Docker 合作闹了矛盾怎么办。</p><p>于是 Google 出面决定制定一个开放的容器标准 Open Container Initiative (OCI)，并且推出了 Kubernetes (k8s) 管理架构，只要是兼容 OCI 的容器，就能使用 Kubernetes (k8s)。于是，我们又有了 Kata Container，runC 等开源的实现，Docker 也从唯一的选择，成为了众多选择之一。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_k3s/kubernetes.png" alt="img"></p><p><strong>如今，我们又迎来了 Kubernetes (k8s) 的世界</strong>，几乎所有公司的云服务都开始用 k8s 管理。</p><blockquote>
+<p>Kubernetes 又称 k8s，这是经典的 Google 命名法，第一个字母 k，到最后一个字母 s，中间有8个字母。</p>
+</blockquote><p><strong>然而，我这篇文章要搭建的是 k3s</strong>，从名字来看，3 只有 8 的右半边，可以大胆猜测 k3s 是一个轻量级的 k8s。因为 k8s 虽然很强大，支持无缝对接 AWS，Azure，GCloud 等公有云，但是运行一个主节点至少需要双核4G的配置，而对于一些个人私有云而言，不需要的功能浪费了大量资源。</p><p>**于是，经过裁剪的 k8s 变成了 k3s，**我们甚至可以在一个树莓派上运行轻量级的 k3s，并且和 k8s 一样使用 kubectl 管理集群。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_k3s/k3s.png" alt="img"></p><h2 id="0-最终目的" style=""><a class="anchor hidden-xs" href="#0-最终目的" title="0-最终目的"><i class="fa fa-link"></i></a>0. 最终目的</h2><p>这篇文章的目的，则是把 Mac Mini 改造成一个私有云，并且在上面新建虚拟机，组成 k3s 集群，部署一个网站服务器 (nginx) ，同时支持负载均衡 (MetalLB)，自动更新 HTTPS 证书 (CertManager，Traefik)，也就是下面的架构图，有一个基本的企业级应用了。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_k3s/intro.png" alt="img"></p><p>为此，我们分成三部实现这个架构：</p><ol>
+<li>安装 Proxmox 私有云：这样我们就可以自由地新建虚拟机；</li>
+<li>搭建 k3s 集群：组建 k3s 集群，利用 kubectl 管理集群；</li>
+<li>部署应用：在 k3s 集群上部署应用：MetalLB，Traefik，CertManager，Nginx。</li>
+</ol><p>后面搭建集群需要用到的命令和配置文件，我都放在了 Github 仓库里。</p><ul>
+<li><a href="https://github.com/wuhanstudio/k3s-proxmox-cluster" target="_blank" rel="noopener">GitHub - k3s-proxmox-cluster</a></li>
+</ul><h2 id="1-Proxmox-私有云" style=""><a class="anchor hidden-xs" href="#1-Proxmox-私有云" title="1-Proxmox-私有云"><i class="fa fa-link"></i></a>1. Proxmox 私有云</h2><p>Proxmox 其实就是基于 Debian 的一个 Linux 发行版，所以我们直接把 Proxmox 当作 Linux 安装就可以了。</p><p>不过值得注意的是，Proxmox 官方镜像必须擦除整个磁盘安装，所以如果不想丢失已有的系统，可以先手动分区安装 Debian，再在 Debian 的基础上安装 Proxmox。</p><ul>
+<li>Debian 安装 Proxmox:<a href="https://link.zhihu.com/?target=https%3A//pve.proxmox.com/wiki/Install_Proxmox_VE_on_Debian_11_Bullseye" target="_blank" rel="noopener">Install Proxmox VE on Debian 11 Bullseye</a></li>
+</ul><p>如果不想格式化 U盘，这里推荐一个 U盘安装系统的工具 Ventoy，我们只需要把不同的 ISO 镜像复制到 U盘里，Ventoy 就会自动生成启动项，利用一个 U盘启动不同的操作系统 ISO。</p><p>Ventoy - A new bootable USB <a href="http://solution.github.com/ventoy/Ventoy" target="_blank" rel="noopener">solution.github.com/ventoy/Ventoy</a></p><p>安装好 Proxmox 后，我们就可以从服务器的 8006 端口 (<strong>这是 HTTPS 的协议</strong>)，在网页上访问虚拟机了。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_k3s/proxmox.png" alt="img"></p><h3 id="11-桥接网络-Bridge" style=""><a class="anchor hidden-xs" href="#11-桥接网络-Bridge" title="11-桥接网络-Bridge"><i class="fa fa-link"></i></a>1.1 桥接网络 (Bridge)</h3><p>我们需要给新建的虚拟机分配 IP，而我的 Mac Mini 直接连接到了路由器，所以打算创建一个桥接网络，这样虚拟机就可以直接从路由器 DHCP 获取 IP，看起来就好像虚拟机直接有线网连到了路由器一样。</p><p>比如我路由器的 LAN 子网是 192.168.1.0/24，Proxmox 连到路由器可能有个 IP: 192.168.1.3，Proxmox 云平台里新建的虚拟机可以分配到 192.168.1.101，和 Proxmox 是平级的。</p><p>在 Proxmox 的 System --&gt; Network --&gt; Create --&gt; Linux Bridge，填入下面的配置，当然 IPv4 网段和 网卡 enp2s0f0 根据自己的实际情况需要调整。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_k3s/proxmox_bridge.png" alt="img"></p><h3 id="12-虚拟机镜像" style=""><a class="anchor hidden-xs" href="#12-虚拟机镜像" title="12-虚拟机镜像"><i class="fa fa-link"></i></a>1.2 虚拟机镜像</h3><p>我后面用的  Ubuntu 20.04 组建 HPC 节点，登录到 Proxmox 控制台后，下面的命令下载 Ubuntu Cloud Image，并且创建一个 VM Template，这样后面创建虚拟机就可以一键复制模板，类似 AWS 的 t2, t3 模板:</p><ul>
+<li>t2.nano (1 vCPU and 0.5 GiB memory)</li>
+<li>t2.micro (1 vCPU and 1 GiB memory)</li>
+<li>t2.small (1 vCPU and 2 GiB memory)</li>
+</ul><pre><code># Log into Proxmox
+
+# Create Ubuntu Cloud Image
+$ curl -O http://cloud-images.ubuntu.com/releases/focal/release/ubuntu-20.04-server-cloudimg-amd64.img
+$ sudo apt install libguestfs-tools -y
+$ sudo virt-customize -a ubuntu-20.04-server-cloudimg-amd64.img --install qemu-guest-agent --truncate /etc/machine-id 
+
+# Create a template VM
+$ sudo qm create 9000 \
+         --name ubuntu-20.04-cloud-init --numa 0 --ostype l26 \
+         --cpu cputype=host --cores 1 --sockets 1 \
+         --memory 1024  \
+         --net0 virtio,bridge=vmbr0
+
+# Replace local with your local storage (e.g. local-lvm)
+$ sudo qm importdisk 9000 ubuntu-20.04-server-cloudimg-amd64.img local  -format qcow2
+$ sudo qm set 9000 --scsihw virtio-scsi-pci --scsi0 /var/lib/vz/images/9000/vm-9000-disk-0.qcow2
+$ sudo qm resize 9000 scsi0 +6G
+$ sudo qm set 9000 --ide2 local:cloudinit
+$ sudo qm set 9000 --boot c --bootdisk scsi0
+$ sudo qm set 9000 --serial0 socket --vga serial0
+$ sudo qm set 9000 --agent enabled=1
+</code></pre><p>这样我们在 Proxmox 里就有了一个 Ubuntu 20.04 (1核1G，8G硬盘) 的模板。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_k3s/proxmox_cloud_init.png" alt="img"></p><p>在上面图中的 Cloud-Init 选项里，我们可以配置虚拟机默认的用户名和密码，还有 SSH Key，这样我们虚拟机开机就可以直接登录，类似 AWS 新建一个 EC2 节点后会让你下载登录用的 pem 密钥。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_k3s/proxmox_ssh.png" alt="img"></p><p>最后把我们前面的配置，转换成一个虚拟机模板。</p><pre><code>$ qm template 9000
+</code></pre><h3 id="13-创建虚拟机" style=""><a class="anchor hidden-xs" href="#13-创建虚拟机" title="13-创建虚拟机"><i class="fa fa-link"></i></a>1.3 创建虚拟机</h3><p>有了前面创建的模板，我们就可以创建3个Ubuntu 虚拟机，作为 HPC 的节点。</p><pre><code>$ qm clone 9000 100 --name Ubuntu-20.04-master --full
+$ qm clone 9000 101 --name Ubuntu-20.04-worker1 --full
+$ qm clone 9000 102 --name Ubuntu-20.04-worker2 --full
+</code></pre><p>这样3条命令，我们就有了3个 Ubuntu 虚拟机，分别为 manager, compute01, compute02，开机后 Proxmox 会利用前面的 Linux Bridge 帮它们从路由器申请 IP，我们可以登录到虚拟机修改主机名。</p><pre><code>$ ssh ubuntu@192.168.1.130
+$ sudo hostnamectl set-hostname master
+
+$ ssh ubuntu@192.168.1.114
+$ sudo hostnamectl set-hostname worker1
+
+$ ssh ubuntu@192.168.1.115
+$ sudo hostnamectl set-hostname worker2
+</code></pre><h2 id="2-k3s-集群" style=""><a class="anchor hidden-xs" href="#2-k3s-集群" title="2-k3s-集群"><i class="fa fa-link"></i></a>2. k3s 集群</h2><p>有了 3 个 Ubuntu 虚拟机后，我们就可以用 k3sup 来迅速组建一个 k3s 集群了，为此我们需要在<strong>自己的电脑</strong>上安装 k3sup 工具，借助个人电脑，自动配置虚拟机的 k3s 集群。</p><pre><code># On your Local PC
+$ curl -sLS https://get.k3sup.dev | sh
+$ sudo install k3sup /usr/local/bin/
+</code></pre><p>前面创建虚拟机模板的时候，我上传了自己电脑的 ssh key，所以我可以免密码 ssh 登录虚拟机，这样西门三行命令就组建好了一个 k3s 集群。</p><pre><code># Make sure you can ssh into each machine without password
+
+# k3s master
+# You may consider increasing the memory of the master node to be 2GB 
+$ k3sup install --ip 192.168.1.130 --user ubuntu
+
+# k3s worker1
+$ k3sup join --ip 192.168.1.114 --server-ip 192.168.1.130 --user ubuntu
+
+# k3s worker2
+$ k3sup join --ip 192.168.1.115 --server-ip 192.168.1.130 --user ubuntu
+</code></pre><p>于是我们可以用 kubectl 管理刚刚创建的 k3s 集群：</p><pre><code># Test your cluster with:
+$ export KUBECONFIG=/home/wuhanstudio/kubeconfig
+$ kubectl config use-context default
+$ kubectl get node -o wide
+</code></pre><p>可以看到3个节点的状态：</p><pre><code>NAME      STATUS   ROLES                  AGE   VERSION
+master    Ready    control-plane,master   53m   v1.25.3+k3s1
+worker1   Ready    &lt;none&gt;                 50m   v1.25.3+k3s1
+worker2   Ready    &lt;none&gt;                 46m   v1.25.3+k3s1
+</code></pre><p>假如很不幸安装过程出了什么问题，例如 GitHub，Google 打不开，建议直接清除重装。</p><pre><code># To uninstall K3s from a server node, run:
+$ /usr/local/bin/k3s-uninstall.sh
+
+# To uninstall K3s from an agent node, run:
+/usr/local/bin/k3s-agent-uninstall.sh
+</code></pre><p>到这里，我们就有了一个 k3s 集群，接下来就可以用 kubectl 部署应用了。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_k3s/kubernetes_console.png" alt="img"></p><h2 id="3-部署应用" style=""><a class="anchor hidden-xs" href="#3-部署应用" title="3-部署应用"><i class="fa fa-link"></i></a>3. 部署应用</h2><p>无论是 k8s 还是 k3s，我们都是用 kubectl 部署应用，所以一些 k8s 的应用可以直接安装到 k3s 集群。</p><p>我们需要安装3个应用：</p><ul>
+<li>MetalLB：用来做负载均衡，自动把流量请求分配到不同的节点，并赋予节点 IP；</li>
+<li>Traefik：我们希望 <a href="http://a.myapp.uk/" target="_blank" rel="noopener">a.myapp.uk</a> 和 <a href="http://b.myapp.uk/" target="_blank" rel="noopener">b.myapp.uk</a> 分别跳转两个不同的网站，但是两个域名都解析到同一台服务器，所以需要 Traefik 相当于门卫，根据请求的域名不同，把请求转发到 k3s 集群内的不同节点；</li>
+<li>CertManager：对于企业级应用，当然希望自动生成 HTTPS 证书。</li>
+</ul><h3 id="31-安装-MetalLB" style=""><a class="anchor hidden-xs" href="#31-安装-MetalLB" title="31-安装-MetalLB"><i class="fa fa-link"></i></a>3.1 安装 MetalLB</h3><p>其实后面的步骤几乎一模一样，无非就是 kubectl apply -f xxx.yml ，例如安装 MetalLB 就是应用了2个 YAML 文件。</p><pre><code># On your local PC
+$ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
+
+# Please change the IP pool in the YML file
+$ kubectl apply -f 3-deployment/1-metallb/metallb-configs.yml
+</code></pre><p>第一个是 MetalLB 官方的配置，第二个则是我的配置文件，因为负载均衡需要给不同的节点分配 IP，如果是 AWS 和 Azure 等云平台，它们提供 Load Balancer 给虚拟器分配公网 IP。</p><p>然而，我这是在自己的私有云上搭建 k3s 集群，并没有公网 IP，所以 MetalLB 的作用就是把局域网的 IP 分配给不同虚拟机节点，下面我就预留了 192.168.1.200-192.168.1.254 分配给虚拟机。</p><pre><code>apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: first-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.1.200-192.168.1.254
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: example
+  namespace: metallb-system
+</code></pre><h3 id="32-安装-Traefik" style=""><a class="anchor hidden-xs" href="#32-安装-Traefik" title="32-安装-Traefik"><i class="fa fa-link"></i></a>3.2 安装 Traefik</h3><p>我们希望 whoami.wuhanstudio.local 和 hello.wuhanstudio.local 都解析到一个虚拟机节点，然后这个节点根据请求的域名不同，把实际的请求转发到另外的2个节点上，实现 Ingress Control，配置起来也就是 kubectl apply 一系列的 YAML 文件。</p><pre><code>$ cd k3s-proxmox-cluster/3-deployment/2-traefik
+$ kubectl apply -f 00-role.yml \
+                -f 00-account.yml \
+                -f 01-role-binding.yml \
+                -f 02-traefik.yml \
+                -f 02-traefik-services.yml
+
+# You can change the domain name in YML file
+$ kubectl apply -f 03-whoami-app.yml \
+                -f 03-whoami-ingress.yml \
+                -f 03-hello-world.yml \
+                -f 03-hello-ingress.yml
+</code></pre><p>这里简单解释一下配置文件，例如 03-hello-ingress.yml 这个文件里就定义了如果请求的域名 host 是 hello.wuhanstudio.local，就把它转发到 hello-world 这个 service。</p><pre><code>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-ingress
+spec:
+  rules:
+  - host: hello.wuhanstudio.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: hello-world
+            port:
+              name: web
+</code></pre><p>而 hello-world 这个网站则是在 03-hello-world.yml 这个文件里定义的 Docker 镜像和端口。</p><pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+  labels:
+    app: hello
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+    spec:
+      containers:
+      - image: tutum/hello-world:latest
+        name: hello-world
+        ports:
+          - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world
+spec:
+  ports:
+    - name: web
+      port: 80
+      targetPort: 80
+  selector:
+    app: hello
+  type: ClusterIP
+</code></pre><h3 id="33-安装-CertManager" style=""><a class="anchor hidden-xs" href="#33-安装-CertManager" title="33-安装-CertManager"><i class="fa fa-link"></i></a>3.3 安装 CertManager</h3><p>尽管我们是一个局域网的 k3s 集群，我还是希望像企业级应用一样，自动更新 HTTPS 证书，所以我们需要安装 CertManager 管理 HTTPS 证书。</p><pre><code>$ cd k3s-proxmox-cluster/3-deployment/3-cert-manager
+
+$ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.10.0/cert-manager.yaml
+
+# Use cmctl to verify the API installation
+$ cmctl check api 
+
+$ kubectl apply -f 04-cert-manager-config.yml
+</code></pre><p>安装好 CertManager 之后，我们需要给2个应用：hello，whoami 生成证书。</p><pre><code>$ kubectl apply -f 05-hello-tls-ingress.yml \
+                -f 05-whoami-tls-ingress.yml
+</code></pre><p>以 hello 为例，我们在 05-hello-tls-ingress.yml 只是定义了证书的名字、域名、self-signed 的形式发放局域网证书。</p><pre><code>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-tls
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    cert-manager.io/cluster-issuer: selfsigned-issuer
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  tls:
+  - hosts:
+    - hello.wuhanstudio.local
+    secretName: hello-tls
+  rules:
+    - host: hello.wuhanstudio.local
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: hello-world
+                port:
+                  number: 80
+</code></pre><p>最后，我们可以确认证书是否顺利发放了。</p><pre><code>$ kubectl get pods --namespace cert-manager
+$ kubectl describe secret hello-tls
+$ kubectl describe secret whoami-tls
+</code></pre><p>可以看到，虽然2个域名都是解析到了 192.168.1.130 这个 IP 地址，但是我们直接访问 IP 地址会得到 404 页面，只有访问对应的域名，才会返回 HTTPS 加密的网站。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_k3s/app.png" alt="img"></p><h2 id="总结" style=""><a class="anchor hidden-xs" href="#总结" title="总结"><i class="fa fa-link"></i></a>总结</h2><p>我们安装了 Proxmox 私有云创建了3个 Ubuntu 虚拟机，并用 k3sup 组建了一个 k3s 集群；最后用 MetalLB 给不同节点动态分配 IP，利用 Traefik 负载均衡，把不同的域名重定向到对应的节点，并用 CertManager 自动生成 HTTPS 证书。</p><p>虽然这是一个 Mac Mini 改造的私有云 k3s 集群，但是不亚于企业级的标准，负载均衡 (Load Banlander)，Traefik (Ingress Controller)，证书管理 (CertManager)应有尽有。</p><p>搭建 k3s 集群需要用到的命令和配置文件，我都放在了 Github 仓库里。</p><ul>
+<li><a href="https://github.com/wuhanstudio/k3s-proxmox-cluster" target="_blank" rel="noopener">GitHub - k3s-proxmox-cluster</a></li>
+</ul></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav">
+<li class=""><a href="#Proxmox-搭建-k3s-集群-负载均衡" title="Proxmox 搭建 k3s 集群 (负载均衡)">Proxmox 搭建 k3s 集群 (负载均衡)</a><ul class="nav">
+<li><a href="#0-最终目的" title="0. 最终目的">0. 最终目的</a></li>
+<li><a href="#1-Proxmox-私有云" title="1. Proxmox 私有云">1. Proxmox 私有云</a><ul class="nav">
+<li><a href="#11-桥接网络-Bridge" title="1.1 桥接网络 (Bridge)">1.1 桥接网络 (Bridge)</a></li>
+<li><a href="#12-虚拟机镜像" title="1.2 虚拟机镜像">1.2 虚拟机镜像</a></li>
+<li><a href="#13-创建虚拟机" title="1.3 创建虚拟机">1.3 创建虚拟机</a></li>
+</ul>
+</li>
+<li><a href="#2-k3s-集群" title="2. k3s 集群">2. k3s 集群</a></li>
+<li class=""><a href="#3-部署应用" title="3. 部署应用">3. 部署应用</a><ul class="nav">
+<li><a href="#31-安装-MetalLB" title="3.1 安装 MetalLB">3.1 安装 MetalLB</a></li>
+<li><a href="#32-安装-Traefik" title="3.2 安装 Traefik">3.2 安装 Traefik</a></li>
+<li class=""><a href="#33-安装-CertManager" title="3.3 安装 CertManager">3.3 安装 CertManager</a></li>
+</ul>
+</li>
+<li class=""><a href="#总结" title="总结">总结</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
+        <div class="toc"><ul class="nav">
+<li class=""><a href="#Proxmox-搭建-k3s-集群-负载均衡" title="Proxmox 搭建 k3s 集群 (负载均衡)">Proxmox 搭建 k3s 集群 (负载均衡)</a><ul class="nav">
+<li><a href="#0-最终目的" title="0. 最终目的">0. 最终目的</a></li>
+<li><a href="#1-Proxmox-私有云" title="1. Proxmox 私有云">1. Proxmox 私有云</a><ul class="nav">
+<li><a href="#11-桥接网络-Bridge" title="1.1 桥接网络 (Bridge)">1.1 桥接网络 (Bridge)</a></li>
+<li><a href="#12-虚拟机镜像" title="1.2 虚拟机镜像">1.2 虚拟机镜像</a></li>
+<li><a href="#13-创建虚拟机" title="1.3 创建虚拟机">1.3 创建虚拟机</a></li>
+</ul>
+</li>
+<li><a href="#2-k3s-集群" title="2. k3s 集群">2. k3s 集群</a></li>
+<li class=""><a href="#3-部署应用" title="3. 部署应用">3. 部署应用</a><ul class="nav">
+<li><a href="#31-安装-MetalLB" title="3.1 安装 MetalLB">3.1 安装 MetalLB</a></li>
+<li><a href="#32-安装-Traefik" title="3.2 安装 Traefik">3.2 安装 Traefik</a></li>
+<li class=""><a href="#33-安装-CertManager" title="3.3 安装 CertManager">3.3 安装 CertManager</a></li>
+</ul>
+</li>
+<li class=""><a href="#总结" title="总结">总结</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/js/bootstrap.min.js" integrity="sha256-kJrlY+s09+QoWjpkOrXXwhxeaoDz9FW5SaxF8I0DibQ=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>
