@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        Proxmox 搭建私有云 HPC (Slurm) - CodiMD
+    </title>
+    <link rel="icon" type="image/png" href="https://codimd.wuhanstudio.cc/favicon.png">
+    <link rel="apple-touch-icon" href="https://codimd.wuhanstudio.cc/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha256-H0KfTigpUV+0/5tn2HXC0CPwhhDhWgSawJdnFd0CGCo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fork-awesome/1.1.3/css/fork-awesome.min.css" integrity="sha256-ZhApazu+kejqTYhMF+1DzNKjIzP7KXu6AzyXcC1gMus=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github-gist.min.css" integrity="sha256-tAflq+ymku3Khs+I/WcAneIlafYgDiOQ9stIHH985Wo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,300italic,300|Source+Serif+Pro|Source+Code+Pro:400,300,500&subset=latin,latin-ext);.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{padding:0 1em;color:#777;border-left:.25em solid #ddd}.night .markdown-body blockquote{color:#bcbcbc}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.night .markdown-body h1,.night .markdown-body h2,.night .markdown-body h3,.night .markdown-body h4,.night .markdown-body h5,.night .markdown-body h6{color:#ddd}.markdown-body h1 .fa-link,.markdown-body h2 .fa-link,.markdown-body h3 .fa-link,.markdown-body h4 .fa-link,.markdown-body h5 .fa-link,.markdown-body h6 .fa-link{color:#000;vertical-align:middle;visibility:hidden;font-size:16px}.night .markdown-body h1 .fa-link,.night .markdown-body h2 .fa-link,.night .markdown-body h3 .fa-link,.night .markdown-body h4 .fa-link,.night .markdown-body h5 .fa-link,.night .markdown-body h6 .fa-link{color:#fff}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .fa-link,.markdown-body h2:hover .anchor .fa-link,.markdown-body h3:hover .anchor .fa-link,.markdown-body h4:hover .anchor .fa-link,.markdown-body h5:hover .anchor .fa-link,.markdown-body h6:hover .anchor .fa-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{margin-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.night .markdown-body table tr{background-color:#5f5f5f}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.night .markdown-body table tr:nth-child(2n){background-color:#4f4f4f}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:.2em 0;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.night .markdown-body code,.night .markdown-body tt{color:#eee;background-color:hsla(0,0%,90.2%,.36)}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\A0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.markdown-body kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid;border-color:#ccc #ccc #bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important}.markdown-body pre{border:inherit!important}.night .markdown-body pre{filter:invert(100%)}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-webkit-inline-flex;display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.night .markdown-body .gist table tr:nth-child(2n){background-color:#ddd}.markdown-body code[data-gist-id]{background:none;padding:0;filter:invert(100%)}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram,.markdown-body pre.vega{text-align:center;background-color:inherit;border-radius:0;white-space:inherit}.night .markdown-body pre.graphviz .graph>polygon{fill:#333}.night .markdown-body pre.mermaid .sectionTitle,.night .markdown-body pre.mermaid .titleText,.night .markdown-body pre.mermaid text{fill:#fff}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code,.markdown-body pre.vega>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg,.markdown-body pre.vega>svg{max-width:100%;height:100%}.night .markdown-body .abc path{fill:#eee}.night .markdown-body .abc path.note_selected{fill:##4DD0E1}.night tspan{fill:#fefefe}.night pre rect{fill:transparent}.night pre.flow-chart path,.night pre.flow-chart rect{stroke:#fff}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p,.markdown-body .alert>ul{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body img{background-color:transparent}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;-webkit-transition:opacity .2s;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;-webkit-transition:opacity .2s;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.MJX_Assistive_MathML{display:none}.ui-infobar{position:relative;z-index:2;max-width:758px;margin-top:25px;margin-bottom:-25px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:10000}.ui-toc-label{opacity:.3;background-color:#ccc;border:none}.ui-toc-label,.ui-toc .open .ui-toc-label{-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc-dropdown{margin-top:23px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child>ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.night .ui-toc-dropdown .nav>li>a:focus,.night .ui-toc-dropdown .nav>li>a:hover{color:#fff;border-left-color:#fff}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.night .ui-toc-dropdown .nav>.active:focus>a,.night .ui-toc-dropdown .nav>.active:hover>a,.night .ui-toc-dropdown .nav>.active>a{color:#fff;border-left:2px solid #fff}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.night .ui-toc-dropdown .nav>li>a{color:#aaa}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,"\30D2\30E9\30AE\30CE\89D2\30B4   Pro W3",Osaka,Meiryo,"\30E1\30A4\30EA\30AA",MS Gothic,"\FF2D\FF33   \30B4\30B7\30C3\30AF",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,"\FF2D\FF33   \FF30\30B4\30B7\30C3\30AF",sans-serif}.markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang TC,Microsoft JhengHei,"\5FAE\8EDF\6B63\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,"\5FAE\8EDF\6B63\9ED1UI",sans-serif}.markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang SC,Microsoft YaHei,"\5FAE\8F6F\96C5\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,"\5FAE\8F6F\96C5\9ED1UI",sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:3px;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:contain}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}small span{line-height:22px}small .dropdown{display:inline-block}small .dropdown a:focus,small .dropdown a:hover{text-decoration:none}.unselectable{-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}.night .navbar{background:#333;border-bottom-color:#333;color:#eee}.night .navbar a{color:#eee}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;font-family:Source Sans Pro,Helvetica,Arial,sans-serif;letter-spacing:.025em}.focus,:focus{outline:none!important}::-moz-focus-inner{border:0!important}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid"><h1 id="Proxmox-搭建私有云-HPC-Slurm" style=""><a class="anchor hidden-xs" href="#Proxmox-搭建私有云-HPC-Slurm" title="Proxmox-搭建私有云-HPC-Slurm"><i class="fa fa-link"></i></a>Proxmox 搭建私有云 HPC (Slurm)</h1><blockquote>
+<p>Mac Mini 改造成私有云 HPC 超算 (Slurm 任务调度)。</p>
+</blockquote><p>很多实验室都有自己的服务器，大部分只是把它当作一个共享的高配置电脑来用：例如一台服务器配 4-8 张 NVDIA 显卡，实验室每个人建立一个账号，大家可以远程访问跑代码 (端口映射)，但是并不能算作 High Performance Computing 超算平台。</p><p>HPC 超算平台需要额外提供 <strong>虚拟化 (Hypervisor)</strong> 和 <strong>任务调度 (Job Scheduler)</strong>。比如我用的两个 HPC 平台： ISCA 和 Jade 2，它们用的 OpenStack 云平台 和 Slurm 调度器。</p><blockquote>
+<p>这个网站 <a href="https://www.hpc-uk.ac.uk/facilities/" target="_blank" rel="noopener">HPC-UK</a> 包含了英国的超算平台：<a href="https://www.hpc-uk.ac.uk/facilities/%E3%80%82" target="_blank" rel="noopener">https://www.hpc-uk.ac.uk/facilities/。</a></p>
+</blockquote><pre><code># Jade 2 HPC 一个节点的 GPU 资源
+
+(base) bash-4.2$ nvidia-smi
+Sat Nov  4 14:31:18 2023
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 11.4     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  Tesla V100-SXM2...  On   | 00000000:06:00.0 Off |                    0 |
+| N/A   36C    P0    43W / 163W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   1  Tesla V100-SXM2...  On   | 00000000:07:00.0 Off |                    0 |
+| N/A   40C    P0    44W / 163W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   2  Tesla V100-SXM2...  On   | 00000000:0A:00.0 Off |                    0 |
+| N/A   38C    P0    43W / 163W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   3  Tesla V100-SXM2...  On   | 00000000:0B:00.0 Off |                    0 |
+| N/A   37C    P0    44W / 163W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   4  Tesla V100-SXM2...  On   | 00000000:85:00.0 Off |                    0 |
+| N/A   39C    P0    42W / 163W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   5  Tesla V100-SXM2...  On   | 00000000:86:00.0 Off |                    0 |
+| N/A   38C    P0    43W / 163W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   6  Tesla V100-SXM2...  On   | 00000000:89:00.0 Off |                    0 |
+| N/A   39C    P0    43W / 163W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   7  Tesla V100-SXM2...  On   | 00000000:8A:00.0 Off |                    0 |
+| N/A   39C    P0    43W / 163W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
+(base) bash-4.2$
+</code></pre><p>后面搭建 HPC 集群用到的命令、配置文件，我都总结到了 GitHub。</p><h2 id="0-最终目标" style=""><a class="anchor hidden-xs" href="#0-最终目标" title="0-最终目标"><i class="fa fa-link"></i></a>0. 最终目标</h2><p>最近在准备学校的 HPC Workshop，于是在想：能不能把闲置的 Mac Mini 改造成一个私有云 HPC 超算，可以灵活新建虚拟机，集成各种开发环境，并且远程提交任务，也就是分三步，实现下面这张图的架构。</p><ol>
+<li>私有云 (Proxmox)：提供虚拟化平台，可以灵活创建不同配置 (CPU, RAM) 的虚拟机；</li>
+<li><strong>任务调度 (Slurm)：提交任务 (job)，根据优先级进行调度，这篇文章的重点；</strong></li>
+<li>应用管理 (Module)：管理不同开发环境 CUDA, GCC, Python, Julia 等。</li>
+</ol><p>最终可以用 sinfo 查看集群节点，sbatch 提交任务，squeue 查看提交的任务，sacct 查看运行状况。</p><pre><code>ubuntu@manager:~$ sinfo
+PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
+mac*         up   infinite      2   idle compute[01-02]
+
+ubuntu@manager:~$ sbatch hello-submit.sh
+Submitted batch job 36
+
+ubuntu@manager:~$ squeue
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+                36       mac hello-wo   ubuntu  R       0:02      1 compute01
+
+ubuntu@manager:~$ sacct -j 36
+       JobID    JobName  Partition    Account  AllocCPUS      State ExitCode
+------------ ---------- ---------- ---------- ---------- ---------- --------
+36           hello-wor+        mac research_+          1    RUNNING      0:0
+36.batch          batch            research_+          1    RUNNING      0:0
+</code></pre><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_slurm/intro.png" alt="img"></p><h2 id="1-私有云-Proxmox" style=""><a class="anchor hidden-xs" href="#1-私有云-Proxmox" title="1-私有云-Proxmox"><i class="fa fa-link"></i></a>1. 私有云 (Proxmox)</h2><p>第一步是在 Mac Mini 上搭建一个私有云 (Proxmox)，也就是类似 AWS，Azure，GCloud，阿里云，腾讯云，百度云，华为云这样的云平台，可以灵活创建不同 CPU，RAM 的虚拟机，并把他们组建成一个 HPC 集群。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_slurm/proxmox.png" alt="img"></p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_slurm/proxmox_vnc.png" alt="img"></p><p>我选择的是轻量级的 Proxmox，而学校的 ISCA 和 Jade 2 是用的开源的 OpenStack。<strong>这里顺便一提，华为云也是 OpenStack 换 Logo 和 皮肤 的产物。</strong></p><blockquote>
+<p>2019年，华为云犯了和鸿蒙一样的错误，鸿蒙没有把 Android 替换干净，华为云没有把 OpenStack 替换干净，现在可能系统升级修复了这些 Bug。</p>
+</blockquote><p>一个云平台，虚拟化 (Hypervisor) 非常重要，直接影响虚拟机和顶层应用的性能，比较大的云平台一般有自己的虚拟化技术，例如<strong>AWS 的 Xen，微软 的 Hyper-V，IBM 的 KVM，VMware 的 ESXi 等</strong>，其中一些开源的 KVM，Boch，LXD/LXC 就在阿里云 (KVM)，腾讯云 (Boch)，华为云 (OpenStack) 等国内云平台得到了广泛应用，当然这问题不大，Proxmox 也是用的 KVM 和 LXC。</p><p>Proxmox 是基于 Debian，<strong>如果我们直接下载 Proxmox 官网的镜像只能安装到整个磁盘</strong>，我并不想覆盖 Mac Mini 里已经安装的 MacOS 和 Ubuntu，所以先手动分区安装了 Debian，再参照官方文档安装 Proxmox。</p><ul>
+<li>Debian 安装 Proxmox: <a href="https://pve.proxmox.com/wiki/Install_Proxmox_VE_on_Debian_11_Bullseye" target="_blank" rel="noopener">Install Proxmox VE on Debian 11 Bullseye</a></li>
+</ul><p>如果不介意覆盖整个磁盘安装 Proxmox，直接下载官方镜像，和安装常规 Linux 操作系统一样，这里主要介绍安装好 Proxmox 后如何配置网卡、镜像、虚拟机。</p><h3 id="11-桥接网络-Bridge" style=""><a class="anchor hidden-xs" href="#11-桥接网络-Bridge" title="11-桥接网络-Bridge"><i class="fa fa-link"></i></a>1.1 桥接网络 (Bridge)</h3><p>我们需要给新建的虚拟机分配 IP，而我的 Mac Mini 直接连接到了路由器，所以打算创建一个桥接网络，这样虚拟机就可以直接从路由器 DHCP 获取 IP，看起来就好像虚拟机直接有线网连到了路由器一样。</p><p>比如我路由器的 LAN 子网是 192.168.1.0/24，Proxmox 连到路由器可能有个 IP: 192.168.1.3，Proxmox 云平台里新建的虚拟机可以分配到 192.168.1.101，和 Proxmox 是平级的。</p><p>在 Proxmox 的 System --&gt; Network --&gt; Create --&gt; Linux Bridge，填入下面的配置，当然 IPv4 网段和 网卡 enp2s0f0 根据自己的实际情况需要调整。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_slurm/proxmox_bridge.png" alt="img"></p><h3 id="12-虚拟机镜像" style=""><a class="anchor hidden-xs" href="#12-虚拟机镜像" title="12-虚拟机镜像"><i class="fa fa-link"></i></a>1.2 虚拟机镜像</h3><p>我后面用的  Ubuntu 20.04 组建 HPC 节点，登录到 Proxmox 控制台后，下面的命令下载 Ubuntu Cloud Image，并且创建一个 VM Template，这样后面创建虚拟机就可以一键复制模板，类似 AWS 的 t2, t3 模板:</p><ul>
+<li>t2.nano (1 vCPU and 0.5 GiB memory)</li>
+<li>t2.micro (1 vCPU and 1 GiB memory)</li>
+<li>t2.small (1 vCPU and 2 GiB memory)</li>
+</ul><pre><code># Log into Proxmox
+
+# Create Ubuntu Cloud Image
+$ curl -O http://cloud-images.ubuntu.com/releases/focal/release/ubuntu-20.04-server-cloudimg-amd64.img
+$ sudo apt install libguestfs-tools -y
+$ sudo virt-customize -a ubuntu-20.04-server-cloudimg-amd64.img --install qemu-guest-agent --truncate /etc/machine-id 
+
+# Create a template VM
+$ sudo qm create 9000 \
+         --name ubuntu-20.04-cloud-init --numa 0 --ostype l26 \
+         --cpu cputype=host --cores 1 --sockets 1 \
+         --memory 1024  \
+         --net0 virtio,bridge=vmbr0
+
+# Replace local with your local storage (e.g. local-lvm)
+$ sudo qm importdisk 9000 ubuntu-20.04-server-cloudimg-amd64.img local  -format qcow2
+$ sudo qm set 9000 --scsihw virtio-scsi-pci --scsi0 /var/lib/vz/images/9000/vm-9000-disk-0.qcow2
+$ sudo qm resize 9000 scsi0 +6G
+$ sudo qm set 9000 --ide2 local:cloudinit
+$ sudo qm set 9000 --boot c --bootdisk scsi0
+$ sudo qm set 9000 --serial0 socket --vga serial0
+$ sudo qm set 9000 --agent enabled=1
+</code></pre><p>这样我们在 Proxmox 里就有了一个 Ubuntu 20.04 (1核1G，8G硬盘) 的模板。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_slurm/proxmox_init.png" alt="img"></p><p>在上面图中的 Cloud-Init 选项里，我们可以配置虚拟机默认的用户名和密码，还有 SSH Key，这样我们虚拟机开机就可以直接登录，类似 AWS 新建一个 EC2 节点后会让你下载登录用的 pem 密钥。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_slurm/proxmox_ssh.png" alt="img"></p><p>最后把我们前面的配置，转换成一个虚拟机模板。</p><pre><code>$ qm template 9000
+</code></pre><h3 id="13-创建虚拟机" style=""><a class="anchor hidden-xs" href="#13-创建虚拟机" title="13-创建虚拟机"><i class="fa fa-link"></i></a>1.3 创建虚拟机</h3><p>有了前面创建的模板，我们就可以创建3个Ubuntu 虚拟机，作为 HPC 的节点。</p><pre><code>$ qm clone 9000 110 --name Ubuntu-20.04-manager --full
+$ qm clone 9000 111 --name Ubuntu-20.04-compute-01 --full
+$ qm clone 9000 112 --name Ubuntu-20.04-compute-02 --full
+</code></pre><p>这样3条命令，我们就有了3个 Ubuntu 虚拟机，分别为 manager, compute01, compute02，开机后 Proxmox 会利用前面的 Linux Bridge 帮它们从路由器申请 IP，我们可以登录到虚拟机修改主机名。</p><pre><code>$ ssh ubuntu@192.168.1.219
+$ sudo hostnamectl set-hostname manager
+
+$ ssh ubuntu@192.168.1.181
+$ sudo hostnamectl set-hostname compute01
+
+$ ssh ubuntu@192.168.1.152
+$ sudo hostnamectl set-hostname compute02
+</code></pre><h2 id="2-任务调度-Slurm" style=""><a class="anchor hidden-xs" href="#2-任务调度-Slurm" title="2-任务调度-Slurm"><i class="fa fa-link"></i></a>2. 任务调度 (Slurm)</h2><p>有了3个虚拟机节点后，<strong>这是最重要的一步，需要安装 Slurm 把它们组建成一个 HPC 集群。</strong></p><p>Slurm 是全球非常受欢迎的超算任务调度器，平常我们在超算上用的 sinfo，sbatch, squeue, sacct 就是由 Slurm 提供的。</p><p><img src="https://doc.wuhanstudio.cc/posts/proxmox_slurm/slurm.png" alt="img"></p><p>在使用超算的时候，我们会发现 HPC 可以提交任务，文件自动同步，还有一些预装的软件，但这其实是 3 个部分，<strong>Slurm 只提供任务管理，文件同步需要我们自己配置 NFS 文件共享，Module 则是另一个软件负责管理开发环境</strong>。</p><h3 id="21-NFS-文件共享" style=""><a class="anchor hidden-xs" href="#21-NFS-文件共享" title="21-NFS-文件共享"><i class="fa fa-link"></i></a>2.1 NFS 文件共享</h3><p>我们首先需要在不同 Ubuntu 虚拟机节点上建立共享的文件夹，这样任务分配到不同节点执行后，在其他节点也可以同步文件输出，这里我创建了 /mnt/slurmfs 共享文件夹。</p><pre><code># For the manager node
+$ sudo apt install ntpdate nfs-kernel-server -y
+
+# Create a shared folder /mnt/slurmfs
+$ sudo mkdir /mnt/slurmfs
+$ sudo chown nobody.nogroup /mnt/slurmfs
+$ sudo chmod -R 777 /mnt/slurmfs
+
+# Auto-mount the NFS folder
+$ sudo vim /etc/exports
+
+    /mnt/slurmfs    &lt;lan network&gt;(rw,sync,no_root_squash,no_subtree_check)
+    /mnt/slurmfs    192.168.1.0/24(rw,sync,no_root_squash,no_subtree_check)
+
+$ sudo exportfs -a
+$ sudo systemctl restart nfs-kernel-server
+</code></pre><p>接下来在每一个子节点上挂载目录：</p><pre><code># For each compute node (Replace the MANAGER_IP)
+$ sudo apt install ntpdate nfs-common -y
+$ sudo mkdir /mnt/slurmfs
+$ sudo chown nobody.nogroup /mnt/slurmfs
+$ sudo mount MANAGER_IP:/mnt/slurmfs /mnt/slurmfs
+
+$ Auto-mount the NFS folder
+$ sudo vim /etc/fstab
+    &lt;manager node ip&gt;:/mnt/slurmfs    /mnt/slurmfs    nfs    defaults   0 0
+    192.168.1.219:/mnt/slurmfs    /mnt/slurmfs    nfs    defaults   0 0
+
+$ sudo mount -a
+</code></pre><h3 id="22-Slurm-安装" style=""><a class="anchor hidden-xs" href="#22-Slurm-安装" title="22-Slurm-安装"><i class="fa fa-link"></i></a>2.2 Slurm 安装</h3><p>前面操作都非常简单，并没有涉及 HPC，到这里我们就要安装核心的 Slurm 调度器了。</p><p><strong>我们需要在一个 manager 节点上启动 slurmctld，2 个 compute 节点上启动 slurmd。</strong></p><p>首先，在 manager 节点上安装 slurm，并且修改配置文件，另外 manager 和 compute 是通过 muge 来通信的。</p><pre><code># For the manager
+
+$ sudo apt install slurm-wlm -y
+$ cd /etc/slurm-llnl
+$ sudo cp /usr/share/doc/slurm-client/examples/slurm.conf.simple.gz .
+$ sudo gzip -d slurm.conf.simple.gz
+$ sudo mv slurm.conf.simple slurm.conf
+</code></pre><p>在 slurm 的配置文件里，我们需要定义 HPC 集群的节点名称：</p><pre><code>$ sudo vim /etc/slurm-llnl/slurm.conf
+
+    SlurmctldHost=manager
+    NodeName=compute01 NodeAddr=192.168.1.181 CPUs=1 State=UNKNOWN
+    NodeName=compute02 NodeAddr=192.168.1.152 CPUs=1 State=UNKNOWN
+    PartitionName=macNodes=compute[01-02] Default=YES MaxTime=INFINITE State=UP
+</code></pre><p>以及每个节点的资源限制，比如我们可能不希望计算占用了节点的全部资源，需要预留一些 CPU 管理通信。</p><pre><code>$ sudo vim /etc/slurm-llnl/cgroup.conf
+
+    CgroupMountpoint="/sys/fs/cgroup"
+    CgroupAutomount=yes
+    CgroupReleaseAgentDir="/etc/slurm-llnl/cgroup"
+    ConstrainCores=no
+    TaskAffinity=no
+    ConstrainRAMSpace=yes
+    ConstrainSwapSpace=no
+    ConstrainDevices=no
+    AllowedRamSpace=100
+    AllowedSwapSpace=0
+    MaxRAMPercent=100
+    MaxSwapPercent=100
+    MinRAMSpace=30
+</code></pre><p>最后我们把配置文件复制到 NFS 文件夹，这样其他节点就可以共享相同的配置文件了。</p><pre><code>$ sudo cp /etc/slurm-llnl/slurm.conf /etc/slurm-llnl/cgroup.conf /mnt/slurmfs/
+$ sudo cp /etc/munge/munge.key /mnt/slurmfs/
+
+$ sudo systemctl enable munge
+$ sudo systemctl restart munge
+
+$ sudo systemctl enable slurmctld
+$ sudo systemctl restart slurmctld
+</code></pre><p>在每个 compute 节点上，我们做类似的配置：</p><pre><code># For each compute node
+$ sudo apt install slurmd slurm-client -y
+
+$ sudo cp /mnt/slurmfs/munge.key /etc/munge/munge.key
+$ sudo cp /mnt/slurmfs/slurm.conf /etc/slurm-llnl/slurm.conf
+$ sudo cp /mnt/slurmfs/cgroup* /etc/slurm-llnl
+
+$ sudo systemctl enable munge
+$ sudo systemctl restart munge
+
+$ sudo systemctl enable slurmd
+$ sudo systemctl restart slurmd
+</code></pre><p>如果一切顺利，我们就可以看到集群的信息了。</p><pre><code>$ sinfo -N
+
+NODELIST   NODES    PARTITION   STATE
+compute01      1     proxmox*    idle
+compute02      1     proxmox*    idle
+</code></pre><p>如果很不幸，集群并没有起来，比如看到下面的报错：</p><pre><code>ubuntu@compute02:~$ sinfo -N
+slurm_load_partitions: Zero Bytes were transmitted or received
+</code></pre><p>这说明 munge 通信出了异常，前面我们修改了 munge 的 key，需要在每个节点重启 munge。</p><pre><code># On both the manager node and compute nodes
+$ sudo systemctl restart munge
+</code></pre><p><strong>到这里，我们就可以使用 sbatch 提交任务，squeue 查看任务了，但是并不能使用 sacct 查看任务运行记录</strong>，这需要 MySQL 数据库记录任务运行情况。</p><h3 id="23-Slurm-Accounting-MySQL" style=""><a class="anchor hidden-xs" href="#23-Slurm-Accounting-MySQL" title="23-Slurm-Accounting-MySQL"><i class="fa fa-link"></i></a>2.3 Slurm Accounting (MySQL)</h3><p>我们首先在 manager 上安装 MariaDB。</p><pre><code># For the manager node
+$ sudo apt-get -y install slurmdbd mariadb-server
+
+$ sudo vim /etc/mysql/mariadb.conf.d/50-server.cnf
+    bind-address            = 0.0.0.0
+
+    innodb_buffer_pool_size=512M
+    innodb_log_file_size=64M
+    innodb_lock_wait_timeout=900
+
+$ sudo systemctl enable mariadb
+$ sudo systemctl restart mariadb
+</code></pre><p>接下来我们给 MariaDB 配置 Slurm 需要的数据库。</p><pre><code>$ sudo mysql_secure_installation
+$ sudo mysql -u root -p
+    &gt; grant all on slurm_acct_db.* TO 'slurm'@'%' identified by 'my_password' with grant option;
+    &gt; create database slurm_acct_db;
+    &gt; grant all on slurm_jobcomp_db.* TO 'slurm'@'%' identified by 'my_password' with grant option;
+    &gt; create database slurm_jobcomp_db;
+</code></pre><p>为了让 slurm 和 数据库 通信，我们需要配置 slurmdbd 服务。</p><pre><code># You can also use slurmdbd.conf in this GitHub repo
+$ sudo vim /etc/slurm-llnl/slurmdbd.conf
+    AuthType=auth/munge
+
+    DbdHost=manager
+    DbdAddr=192.168.1.219
+    DbdPort=6819
+    DebugLevel=info
+
+    LogFile=/var/log/slurm-llnl/slurmdbd.log
+    PidFile=/var/run/slurmdbd.pid
+
+    SlurmUser=slurm
+    StorageType=accounting_storage/mysql
+    StorageHost=manager
+    StorageUser=slurm
+    StoragePass=my_password
+    StorageLoc=slurm_acct_db
+
+$ sudo systemctl enable slurmdbd
+$ sudo systemctl restart slurmdbd
+
+# You can also use slurm_acct.conf in this GitHub repo
+$ sudo vim /etc/slurm-llnl/slurm.conf
+    # LOGGING AND ACCOUNTING
+    AccountingStorageHost=manager
+    AccountingStorageLoc=slurm_acct_db
+    AccountingStorageUser=slurm
+    AccountingStorageType=accounting_storage/slurmdbd
+    AccountingStoragePort=6819
+
+    JobCompType=jobcomp/mysql
+    JobCompHost=manager
+    JobCompUser=slurm
+    JobCompPass=my_password
+    JobContainerType=job_container/none
+    JobAcctGatherType=jobacct_gather/linux
+
+$ sudo cp /etc/slurm-llnl/slurm.conf /mnt/slurmfs/slurm.conf
+$ sudo systemctl restart slurmctld
+</code></pre><p>由于我们修改了 slurm.conf，需要重启每一个 compute 节点的 slurmd 服务。</p><pre><code># For each compute node
+$ sudo cp /mnt/slurmfs/slurm.conf /etc/slurm-llnl/slurm.conf
+$ sudo systemctl restart slurmd
+</code></pre><p>一切正常的话，我们就可以在 sacctmgr 里看到自己的 HPC 集群了。</p><pre><code># Check if the cluster is added to the manager
+$ sacctmgr list cluster
+   Cluster     ControlHost  ControlPort   RPC     Share GrpJobs       GrpTRES GrpSubmit MaxJobs       MaxTRES MaxSubmit     MaxWall                  QOS   Def QOS
+---------- --------------- ------------ ----- --------- ------- ------------- --------- ------- ------------- --------- ----------- -------------------- ---------
+   proxmox   192.168.1.219         6817  8704         1                                                                                           normal
+
+# If not, the cluster can be added using sacctmgr
+$ sudo sacctmgr add cluster proxmox
+</code></pre><p>到这里，我们就有一个完整的 HPC 集群了，并且 Slurm 会自动记录过去的任务，我们可以尝试提交一个任务，例如创建 <a href="http://hello-world-submit.sh" target="_blank" rel="noopener">hello-world-submit.sh</a>：</p><pre><code>#!/bin/sh
+#SBATCH --export=ALL # export all environment variables to the batch job.
+#SBATCH -p mac # submit to the serial queue
+#SBATCH --time=00:10:00 # Maximum wall time for the job.
+#SBATCH --nodes=1 # specify number of nodes.
+#SBATCH --ntasks-per-node=1 # specify number of processors per node
+#SBATCH --mail-type=END # send email at job completion
+#SBATCH --output=hello-world.o
+#SBATCH --error=hello-world.e
+#SBATCH --job-name=hello-world
+
+## print start date and time
+echo Job started on:
+date -u
+
+echo "hello-world"
+
+## print node job run on
+echo -n "This script is running on "
+hostname
+
+sleep 60
+## print end date and time
+echo Job ended on:
+date -u
+</code></pre><p>接下来就可以提交，查看任务了：</p><pre><code>ubuntu@manager:~$ sbatch hello-world-submit.sh
+Submitted batch job 2
+
+ubuntu@manager:~$ squeue
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+                 2       mac hello-wo   ubuntu  R       0:02      1 compute01
+
+ubuntu@manager:~$ sacct -j 2
+       JobID    JobName  Partition    Account  AllocCPUS      State ExitCode
+------------ ---------- ---------- ---------- ---------- ---------- --------
+2            hello-wor+        mac                     1  COMPLETED      0:0
+2.batch           batch                                1  COMPLETED      0:0
+</code></pre><p>到这里，最复杂的部分 Slurm + Accounting 就配置完了，接下来就是很轻松的 Module 和 MPI 了。</p><h2 id="3-应用管理-Module" style=""><a class="anchor hidden-xs" href="#3-应用管理-Module" title="3-应用管理-Module"><i class="fa fa-link"></i></a>3. 应用管理 (Module)</h2><p>最后为了管理超算上面的应用，我们需要用到 Module 这个软件，为了并行加速需要 MPICH。</p><h3 id="31-MPI-并行" style=""><a class="anchor hidden-xs" href="#31-MPI-并行" title="31-MPI-并行"><i class="fa fa-link"></i></a>3.1 MPI 并行</h3><p>相比之前的 Slurm，现在已经非常简单了。</p><pre><code>$ srun --nodes=2 sudo apt install openmpi-bin openmpi-common libopenmpi3 libopenmpi-dev -y
+</code></pre><h3 id="32-Module-环境管理" style=""><a class="anchor hidden-xs" href="#32-Module-环境管理" title="32-Module-环境管理"><i class="fa fa-link"></i></a>3.2 Module 环境管理</h3><p>同样，我们需要在每个节点上安装 Module。</p><pre><code># On the manager
+$ srun --nodes=2 sudo apt install build-essential tcl-dev tcl -y
+
+# For each compute node
+$ curl -LJO https://github.com/cea-hpc/modules/releases/download/v5.3.1/modules-5.3.1.tar.gz
+$ tar xfz modules-5.3.1.tar.gz
+$ cd modules-5.3.1
+$ ./configure
+$ make
+$ sudo make install
+$ sudo ln -s /usr/local/Modules/init/profile.sh /etc/profile.d/modules.sh
+$ sudo ln -s /usr/local/Modules/init/profile.csh /etc/profile.d/modules.csh
+</code></pre><p>这样就可以用 Module 管理不同的软件环境了：CUDA，Python，GCC，Julia。</p><h2 id="总结" style=""><a class="anchor hidden-xs" href="#总结" title="总结"><i class="fa fa-link"></i></a>总结</h2><p>在安装完 Proxmox，NFS，Slurm，Module，MPI 后，我们终于把 Mac Mini 改造成了自己的 HPC 超算平台，虽然硬件资源比较弱，但是私有云，虚拟化，任务调度，软件管理，并行计算，应有尽有。</p><pre><code>ubuntu@manager:~$ sbatch hello-world-submit.sh
+Submitted batch job 2
+
+ubuntu@manager:~$ squeue
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+                 2       mac hello-wo   ubuntu  R       0:02      1 compute01
+
+ubuntu@manager:~$ sacct -j 2
+       JobID    JobName  Partition    Account  AllocCPUS      State ExitCode
+------------ ---------- ---------- ---------- ---------- ---------- --------
+2            hello-wor+        mac                     1  COMPLETED      0:0
+2.batch           batch                                1  COMPLETED      0:0
+</code></pre></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav">
+<li class=""><a href="#Proxmox-搭建私有云-HPC-Slurm" title="Proxmox 搭建私有云 HPC (Slurm)">Proxmox 搭建私有云 HPC (Slurm)</a><ul class="nav">
+<li class=""><a href="#0-最终目标" title="0. 最终目标">0. 最终目标</a></li>
+<li class=""><a href="#1-私有云-Proxmox" title="1. 私有云 (Proxmox)">1. 私有云 (Proxmox)</a><ul class="nav">
+<li class=""><a href="#11-桥接网络-Bridge" title="1.1 桥接网络 (Bridge)">1.1 桥接网络 (Bridge)</a></li>
+<li class=""><a href="#12-虚拟机镜像" title="1.2 虚拟机镜像">1.2 虚拟机镜像</a></li>
+<li class=""><a href="#13-创建虚拟机" title="1.3 创建虚拟机">1.3 创建虚拟机</a></li>
+</ul>
+</li>
+<li class=""><a href="#2-任务调度-Slurm" title="2. 任务调度 (Slurm)">2. 任务调度 (Slurm)</a><ul class="nav">
+<li class=""><a href="#21-NFS-文件共享" title="2.1 NFS 文件共享">2.1 NFS 文件共享</a></li>
+<li class=""><a href="#22-Slurm-安装" title="2.2 Slurm 安装">2.2 Slurm 安装</a></li>
+<li class=""><a href="#23-Slurm-Accounting-MySQL" title="2.3 Slurm Accounting (MySQL)">2.3 Slurm Accounting (MySQL)</a></li>
+</ul>
+</li>
+<li class=""><a href="#3-应用管理-Module" title="3. 应用管理 (Module)">3. 应用管理 (Module)</a><ul class="nav">
+<li class=""><a href="#31-MPI-并行" title="3.1 MPI 并行">3.1 MPI 并行</a></li>
+<li class=""><a href="#32-Module-环境管理" title="3.2 Module 环境管理">3.2 Module 环境管理</a></li>
+</ul>
+</li>
+<li><a href="#总结" title="总结">总结</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
+        <div class="toc"><ul class="nav">
+<li class=""><a href="#Proxmox-搭建私有云-HPC-Slurm" title="Proxmox 搭建私有云 HPC (Slurm)">Proxmox 搭建私有云 HPC (Slurm)</a><ul class="nav">
+<li class=""><a href="#0-最终目标" title="0. 最终目标">0. 最终目标</a></li>
+<li class=""><a href="#1-私有云-Proxmox" title="1. 私有云 (Proxmox)">1. 私有云 (Proxmox)</a><ul class="nav">
+<li class=""><a href="#11-桥接网络-Bridge" title="1.1 桥接网络 (Bridge)">1.1 桥接网络 (Bridge)</a></li>
+<li class=""><a href="#12-虚拟机镜像" title="1.2 虚拟机镜像">1.2 虚拟机镜像</a></li>
+<li class=""><a href="#13-创建虚拟机" title="1.3 创建虚拟机">1.3 创建虚拟机</a></li>
+</ul>
+</li>
+<li class=""><a href="#2-任务调度-Slurm" title="2. 任务调度 (Slurm)">2. 任务调度 (Slurm)</a><ul class="nav">
+<li class=""><a href="#21-NFS-文件共享" title="2.1 NFS 文件共享">2.1 NFS 文件共享</a></li>
+<li class=""><a href="#22-Slurm-安装" title="2.2 Slurm 安装">2.2 Slurm 安装</a></li>
+<li class=""><a href="#23-Slurm-Accounting-MySQL" title="2.3 Slurm Accounting (MySQL)">2.3 Slurm Accounting (MySQL)</a></li>
+</ul>
+</li>
+<li class=""><a href="#3-应用管理-Module" title="3. 应用管理 (Module)">3. 应用管理 (Module)</a><ul class="nav">
+<li class=""><a href="#31-MPI-并行" title="3.1 MPI 并行">3.1 MPI 并行</a></li>
+<li class=""><a href="#32-Module-环境管理" title="3.2 Module 环境管理">3.2 Module 环境管理</a></li>
+</ul>
+</li>
+<li><a href="#总结" title="总结">总结</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/js/bootstrap.min.js" integrity="sha256-kJrlY+s09+QoWjpkOrXXwhxeaoDz9FW5SaxF8I0DibQ=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>
