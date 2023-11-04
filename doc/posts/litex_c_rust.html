@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        LiteX 定制 SoC 上使用 C 和 Rust 嵌入式 (RISC-V) - CodiMD
+    </title>
+    <link rel="icon" type="image/png" href="https://codimd.wuhanstudio.cc/favicon.png">
+    <link rel="apple-touch-icon" href="https://codimd.wuhanstudio.cc/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha256-H0KfTigpUV+0/5tn2HXC0CPwhhDhWgSawJdnFd0CGCo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fork-awesome/1.1.3/css/fork-awesome.min.css" integrity="sha256-ZhApazu+kejqTYhMF+1DzNKjIzP7KXu6AzyXcC1gMus=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github-gist.min.css" integrity="sha256-tAflq+ymku3Khs+I/WcAneIlafYgDiOQ9stIHH985Wo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,300italic,300|Source+Serif+Pro|Source+Code+Pro:400,300,500&subset=latin,latin-ext);.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{padding:0 1em;color:#777;border-left:.25em solid #ddd}.night .markdown-body blockquote{color:#bcbcbc}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.night .markdown-body h1,.night .markdown-body h2,.night .markdown-body h3,.night .markdown-body h4,.night .markdown-body h5,.night .markdown-body h6{color:#ddd}.markdown-body h1 .fa-link,.markdown-body h2 .fa-link,.markdown-body h3 .fa-link,.markdown-body h4 .fa-link,.markdown-body h5 .fa-link,.markdown-body h6 .fa-link{color:#000;vertical-align:middle;visibility:hidden;font-size:16px}.night .markdown-body h1 .fa-link,.night .markdown-body h2 .fa-link,.night .markdown-body h3 .fa-link,.night .markdown-body h4 .fa-link,.night .markdown-body h5 .fa-link,.night .markdown-body h6 .fa-link{color:#fff}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .fa-link,.markdown-body h2:hover .anchor .fa-link,.markdown-body h3:hover .anchor .fa-link,.markdown-body h4:hover .anchor .fa-link,.markdown-body h5:hover .anchor .fa-link,.markdown-body h6:hover .anchor .fa-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{margin-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.night .markdown-body table tr{background-color:#5f5f5f}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.night .markdown-body table tr:nth-child(2n){background-color:#4f4f4f}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:.2em 0;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.night .markdown-body code,.night .markdown-body tt{color:#eee;background-color:hsla(0,0%,90.2%,.36)}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\A0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.markdown-body kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid;border-color:#ccc #ccc #bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important}.markdown-body pre{border:inherit!important}.night .markdown-body pre{filter:invert(100%)}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-webkit-inline-flex;display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.night .markdown-body .gist table tr:nth-child(2n){background-color:#ddd}.markdown-body code[data-gist-id]{background:none;padding:0;filter:invert(100%)}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram,.markdown-body pre.vega{text-align:center;background-color:inherit;border-radius:0;white-space:inherit}.night .markdown-body pre.graphviz .graph>polygon{fill:#333}.night .markdown-body pre.mermaid .sectionTitle,.night .markdown-body pre.mermaid .titleText,.night .markdown-body pre.mermaid text{fill:#fff}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code,.markdown-body pre.vega>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg,.markdown-body pre.vega>svg{max-width:100%;height:100%}.night .markdown-body .abc path{fill:#eee}.night .markdown-body .abc path.note_selected{fill:##4DD0E1}.night tspan{fill:#fefefe}.night pre rect{fill:transparent}.night pre.flow-chart path,.night pre.flow-chart rect{stroke:#fff}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p,.markdown-body .alert>ul{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body img{background-color:transparent}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;-webkit-transition:opacity .2s;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;-webkit-transition:opacity .2s;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.MJX_Assistive_MathML{display:none}.ui-infobar{position:relative;z-index:2;max-width:758px;margin-top:25px;margin-bottom:-25px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:10000}.ui-toc-label{opacity:.3;background-color:#ccc;border:none}.ui-toc-label,.ui-toc .open .ui-toc-label{-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc-dropdown{margin-top:23px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child>ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.night .ui-toc-dropdown .nav>li>a:focus,.night .ui-toc-dropdown .nav>li>a:hover{color:#fff;border-left-color:#fff}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.night .ui-toc-dropdown .nav>.active:focus>a,.night .ui-toc-dropdown .nav>.active:hover>a,.night .ui-toc-dropdown .nav>.active>a{color:#fff;border-left:2px solid #fff}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.night .ui-toc-dropdown .nav>li>a{color:#aaa}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,"\30D2\30E9\30AE\30CE\89D2\30B4   Pro W3",Osaka,Meiryo,"\30E1\30A4\30EA\30AA",MS Gothic,"\FF2D\FF33   \30B4\30B7\30C3\30AF",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,"\FF2D\FF33   \FF30\30B4\30B7\30C3\30AF",sans-serif}.markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang TC,Microsoft JhengHei,"\5FAE\8EDF\6B63\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,"\5FAE\8EDF\6B63\9ED1UI",sans-serif}.markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang SC,Microsoft YaHei,"\5FAE\8F6F\96C5\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,"\5FAE\8F6F\96C5\9ED1UI",sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:3px;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:contain}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}small span{line-height:22px}small .dropdown{display:inline-block}small .dropdown a:focus,small .dropdown a:hover{text-decoration:none}.unselectable{-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}.night .navbar{background:#333;border-bottom-color:#333;color:#eee}.night .navbar a{color:#eee}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;font-family:Source Sans Pro,Helvetica,Arial,sans-serif;letter-spacing:.025em}.focus,:focus{outline:none!important}::-moz-focus-inner{border:0!important}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid"><h1 id="LiteX-定制-SoC-上使用-C-和-Rust-嵌入式-RISC-V" style=""><a class="anchor hidden-xs" href="#LiteX-定制-SoC-上使用-C-和-Rust-嵌入式-RISC-V" title="LiteX-定制-SoC-上使用-C-和-Rust-嵌入式-RISC-V"><i class="fa fa-link"></i></a>LiteX 定制 SoC 上使用 C 和 Rust 嵌入式 (RISC-V)</h1><p>在使用了各种开发板、MCU 后，开始尝试自己在 FPGA 上定制一个 SoC，并用 C 和 Rust 给这个 SoC 开发固件、移植操作系统 (RT-Thread, Zephyr)。</p><p>这篇文章会首先说明 CPU 和 SoC 的区别，接下来介绍在 FPGA 上使用 LiteX 定制一个包含 RISC-V CPU 的 SoC，以及给定制的 SoC 使用 C 和 Rust 开发固件，未来可能会继续移植操作系统 (RTOS)，项目所有的源码都放在了这个 Github 仓库里：</p><ul>
+<li><a href="https://github.com/wuhanstudio/litex-soc-icesugar-rust" target="_blank" rel="noopener">GitHub - Using Rust on a customized LiteX SoC (RISC-V)</a></li>
+</ul><h2 id="0-Introduction" style=""><a class="anchor hidden-xs" href="#0-Introduction" title="0-Introduction"><i class="fa fa-link"></i></a>0. Introduction</h2><p>首先介绍 CPU 和 SoC 的区别：通常 CPU 大家比较熟悉，CPU 实现一些指令集 (ISA) 从而可以编程用作通用计算，常见的指令集有 x86, AMD64, ARM, MIPS, RISC-V。然而 CPU 不能独立运行，需要从外部存储加载代码、数据到内存 (RAM) 里执行。为了和外部世界交互，例如读写硬盘、传感器，连接显示屏，还会需要总线和一些外围设备 (Peripheral) ，这样各种总线、外围组件等一起组成了 SoC (System on Chip)。</p><p>例如下面这个可以运行 Linux 的 SoC 包含了 8 核 RISC-V CPU, ROM, SRAM, LiteDRAM, LiteSATA 等组件，所以通常来讲 CPU 是 SoC 的一部分。</p><p>当然，现在很多时候模糊了 CPU 和 SoC 的界限，例如 Intel CPU 内部集成了 GPU、硬件加密等各种外设模块，其实算是 SoC，可能解释起来比较麻烦，商业宣传上依旧称之为 Intel CPU。</p><p><img src="https://doc.wuhanstudio.cc/posts/litex_c_rust/litex.png" alt="img"></p><p>我们可以用 FPGA 来设计一个软核 CPU，并添加总线、各种外设 (Peripheral) 组成一个 SoC。当然，如果所有的模块都从零开始写，会有太多重复的工作，于是出现了开源的 LiteX。</p><p>LiteX 可以用 Python 代码组装现有的 Verilog 模块 (也支持VHDL / (n)Migen / Spinal-HDL)，快速设计一个 SoC。</p><p>例如 LiteX 提供了现成的 CPU (VexRISCV, OpenRISC, LM32 等) ，常见的外设总线 (Wishbone, AXI, Avalon-ST)，还有各种外设模块 RAM, ROM, Timer, UART, JTAG, DRAM, 以太网，大大简化了 SoC 的设计。</p><p><img src="https://doc.wuhanstudio.cc/posts/litex_c_rust/litex_logo.png" alt="img"></p><p>我手边有一个 ICESugar 开发板，就打算用它设计一个 SoC，再用 C 和  Rust 编写固件。</p><p><img src="https://doc.wuhanstudio.cc/posts/litex_c_rust/ice_sugar.png" alt="img"></p><p>这个开发板用的 FPGA 是 iCE40UP5K，有 5K 个 Logic Cells (4-LUT + Carry + FF)，设计一个 MCU 级别的 SoC 足够了。从以前的经验来看，不同数量的 Logic Cell 可以实现的功能：</p><ul>
+<li>4-LUT &lt; 2K：简单的数字电路；</li>
+<li>4-LUT 2K - 4K：可以设计 CPU，MCU 级别的 SoC，运行裸机程序 (外部 SPI Flash)；</li>
+<li>4-LUT 5K - 10K：可以设计 CPU，MCU 级别的 SoC，运行实时系统 (外部 SPI Flash)；</li>
+<li>4-LUT 10K - 20K：可以设计能运行 Linux 的 SoC (外部 SDRAM)。</li>
+</ul><p>当然，这些都是最小系统的参考，毕竟也取决于设计的 SoC 片内 Flash, RAM 希望有多大，具体包含多少外设等等。</p><p>例如之前我用 <a href="https://www.stepfpga.com/doc/xo2-4000hc" target="_blank" rel="noopener">STEP-MXO2-V2</a> (LCMXO2-4000HC 4K LUTs) 运行了 Picosoc (RISCV32IMC)，并且从外部 SPI Flash 加载裸机程序：</p><p><img src="https://doc.wuhanstudio.cc/posts/litex_c_rust/step_fpga.png" alt="img"></p><p>另一个项目用 Lichee Tang (EG4S20 20K LUTs) 可以运行 Picosoc 和 蜂鸟 E203，并移植了 RT-Thread Nano 实时系统：</p><p><img src="https://doc.wuhanstudio.cc/posts/litex_c_rust/lichee_tang.png" alt="img"></p><p>到这里介绍了 CPU / SoC，FPGA，LiteX，下面分三步介绍：LiteX 定制 SoC，C 嵌入式开发，Rust 嵌入式开发。</p><h2 id="1-LiteX-定制-SoC" style=""><a class="anchor hidden-xs" href="#1-LiteX-定制-SoC" title="1-LiteX-定制-SoC"><i class="fa fa-link"></i></a>1. LiteX 定制 SoC</h2><h3 id="11-安装-LiteX" style=""><a class="anchor hidden-xs" href="#11-安装-LiteX" title="11-安装-LiteX"><i class="fa fa-link"></i></a>1.1 安装 LiteX</h3><p>我们首先安装 LiteX, 虽然 Github 上安装脚本就只有一个文件，但是安装过程会下载 LiteX 非常多的模块到单独的目录，所以建议单独新建一个文件夹执行 LiteX 安装脚本。</p><pre><code>$ mkdir python-litex &amp;&amp; cd python-litex
+$ wget https://raw.githubusercontent.com/enjoy-digital/litex/master/litex_setup.py
+$ chmod +x litex_setup.py
+$ ./litex_setup.py --init --install --user `whoami` --config=full
+</code></pre><p><img src="https://doc.wuhanstudio.cc/posts/litex_c_rust/python-litex.png" alt="img"></p><p>LiteX 除了生成 Gateware (FPGA Bitstream)，还会编译一个默认的 BIOS 作为软件用来测试 SoC，所以我们还要安装 riscv-gcc 的工具链。</p><pre><code>$ ./litex_setup.py --gcc=riscv
+</code></pre><h3 id="12-Litex-生成-SoC" style=""><a class="anchor hidden-xs" href="#12-Litex-生成-SoC" title="12-Litex-生成-SoC"><i class="fa fa-link"></i></a>1.2 Litex 生成 SoC</h3><p>这样 LiteX 就安装好了，它本身其实是一个 Python 软件包，可以调用 Python 模块的方式生成一个 SoC。</p><pre><code>$ python3 -m litex_boards.targets.muselab_icesugar --build --doc
+</code></pre><p>上面就是调用 Python 脚本生成了一个 SoC，它会在当前文件夹生成 build 目录，里面包含了 Gateware 和 Software。我手上的 ICESugar 开发板已经被 LiteX 支持了，所以可以直接调用内置的 python 模块。</p><pre><code>$ python3 -m litex_boards.targets.muselab_icesugar --flash
+</code></pre><p>如果开发板已经被 LiteX 支持，使用上面两行就可以生成一个 SoC (Gateware) 以及 BIOS (Software)，并且上传到开发板，在串口看到 SoC 的启动信息：</p><pre><code>        __   _ __      _  __
+       / /  (_) /____ | |/_/
+      / /__/ / __/ -_)&gt;  &lt;
+     /____/_/\__/\__/_/|_|
+   Build your hardware, easily!
+
+ (c) Copyright 2012-2022 Enjoy-Digital
+ (c) Copyright 2007-2015 M-Labs
+
+ BIOS built on Jan 13 2023 16:37:14
+ BIOS CRC passed (079a83e1)
+
+ LiteX git sha1: 0440733f
+
+--=============== SoC ==================--
+CPU:		VexRiscv_Lite @ 24MHz
+BUS:		WISHBONE 32-bit @ 4GiB
+CSR:		32-bit data
+ROM:		32KiB
+SRAM:		64KiB
+FLASH:		8192KiB
+
+--========== Initialization ============--
+
+Initializing W25Q64FV SPI Flash @0x00800000...
+SPI Flash clk configured to 12 MHz
+Memspeed at 0x800000 (Sequential, 4.0KiB)...
+   Read speed: 1.2MiB/s
+Memspeed at 0x800000 (Random, 4.0KiB)...
+   Read speed: 467.1KiB/s
+
+--============== Boot ==================--
+Booting from serial...
+Press Q or ESC to abort boot completely.
+sL5DdSMmkekro
+             Timeout
+No boot medium found
+
+--============= Console ================--
+
+litex&gt; 
+</code></pre><p>另外，我们还可以用 --doc选项为 SoC 生成一个文档，文档会列出所有的寄存器名称和地址。</p><p><img src="https://doc.wuhanstudio.cc/posts/litex_c_rust/litex_reg.png" alt="img"></p><p>这样 LiteX 就为我们生成了 SoC Bitstream 和默认 BIOS 了，甚至还有 SoC 的寄存器文档。这个默认 BIOS 支持从 SPI Flash，串口，网络等其他位置加载后续的应用程序。</p><p>接下来我会以 ICESugar 为例介绍这个 SoC 的组成以及如何添加一个新的开发板到  LiteX。</p><h3 id="13-LiteX-自定义开发板" style=""><a class="anchor hidden-xs" href="#13-LiteX-自定义开发板" title="13-LiteX-自定义开发板"><i class="fa fa-link"></i></a>1.3 LiteX 自定义开发板</h3><p>如果自己的开发板不被 Litex 默认支持，也可以自己添加platform (FPGA 型号、板载资源) 和 target (期望生成的 SoC) ，下面链接是 LiteX 目前支持的 FPGA 开发板列表。</p><p>LiteX 目前支持的 FPGA 有 Xilinx (AMD), Altera (Intel), Lattice, Anlogic 各种平台，完整的 FPGA 厂商列表可以在这个目录下找到 <a href="https://github.com/enjoy-digital/litex/tree/master/litex/build%E3%80%82" target="_blank" rel="noopener">https://github.com/enjoy-digital/litex/tree/master/litex/build。</a></p><p>比如以 ICESugar 开发板 (Lattice) 为例，在 litex_boards/platforms/muselab_icesugar.py 里可以找到这个 platform 的定义，主要是定义自己的 FPGA 开发板芯片类型，以及有哪些外设接口，只要熟悉自己的 FPGA 开发板，添加一个新的 platform 并不太难。</p><pre><code>#
+# This file is part of LiteX-Boards.
+#
+# Copyright (c) 2021 Hans Baier &lt;hansfbaier@gmail.com&gt;
+# SPDX-License-Identifier: BSD-2-Clause
+
+# iCESugar FPGA: https://www.aliexpress.com/item/4001201771358.html
+
+from litex.build.generic_platform import *
+from litex.build.lattice import LatticeiCE40Platform
+from litex.build.lattice.programmer import IceSugarProgrammer
+
+# IOs ----------------------------------------------------------------------------------------------
+
+_io = [
+    # Clk / Rst
+    ("clk12", 0, Pins("35"), IOStandard("LVCMOS33")),
+
+    # Leds R / G / B
+    ("user_led_n",    0, Pins("40"), IOStandard("LVCMOS33")),
+    ("user_led_n",    1, Pins("39"), IOStandard("LVCMOS33")),
+    ("user_led_n",    2, Pins("41"), IOStandard("LVCMOS33")),
+
+    # RGB led, active-low, alias for Leds
+    ("rgb_led", 0,
+        Subsignal("r", Pins("40")),
+        Subsignal("g", Pins("39")),
+        Subsignal("b", Pins("31")),
+        IOStandard("LVCMOS33"),
+    ),
+
+    # Switches / jumper-attached to PMOD4
+    ("user_sw", 0, Pins("18"), IOStandard("LVCMOS18")),
+    ("user_sw", 1, Pins("19"), IOStandard("LVCMOS18")),
+    ("user_sw", 2, Pins("20"), IOStandard("LVCMOS18")),
+    ("user_sw", 3, Pins("21"), IOStandard("LVCMOS18")),
+
+    # Serial
+    ("serial", 0,
+        Subsignal("rx", Pins("4")),
+        Subsignal("tx", Pins("6"), Misc("PULLUP")),
+        IOStandard("LVCMOS33")
+    ),
+
+    # SPIFlash
+    ("spiflash", 0,
+        Subsignal("cs_n", Pins("16"), IOStandard("LVCMOS33")),
+        Subsignal("clk",  Pins("15"), IOStandard("LVCMOS33")),
+        Subsignal("miso", Pins("17"), IOStandard("LVCMOS33")),
+        Subsignal("mosi", Pins("14"), IOStandard("LVCMOS33")),
+    ),
+
+    # USB
+    ("usb", 0,
+        Subsignal("d_p", Pins("10")),
+        Subsignal("d_n", Pins("9")),
+        Subsignal("pullup", Pins("11")),
+        IOStandard("LVCMOS33")
+    ),
+]
+
+# Connectors ---------------------------------------------------------------------------------------
+
+_connectors = [
+    # Pin order similar to iCEBreaker to allow PMODs reuse.
+    ("PMOD1", "10  6  3 48  9  4  2 47"),
+    ("PMOD2", "46 44 42 37 45 43 38 36"),
+    ("PMOD3", "34 31 27 25 32 28 26 23"),
+    ("J7",    "48 - 3 47 - 2"), # Numbering similar to PMODS: 0: Marked pin.
+]
+
+# PMODS --------------------------------------------------------------------------------------------
+
+def led_pmod_io_v11(pmod, offset=0):
+    return [
+        # LED PMOD: https://www.aliexpress.com/item/1005001504777342.html
+        # Contrary to the supplied schematic, the two nibbles seem to be swapped on the board.
+        ("user_led_n", offset + 0,  Pins(f"{pmod}:4"), IOStandard("LVCMOS33")),
+        ("user_led_n", offset + 1,  Pins(f"{pmod}:5"), IOStandard("LVCMOS33")),
+        ("user_led_n", offset + 2,  Pins(f"{pmod}:6"), IOStandard("LVCMOS33")),
+        ("user_led_n", offset + 3,  Pins(f"{pmod}:7"), IOStandard("LVCMOS33")),
+        ("user_led_n", offset + 4,  Pins(f"{pmod}:0"), IOStandard("LVCMOS33")),
+        ("user_led_n", offset + 5,  Pins(f"{pmod}:1"), IOStandard("LVCMOS33")),
+        ("user_led_n", offset + 6,  Pins(f"{pmod}:2"), IOStandard("LVCMOS33")),
+        ("user_led_n", offset + 7,  Pins(f"{pmod}:3"), IOStandard("LVCMOS33")),
+    ]
+
+# Platform -----------------------------------------------------------------------------------------
+
+class Platform(LatticeiCE40Platform):
+    default_clk_name   = "clk12"
+    default_clk_period = 1e9/12e6
+
+    def __init__(self, toolchain="icestorm"):
+        LatticeiCE40Platform.__init__(self, "ice40-up5k-sg48", _io, _connectors, toolchain=toolchain)
+
+    def create_programmer(self):
+        return IceSugarProgrammer()
+
+    def do_finalize(self, fragment):
+        LatticeiCE40Platform.do_finalize(self, fragment)
+        self.add_period_constraint(self.lookup_request("clk12", loose=True), 1e9/12e6)
+</code></pre><p>定义好了 <strong>FPGA 开发板 (Platform)</strong>，接下来需要定义 <strong>SoC (Target)</strong>，也就是我们想要生成的 SoC 的配置，例如使用什么 CPU，什么总线，有哪些外设，Flash、SRAM 的大小等等。这些也是在一个 Python 脚本定义的。</p><p>例如下面的 litex-boards/litex_boards/targets/muselab_icesugar.py定义了我们要生成的 SoC。我们定义了一个 RISC-V CPU （VexRISCV）以及它的时钟输入，系统主频：</p><pre><code># Set CPU variant
+if kwargs.get("cpu_type", "vexriscv") == "vexriscv":
+    kwargs["cpu_variant"] = "lite"
+
+SoCCore.__init__(self, platform, sys_clk_freq, ident="LiteX SoC on Muselab iCESugar", **kwargs)
+</code></pre><p>我们使用 FPGA 自带的 SPRAM 来生成 SoC 64KB 的 SRAM。</p><pre><code># 64KB SPRAM (used as SRAM) ---------------------------------------------------------------
+self.spram = Up5kSPRAM(size=64*kB)
+self.bus.add_slave("sram", self.spram.bus, SoCRegion(size=64*kB))
+</code></pre><p>系统从 SPI Flash 启动，并且分配 32KB 作为 SoC 的 ROM。</p><pre><code># SPI Flash --------------------------------------------------------------------------------
+from litespi.modules import W25Q64FV
+from litespi.opcodes import SpiNorFlashOpCodes as Codes
+self.add_spi_flash(mode="1x", module=W25Q64FV(Codes.READ_1_1_1), with_master=False)
+
+# Add ROM linker region --------------------------------------------------------------------
+self.bus.add_region("rom", SoCRegion(
+    origin = self.bus.regions["spiflash"].origin + bios_flash_offset,
+    size   = 32*kB,
+    linker = True)
+)
+self.cpu.set_reset_address(self.bus.regions["rom"].origin)
+</code></pre><p>当然还有最基本的外设，经典的跑马灯：</p><pre><code># Leds -------------------------------------------------------------------------------------
+if with_led_chaser:
+    led_pads = platform.request_all("user_led_n")
+    self.leds = LedChaser(
+        pads         = led_pads,
+        sys_clk_freq = sys_clk_freq)
+</code></pre><p>我们不需要单独定义串口，因为前面在 platform 里面定义了板载的串口之后，LiteX 会把它作为默认的串口。</p><pre><code># Serial
+("serial", 0,
+    Subsignal("rx", Pins("4")),
+    Subsignal("tx", Pins("6"), Misc("PULLUP")),
+    IOStandard("LVCMOS33")
+),
+</code></pre><p>从默认的选项里我们可以看到，系统主频默认是 24MHz，启动地址是 Flash 的偏移地址 0x40000，所以我们后面需要把固件烧录到这个地址。</p><pre><code>parser = LiteXArgumentParser(platform=muselab_icesugar.Platform, description="LiteX SoC on iCEBreaker.")
+parser.add_target_argument("--flash",             action="store_true",       help="Flash Bitstream.")
+parser.add_target_argument("--sys-clk-freq",      default=24e6,  type=float, help="System clock frequency.")
+parser.add_target_argument("--bios-flash-offset", default="0x40000",         help="BIOS offset in SPI Flash.")
+args = parser.parse_args()
+</code></pre><p>这是完整的 target SoC 定义文件，一共也就 100 来行 Python 代码就定义好一个 SoC：</p><pre><code>#!/usr/bin/env python3
+
+#
+# This file is part of LiteX-Boards.
+#
+# Copyright (c) 2021 Hans Baier &lt;hansfbaier@gmail.com&gt;
+# SPDX-License-Identifier: BSD-2-Clause
+
+# iCESugar FPGA: https://www.aliexpress.com/item/4001201771358.html
+
+from migen import *
+from migen.genlib.resetsync import AsyncResetSynchronizer
+
+from litex.gen import LiteXModule
+
+from litex_boards.platforms import muselab_icesugar
+
+from litex.soc.cores.ram import Up5kSPRAM
+from litex.soc.cores.clock import iCE40PLL
+from litex.soc.integration.soc_core import *
+from litex.soc.integration.soc import SoCRegion
+from litex.soc.integration.builder import *
+from litex.soc.cores.led import LedChaser
+
+kB = 1024
+mB = 1024*kB
+
+# CRG ----------------------------------------------------------------------------------------------
+
+class _CRG(LiteXModule):
+    def __init__(self, platform, sys_clk_freq):
+        self.rst    = Signal()
+        self.cd_sys = ClockDomain()
+        self.cd_por = ClockDomain()
+
+        # # #
+
+        # Clk/Rst
+        clk12 = platform.request("clk12")
+
+        # Power On Reset
+        por_count = Signal(16, reset=2**16-1)
+        por_done  = Signal()
+        self.comb += self.cd_por.clk.eq(ClockSignal())
+        self.comb += por_done.eq(por_count == 0)
+        self.sync.por += If(~por_done, por_count.eq(por_count - 1))
+
+        # PLL
+        self.pll = pll = iCE40PLL(primitive="SB_PLL40_PAD")
+        self.comb += pll.reset.eq(self.rst)
+        pll.register_clkin(clk12, 12e6)
+        pll.create_clkout(self.cd_sys, sys_clk_freq, with_reset=False)
+        self.specials += AsyncResetSynchronizer(self.cd_sys, ~por_done | ~pll.locked)
+        platform.add_period_constraint(self.cd_sys.clk, 1e9/sys_clk_freq)
+
+# BaseSoC ------------------------------------------------------------------------------------------
+
+class BaseSoC(SoCCore):
+    def __init__(self, bios_flash_offset, sys_clk_freq=24e6,
+        with_led_chaser     = True,
+        with_video_terminal = False,
+        **kwargs):
+        platform = muselab_icesugar.Platform()
+
+        # CRG --------------------------------------------------------------------------------------
+        self.crg = _CRG(platform, sys_clk_freq)
+
+        # SoCCore ----------------------------------------------------------------------------------
+        # Disable Integrated ROM/SRAM since too large for iCE40 and UP5K has specific SPRAM.
+        kwargs["integrated_sram_size"] = 0
+        kwargs["integrated_rom_size"]  = 0
+
+        # Set CPU variant
+        if kwargs.get("cpu_type", "vexriscv") == "vexriscv":
+            kwargs["cpu_variant"] = "lite"
+        SoCCore.__init__(self, platform, sys_clk_freq, ident="LiteX SoC on Muselab iCESugar", **kwargs)
+
+        # 64KB SPRAM (used as SRAM) ---------------------------------------------------------------
+        self.spram = Up5kSPRAM(size=64*kB)
+        self.bus.add_slave("sram", self.spram.bus, SoCRegion(size=64*kB))
+
+        # SPI Flash --------------------------------------------------------------------------------
+        from litespi.modules import W25Q64FV
+        from litespi.opcodes import SpiNorFlashOpCodes as Codes
+        self.add_spi_flash(mode="1x", module=W25Q64FV(Codes.READ_1_1_1), with_master=False)
+
+        # Add ROM linker region --------------------------------------------------------------------
+        self.bus.add_region("rom", SoCRegion(
+            origin = self.bus.regions["spiflash"].origin + bios_flash_offset,
+            size   = 32*kB,
+            linker = True)
+        )
+        self.cpu.set_reset_address(self.bus.regions["rom"].origin)
+
+        # Leds -------------------------------------------------------------------------------------
+        if with_led_chaser:
+            led_pads = platform.request_all("user_led_n")
+            self.leds = LedChaser(
+                pads         = led_pads,
+                sys_clk_freq = sys_clk_freq)
+
+# Flash --------------------------------------------------------------------------------------------
+
+def flash(bios_flash_offset):
+    from litex.build.lattice.programmer import IceSugarProgrammer
+    prog = IceSugarProgrammer()
+    prog.flash(bios_flash_offset, "build/muselab_icesugar/software/bios/bios.bin")
+    prog.flash(0x00000000,        "build/muselab_icesugar/gateware/muselab_icesugar.bin")
+
+# Build --------------------------------------------------------------------------------------------
+
+def main():
+    from litex.build.parser import LiteXArgumentParser
+    parser = LiteXArgumentParser(platform=muselab_icesugar.Platform, description="LiteX SoC on iCESugar.")
+    parser.add_target_argument("--flash",             action="store_true",       help="Flash Bitstream.")
+    parser.add_target_argument("--sys-clk-freq",      default=24e6,  type=float, help="System clock frequency.")
+    parser.add_target_argument("--bios-flash-offset", default="0x40000",         help="BIOS offset in SPI Flash.")
+    args = parser.parse_args()
+
+    soc = BaseSoC(
+        bios_flash_offset = int(args.bios_flash_offset, 0),
+        sys_clk_freq      = args.sys_clk_freq,
+        **parser.soc_argdict
+    )
+    builder = Builder(soc, **parser.builder_argdict)
+    if args.build:
+        builder.build(**parser.toolchain_argdict)
+
+    if args.load:
+        prog = soc.platform.create_programmer()
+        prog.load_bitstream(builder.get_bitstream_filename(mode="sram", ext=".bin")) # FIXME
+
+    if args.flash:
+        flash(int(args.bios_flash_offset, 0))
+
+if __name__ == "__main__":
+    main()
+</code></pre><p>带 RISC-V CPU 的 SoC 已经生成了，接下来我们就可以把它当作一个 MCU 进行固件开发了，下面我会分别介绍如何在这个定制的 SoC 上使用 C 和 Rust。</p><h2 id="2-C-嵌入式开发" style=""><a class="anchor hidden-xs" href="#2-C-嵌入式开发" title="2-C-嵌入式开发"><i class="fa fa-link"></i></a>2. C 嵌入式开发</h2><p>前面提到 LiteX 默认会生成一个 BIOS 用于启动后续的应用程序，但是我并不想使用这个 BIOS，而是希望直接从前面定义的 Flash 的 0x40000 地址启动自己的固件。</p><p>除了 BIOS，LiteX 也很贴心的提供了一个固件 Demo，我们可以用下面的命令生成 C 固件 Demo 程序，记得把 --build-path替换为上一步 SoC 的编译目录。</p><pre><code>$ litex_bare_metal_demo --build-path=/home/YOUR_NAME/litex-soc-icesugar-rust/build/muselab_icesugar/
+</code></pre><p>不过这个默认的 Demo 程序需要通过 BIOS 加载到内存运行，而我们前面定义的 SoC 并没有分配main_ram，所以我修改了linker.ld，让这个 Demo 从 SPI Flash 加载运行，主要是把 .text .rodata .data 字段放到了 rom 而不是默认的 main_ram。</p><pre><code>.text :
+{
+	_ftext = .;
+	/* Make sure crt0 files come first, and they, and the isr */
+	/* don't get disposed of by greedy optimisation */
+	*crt0*(.text)
+	KEEP(*crt0*(.text))
+	KEEP(*(.text.isr))
+
+	*(.text .stub .text.* .gnu.linkonce.t.*)
+	_etext = .;
+} &gt; rom
+
+.rodata :
+{
+	. = ALIGN(8);
+	_frodata = .;
+	*(.rodata .rodata.* .gnu.linkonce.r.*)
+	*(.rodata1)
+	*(.got .got.*)
+	*(.toc .toc.*)
+	. = ALIGN(8);
+	_erodata = .;
+} &gt; rom
+
+.data :
+{
+	. = ALIGN(8);
+	_fdata = .;
+	*(.data .data.* .gnu.linkonce.d.*)
+	*(.data1)
+	_gp = ALIGN(16);
+	*(.sdata .sdata.* .gnu.linkonce.s.*)
+	. = ALIGN(8);
+	_edata = .;
+} &gt; sram AT &gt; rom
+</code></pre><p>这样就可以编译 Demo 程序并上传到 SPI Flash 运行了，覆盖掉 LiteX 默认的 BIOS。</p><pre><code>$ cd demo
+$ make
+$ icesprog -w demo.bin -o 0x40000
+</code></pre><p>FPGA 上电后自动执行 Demo 程序串口会打印输出：</p><pre><code>LiteX minimal demo app built Jan 13 2023 16:40:00
+
+Available commands:
+help               - Show this command
+reboot             - Reboot CPU
+led                - Led demo
+donut              - Spinning Donut demo
+helloc             - Hello C
+
+litex-demo-app&gt; 
+</code></pre><p>默认的 Demo 包含了 C  程序的 Hello World, Donut 和控制 LED。</p><p>顺便一提，<strong>前面生成 SoC 的时候会自动生成底层寄存器相关的 C 头文件和驱动</strong>，所以我们 C 程序并不需要从寄存器定义写起。</p><pre><code>#include &lt;stdio.h&gt;
+
+void helloc(void);
+void helloc(void) {
+  printf("C: Hello, world!\n");
+}
+</code></pre><p>例如上面的 C Hello 程序，stdio的printf可以直接调用，并不需要重写串口驱动，这也是使用  LiteX 的好处之一。</p><h2 id="3-Rust-嵌入式开发" style=""><a class="anchor hidden-xs" href="#3-Rust-嵌入式开发" title="3-Rust-嵌入式开发"><i class="fa fa-link"></i></a>3. Rust 嵌入式开发</h2><h3 id="31-安装-Rust-工具链" style=""><a class="anchor hidden-xs" href="#31-安装-Rust-工具链" title="31-安装-Rust-工具链"><i class="fa fa-link"></i></a>3.1 安装 Rust 工具链</h3><p>我们需要先安装 Rust 对 RISC-V 的支持，这里不需要单独安装 riscv-gcc 工具链，直接使用 Cargo 就可以了。</p><pre><code>$ rustup target add riscv32imac-unknown-none-elf
+$ cargo install cargo-binutils
+$ rustup component add llvm-tools-preview
+</code></pre><p>如果想直接体验 Rust 固件的话，可以用 cargo objcopy 生成 bin 固件。</p><pre><code>$ cd app
+$ cargo objcopy --target riscv32i-unknown-none-elf --release -- -O binary app.bin
+$ icesprog -o 0x40000 app.bin
+</code></pre><p>这个固件只是在串口每隔 500ms 打印一个 Hello LiteX SoC：</p><pre><code>Hello LiteX SoC
+Hello LiteX SoC
+...
+</code></pre><p>下面我会介绍怎么生成这个 Rust 项目的。</p><h3 id="32-SVD-生成-Rust-Crate" style=""><a class="anchor hidden-xs" href="#32-SVD-生成-Rust-Crate" title="32-SVD-生成-Rust-Crate"><i class="fa fa-link"></i></a>3.2 SVD 生成 Rust Crate</h3><p>为了使用 Rust 开发固件，我们需要生成开发板的 Rust Peripheral Access Crate (PAC)，例如在 Github 仓库里我把它命名成了 icesugar-pac，这个 crate 提供了底层寄存器相关的定义和控制，例如 TIMER0，UART0，LED 等。</p><p>这个 Rust PAC 并不需要我们自己从头写，可以从 SVD 文件 (System View Description) 自动生成，前面我们用 LiteX 生成 SoC 的时候，就可以传入 --csr-svd 选项生成 SoC 的 SVD 文件。</p><pre><code>$ python3 -m litex_boards.targets.muselab_icesugar --csr-json csr.json --timer-uptime --build --csr-svd icesugar.svd
+</code></pre><p>例如我们生成的 icesugar.svd 文件里包含了外设寄存器相关的定义，寄存器大小、地址、默认值等：</p><pre><code>&lt;peripheral&gt;
+    &lt;name&gt;LEDS&lt;/name&gt;
+    &lt;baseAddress&gt;0xF0001000&lt;/baseAddress&gt;
+    &lt;groupName&gt;LEDS&lt;/groupName&gt;
+    &lt;registers&gt;
+        &lt;register&gt;
+            &lt;name&gt;OUT&lt;/name&gt;
+            &lt;description&gt;&lt;![CDATA[Led Output(s) Control.]]&gt;&lt;/description&gt;
+            &lt;addressOffset&gt;0x0000&lt;/addressOffset&gt;
+            &lt;resetValue&gt;0x00&lt;/resetValue&gt;
+            &lt;size&gt;32&lt;/size&gt;
+            &lt;fields&gt;
+                &lt;field&gt;
+                    &lt;name&gt;out&lt;/name&gt;
+                    &lt;msb&gt;2&lt;/msb&gt;
+                    &lt;bitRange&gt;[2:0]&lt;/bitRange&gt;
+                    &lt;lsb&gt;0&lt;/lsb&gt;
+                &lt;/field&gt;
+            &lt;/fields&gt;
+        &lt;/register&gt;
+    &lt;/registers&gt;
+    &lt;addressBlock&gt;
+        &lt;offset&gt;0&lt;/offset&gt;
+        &lt;size&gt;0x4&lt;/size&gt;
+        &lt;usage&gt;registers&lt;/usage&gt;
+    &lt;/addressBlock&gt;
+&lt;/peripheral&gt;
+</code></pre><p>有了这个 SVD 文件，我们可以用 <a href="https://github.com/rust-embedded/svd2rust" target="_blank" rel="noopener">svd2rust</a> 生成对应的 Rust 库。</p><pre><code>$ cargo install svd2rust
+
+$ cargo new --lib icesugar-pac &amp;&amp; cd icesugar-pac
+$ cp ../icesugar.svd ./
+
+$ svd2rust -i icesugar.svd
+$ mv generic.rs src/
+</code></pre><p>这样就会生成这样一个文件结构：</p><pre><code>.
+├── build.rs
+├── Cargo.toml
+├── device.x
+├── icesugar.svd
+└── src
+    ├── generic.rs
+    └── lib.rs
+</code></pre><p>我们需要手动在 Cargo.toml 文件里添加依赖：</p><pre><code>[dependencies]
+bare-metal = "1.0"
+riscv = "0.10"
+vcell = "0.1"
+riscv-rt = { optional = true, version = "0.10" }
+
+[build-dependencies]
+svd2rust = { version = "0.28", default-features = false }
+
+[features]
+default = ["rt"]
+rt = ["dep:riscv-rt"]
+</code></pre><p>有了 Rust PAC 支持，最后我们就可以开始 Rust 嵌入式开发了，创建 Rust 嵌入式项目可以参考这篇文章：</p><p>总体流程就是先创建 Rust 项目模板，在 .cargo/config 里定义生成的目标硬件 RISC-V 以及链接脚本。</p><pre><code>$ cargo new app
+</code></pre><p>在 .cargo/config里指定 riscv32i-unknown-none-elf和链接脚本 memory.x：</p><pre><code># .cargo/config
+[target.riscv32i-unknown-none-elf]
+rustflags = [
+  "-C", "link-arg=-Tmemory.x",
+  "-C", "link-arg=-Tlink.x",
+  "-C", "linker-plugin-lto",
+  # The following option can decrease the code size significantly.  We don't
+  # have it enabled by default as it gets rid of panic information we do want
+  # to have those when developing code.
+  # "-C", "force-frame-pointers=no",
+]
+
+[build]
+target = "riscv32i-unknown-none-elf"
+</code></pre><p>这里 memory.x文件里定义的 layout 需要和之前 SoC 的定义的布局匹配，比如我们从偏移地址 0x40000 启动固件：</p><pre><code>MEMORY {
+	sram : ORIGIN = 0x00000000, LENGTH = 0x00010000
+	spiflash : ORIGIN = 0x00800000, LENGTH = 0x00800000
+	rom : ORIGIN = 0x00840000, LENGTH = 0x00008000
+}
+
+REGION_ALIAS("REGION_TEXT", rom);
+REGION_ALIAS("REGION_RODATA", rom);
+REGION_ALIAS("REGION_DATA", sram);
+REGION_ALIAS("REGION_BSS", sram);
+REGION_ALIAS("REGION_HEAP", sram);
+REGION_ALIAS("REGION_STACK", sram);
+</code></pre><p>当然，还需要在 cargo.toml 里添加上一步 SVD 生成的 icesugar-pac等依赖：</p><pre><code>[package]
+name = "app"
+version = "0.1.0"
+edition = "2023"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+icesugar-pac = { path = "../icesugar-pac"}
+panic-halt = "0.2.0"
+riscv-rt = { version = "0.10.0"}
+
+[profile.release]
+# Keep debug information for release builds, for easier debugging.
+# It will be removed during the conversion to the .dfu file.
+# debug = true
+
+# Improve code generation
+lto = true
+# codegen-units = 1
+</code></pre><p>最终我们就可以开始写 Rust 主程序了，初始化定时器并每隔 500 毫秒打印字符到串口：</p><pre><code>#![no_std]
+#![no_main]
+
+extern crate panic_halt;
+
+use icesugar_pac;
+use riscv_rt::entry;
+
+mod timer;
+mod print;
+
+use timer::Timer;
+
+const SYSTEM_CLOCK_FREQUENCY: u32 = 24_000_000;
+
+// This is the entry point for the application.
+// It is not allowed to return.
+#[entry]
+fn main() -&gt; ! {
+    let peripherals = unsafe { icesugar_pac::Peripherals::steal() };
+    // let peripherals = icesugar_pac::Peripherals::take().unwrap();
+
+    print::print_hardware::set_hardware(peripherals.UART);
+    let mut timer = Timer::new(peripherals.TIMER0);
+
+    loop {
+        print!("Hello LiteX SoC\r\n");
+        msleep(&amp;mut timer, 500);
+    }
+}
+
+fn msleep(timer: &amp;mut Timer, ms: u32) {
+    timer.disable();
+
+    timer.reload(0);
+    timer.load(SYSTEM_CLOCK_FREQUENCY / 1_000 * ms);
+
+    timer.enable();
+
+    // Wait until the time has elapsed
+    while timer.value() &gt; 0 {}
+}
+</code></pre><p>完整的 Rust 主程序在 app/src/main.rs 可以找到，前面提到我们可以用 cargo objcopy编译生成最终的固件 app.bin：</p><pre><code>$ cargo objcopy --target riscv32i-unknown-none-elf --release -- -O binary app.bin
+$ icesprog -o 0x40000 app.bin
+</code></pre><p>终于到这里，我们就成功在 LiteX 定制的 SoC 上运行 Rust 嵌入式程序了。</p><h3 id="33-小结" style=""><a class="anchor hidden-xs" href="#33-小结" title="33-小结"><i class="fa fa-link"></i></a>3.3 小结</h3><p>最后，再次顺便一提，项目所有的代码都放在了这个 Github 仓库里：</p><p>2023 年自己尝试的时候，网上还没有找到一篇文档完整的描述 LiteX 定制 SoC 并编写 C 和 Rust 固件，尝试过程中也碰到了不少问题，最后把零散的资料整理在一起成了一个完整的项目，后面有时间再尝试给这个 SoC 移植 RT-Thread 和 Zephyr 实时系统。</p><h2 id="4-References" style=""><a class="anchor hidden-xs" href="#4-References" title="4-References"><i class="fa fa-link"></i></a>4. References</h2><ul>
+<li><a href="https://github.com/icebreaker-fpga/icebreaker-litex-examples" target="_blank" rel="noopener">https://github.com/icebreaker-fpga/icebreaker-litex-examples</a></li>
+<li><a href="https://docs.rs/svd2rust/latest/svd2rust/" target="_blank" rel="noopener">https://docs.rs/svd2rust/latest/svd2rust/</a></li>
+<li><a href="http://pepijndevos.nl/2020/08/04/a-rust-hal-for-your-litex-fpga-soc.html" target="_blank" rel="noopener">http://pepijndevos.nl/2020/08/04/a-rust-hal-for-your-litex-fpga-soc.html</a></li>
+<li><a href="https://github.com/pepijndevos/rust-litex-example" target="_blank" rel="noopener">https://github.com/pepijndevos/rust-litex-example</a></li>
+<li><a href="https://github.com/pepijndevos/rust-litex-hal" target="_blank" rel="noopener">https://github.com/pepijndevos/rust-litex-hal</a></li>
+</ul></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav">
+<li class=""><a href="#LiteX-定制-SoC-上使用-C-和-Rust-嵌入式-RISC-V" title="LiteX 定制 SoC 上使用 C 和 Rust 嵌入式 (RISC-V)">LiteX 定制 SoC 上使用 C 和 Rust 嵌入式 (RISC-V)</a><ul class="nav">
+<li class=""><a href="#0-Introduction" title="0. Introduction">0. Introduction</a></li>
+<li class=""><a href="#1-LiteX-定制-SoC" title="1. LiteX 定制 SoC">1. LiteX 定制 SoC</a><ul class="nav">
+<li class=""><a href="#11-安装-LiteX" title="1.1 安装 LiteX">1.1 安装 LiteX</a></li>
+<li class=""><a href="#12-Litex-生成-SoC" title="1.2 Litex 生成 SoC">1.2 Litex 生成 SoC</a></li>
+<li class=""><a href="#13-LiteX-自定义开发板" title="1.3 LiteX 自定义开发板">1.3 LiteX 自定义开发板</a></li>
+</ul>
+</li>
+<li class=""><a href="#2-C-嵌入式开发" title="2. C 嵌入式开发">2. C 嵌入式开发</a></li>
+<li class=""><a href="#3-Rust-嵌入式开发" title="3. Rust 嵌入式开发">3. Rust 嵌入式开发</a><ul class="nav">
+<li class=""><a href="#31-安装-Rust-工具链" title="3.1 安装 Rust 工具链">3.1 安装 Rust 工具链</a></li>
+<li class=""><a href="#32-SVD-生成-Rust-Crate" title="3.2 SVD 生成 Rust Crate">3.2 SVD 生成 Rust Crate</a></li>
+<li><a href="#33-小结" title="3.3 小结">3.3 小结</a></li>
+</ul>
+</li>
+<li class=""><a href="#4-References" title="4. References">4. References</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
+        <div class="toc"><ul class="nav">
+<li class=""><a href="#LiteX-定制-SoC-上使用-C-和-Rust-嵌入式-RISC-V" title="LiteX 定制 SoC 上使用 C 和 Rust 嵌入式 (RISC-V)">LiteX 定制 SoC 上使用 C 和 Rust 嵌入式 (RISC-V)</a><ul class="nav">
+<li class=""><a href="#0-Introduction" title="0. Introduction">0. Introduction</a></li>
+<li class=""><a href="#1-LiteX-定制-SoC" title="1. LiteX 定制 SoC">1. LiteX 定制 SoC</a><ul class="nav">
+<li class=""><a href="#11-安装-LiteX" title="1.1 安装 LiteX">1.1 安装 LiteX</a></li>
+<li class=""><a href="#12-Litex-生成-SoC" title="1.2 Litex 生成 SoC">1.2 Litex 生成 SoC</a></li>
+<li class=""><a href="#13-LiteX-自定义开发板" title="1.3 LiteX 自定义开发板">1.3 LiteX 自定义开发板</a></li>
+</ul>
+</li>
+<li class=""><a href="#2-C-嵌入式开发" title="2. C 嵌入式开发">2. C 嵌入式开发</a></li>
+<li class=""><a href="#3-Rust-嵌入式开发" title="3. Rust 嵌入式开发">3. Rust 嵌入式开发</a><ul class="nav">
+<li class=""><a href="#31-安装-Rust-工具链" title="3.1 安装 Rust 工具链">3.1 安装 Rust 工具链</a></li>
+<li class=""><a href="#32-SVD-生成-Rust-Crate" title="3.2 SVD 生成 Rust Crate">3.2 SVD 生成 Rust Crate</a></li>
+<li><a href="#33-小结" title="3.3 小结">3.3 小结</a></li>
+</ul>
+</li>
+<li class=""><a href="#4-References" title="4. References">4. References</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/js/bootstrap.min.js" integrity="sha256-kJrlY+s09+QoWjpkOrXXwhxeaoDz9FW5SaxF8I0DibQ=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>
