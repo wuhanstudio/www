@@ -466,6 +466,15 @@ $ sacctmgr list cluster
 $ sudo sacctmgr add cluster proxmox
 ```
 
+如果这里很不幸 proxmox 加入到节点失败，可以检查一下节点直接是不是能互相 ping 通，最好在 /etc/hosts/ 文件里定义好各自的 IP。
+
+```
+# /etc.hosts on both the manager node and compute nodes
+192.168.1.219 manager
+192.168.1.181 cpmpute01
+192.168.1.152 compute02
+```
+
 到这里，我们就有一个完整的 HPC 集群了，并且 Slurm 会自动记录过去的任务，我们可以尝试提交一个任务，例如创建 hello-world-submit.sh：
 
 ```
