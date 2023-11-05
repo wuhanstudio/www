@@ -87,7 +87,7 @@ $ sudo hostnamectl set-hostname worker2
 </code></pre><h2 id="2-k3s-集群" style=""><a class="anchor hidden-xs" href="#2-k3s-集群" title="2-k3s-集群"><i class="fa fa-link"></i></a>2. k3s 集群</h2><p>有了 3 个 Ubuntu 虚拟机后，我们就可以用 k3sup 来迅速组建一个 k3s 集群了，为此我们需要在<strong>自己的电脑</strong>上安装 k3sup 工具，借助个人电脑，自动配置虚拟机的 k3s 集群。</p><pre><code># On your Local PC
 $ curl -sLS https://get.k3sup.dev | sh
 $ sudo install k3sup /usr/local/bin/
-</code></pre><p>前面创建虚拟机模板的时候，我上传了自己电脑的 ssh key，所以我可以免密码 ssh 登录虚拟机，这样西门三行命令就组建好了一个 k3s 集群。</p><pre><code># Make sure you can ssh into each machine without password
+</code></pre><p>前面创建虚拟机模板的时候，我上传了自己电脑的 ssh key，所以我可以免密码 ssh 登录虚拟机，这样三行命令就组建好了一个 k3s 集群。</p><pre><code># Make sure you can ssh into each machine without password
 
 # k3s master
 # You may consider increasing the memory of the master node to be 2GB 
@@ -252,13 +252,13 @@ $ kubectl describe secret whoami-tls
 </ul>
 </li>
 <li><a href="#2-k3s-集群" title="2. k3s 集群">2. k3s 集群</a></li>
-<li class=""><a href="#3-部署应用" title="3. 部署应用">3. 部署应用</a><ul class="nav">
+<li><a href="#3-部署应用" title="3. 部署应用">3. 部署应用</a><ul class="nav">
 <li><a href="#31-安装-MetalLB" title="3.1 安装 MetalLB">3.1 安装 MetalLB</a></li>
 <li><a href="#32-安装-Traefik" title="3.2 安装 Traefik">3.2 安装 Traefik</a></li>
-<li class=""><a href="#33-安装-CertManager" title="3.3 安装 CertManager">3.3 安装 CertManager</a></li>
+<li><a href="#33-安装-CertManager" title="3.3 安装 CertManager">3.3 安装 CertManager</a></li>
 </ul>
 </li>
-<li class=""><a href="#总结" title="总结">总结</a></li>
+<li><a href="#总结" title="总结">总结</a></li>
 </ul>
 </li>
 </ul>
@@ -277,13 +277,13 @@ $ kubectl describe secret whoami-tls
 </ul>
 </li>
 <li><a href="#2-k3s-集群" title="2. k3s 集群">2. k3s 集群</a></li>
-<li class=""><a href="#3-部署应用" title="3. 部署应用">3. 部署应用</a><ul class="nav">
+<li><a href="#3-部署应用" title="3. 部署应用">3. 部署应用</a><ul class="nav">
 <li><a href="#31-安装-MetalLB" title="3.1 安装 MetalLB">3.1 安装 MetalLB</a></li>
 <li><a href="#32-安装-Traefik" title="3.2 安装 Traefik">3.2 安装 Traefik</a></li>
-<li class=""><a href="#33-安装-CertManager" title="3.3 安装 CertManager">3.3 安装 CertManager</a></li>
+<li><a href="#33-安装-CertManager" title="3.3 安装 CertManager">3.3 安装 CertManager</a></li>
 </ul>
 </li>
-<li class=""><a href="#总结" title="总结">总结</a></li>
+<li><a href="#总结" title="总结">总结</a></li>
 </ul>
 </li>
 </ul>

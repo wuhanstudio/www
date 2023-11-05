@@ -164,7 +164,7 @@ $ curl -sLS https://get.k3sup.dev | sh
 $ sudo install k3sup /usr/local/bin/
 ```
 
-前面创建虚拟机模板的时候，我上传了自己电脑的 ssh key，所以我可以免密码 ssh 登录虚拟机，这样西门三行命令就组建好了一个 k3s 集群。
+前面创建虚拟机模板的时候，我上传了自己电脑的 ssh key，所以我可以免密码 ssh 登录虚拟机，这样三行命令就组建好了一个 k3s 集群。
 
 ```
 # Make sure you can ssh into each machine without password
