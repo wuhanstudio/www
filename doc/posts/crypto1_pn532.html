@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        CRYPTO1: 门禁卡破解 (Proxmark, PN532) - CodiMD
+    </title>
+    <link rel="icon" type="image/png" href="https://codimd.wuhanstudio.cc/favicon.png">
+    <link rel="apple-touch-icon" href="https://codimd.wuhanstudio.cc/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha256-H0KfTigpUV+0/5tn2HXC0CPwhhDhWgSawJdnFd0CGCo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fork-awesome/1.1.3/css/fork-awesome.min.css" integrity="sha256-ZhApazu+kejqTYhMF+1DzNKjIzP7KXu6AzyXcC1gMus=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github-gist.min.css" integrity="sha256-tAflq+ymku3Khs+I/WcAneIlafYgDiOQ9stIHH985Wo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,300italic,300|Source+Serif+Pro|Source+Code+Pro:400,300,500&subset=latin,latin-ext);.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{padding:0 1em;color:#777;border-left:.25em solid #ddd}.night .markdown-body blockquote{color:#bcbcbc}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.night .markdown-body h1,.night .markdown-body h2,.night .markdown-body h3,.night .markdown-body h4,.night .markdown-body h5,.night .markdown-body h6{color:#ddd}.markdown-body h1 .fa-link,.markdown-body h2 .fa-link,.markdown-body h3 .fa-link,.markdown-body h4 .fa-link,.markdown-body h5 .fa-link,.markdown-body h6 .fa-link{color:#000;vertical-align:middle;visibility:hidden;font-size:16px}.night .markdown-body h1 .fa-link,.night .markdown-body h2 .fa-link,.night .markdown-body h3 .fa-link,.night .markdown-body h4 .fa-link,.night .markdown-body h5 .fa-link,.night .markdown-body h6 .fa-link{color:#fff}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .fa-link,.markdown-body h2:hover .anchor .fa-link,.markdown-body h3:hover .anchor .fa-link,.markdown-body h4:hover .anchor .fa-link,.markdown-body h5:hover .anchor .fa-link,.markdown-body h6:hover .anchor .fa-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{margin-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.night .markdown-body table tr{background-color:#5f5f5f}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.night .markdown-body table tr:nth-child(2n){background-color:#4f4f4f}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:.2em 0;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.night .markdown-body code,.night .markdown-body tt{color:#eee;background-color:hsla(0,0%,90.2%,.36)}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\A0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.markdown-body kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid;border-color:#ccc #ccc #bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important}.markdown-body pre{border:inherit!important}.night .markdown-body pre{filter:invert(100%)}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-webkit-inline-flex;display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.night .markdown-body .gist table tr:nth-child(2n){background-color:#ddd}.markdown-body code[data-gist-id]{background:none;padding:0;filter:invert(100%)}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram,.markdown-body pre.vega{text-align:center;background-color:inherit;border-radius:0;white-space:inherit}.night .markdown-body pre.graphviz .graph>polygon{fill:#333}.night .markdown-body pre.mermaid .sectionTitle,.night .markdown-body pre.mermaid .titleText,.night .markdown-body pre.mermaid text{fill:#fff}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code,.markdown-body pre.vega>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg,.markdown-body pre.vega>svg{max-width:100%;height:100%}.night .markdown-body .abc path{fill:#eee}.night .markdown-body .abc path.note_selected{fill:##4DD0E1}.night tspan{fill:#fefefe}.night pre rect{fill:transparent}.night pre.flow-chart path,.night pre.flow-chart rect{stroke:#fff}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p,.markdown-body .alert>ul{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body img{background-color:transparent}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;-webkit-transition:opacity .2s;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;-webkit-transition:opacity .2s;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.MJX_Assistive_MathML{display:none}.ui-infobar{position:relative;z-index:2;max-width:758px;margin-top:25px;margin-bottom:-25px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:10000}.ui-toc-label{opacity:.3;background-color:#ccc;border:none}.ui-toc-label,.ui-toc .open .ui-toc-label{-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc-dropdown{margin-top:23px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child>ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.night .ui-toc-dropdown .nav>li>a:focus,.night .ui-toc-dropdown .nav>li>a:hover{color:#fff;border-left-color:#fff}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.night .ui-toc-dropdown .nav>.active:focus>a,.night .ui-toc-dropdown .nav>.active:hover>a,.night .ui-toc-dropdown .nav>.active>a{color:#fff;border-left:2px solid #fff}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.night .ui-toc-dropdown .nav>li>a{color:#aaa}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,"\30D2\30E9\30AE\30CE\89D2\30B4   Pro W3",Osaka,Meiryo,"\30E1\30A4\30EA\30AA",MS Gothic,"\FF2D\FF33   \30B4\30B7\30C3\30AF",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,"\FF2D\FF33   \FF30\30B4\30B7\30C3\30AF",sans-serif}.markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang TC,Microsoft JhengHei,"\5FAE\8EDF\6B63\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,"\5FAE\8EDF\6B63\9ED1UI",sans-serif}.markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang SC,Microsoft YaHei,"\5FAE\8F6F\96C5\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,"\5FAE\8F6F\96C5\9ED1UI",sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:3px;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:contain}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}small span{line-height:22px}small .dropdown{display:inline-block}small .dropdown a:focus,small .dropdown a:hover{text-decoration:none}.unselectable{-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}.night .navbar{background:#333;border-bottom-color:#333;color:#eee}.night .navbar a{color:#eee}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;font-family:Source Sans Pro,Helvetica,Arial,sans-serif;letter-spacing:.025em}.focus,:focus{outline:none!important}::-moz-focus-inner{border:0!important}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid"><h1 id="CRYPTO1-门禁卡破解-Proxmark-PN532" style=""><a class="anchor hidden-xs" href="#CRYPTO1-门禁卡破解-Proxmark-PN532" title="CRYPTO1-门禁卡破解-Proxmark-PN532"><i class="fa fa-link"></i></a>CRYPTO1: 门禁卡破解 (Proxmark, PN532)</h1><blockquote>
+<p>2015 年 Crypto1 被宣布理论死亡，这篇文章理论应用实践，介绍如何让门禁卡实际也死亡。</p>
+</blockquote><p>之前一篇文章介绍了 Crypto1 加密算法，是如何被人逆向工程，并公开了算法细节，随后从认证方式 (Authentication) 到 核心算法 (Crypto1) 全部被破解，最终在 2015 年使用 Crypto1 加密算法的 NXP Mifare Classic 卡 (M1 卡) 迎来了理论上的死亡。</p><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/465900396" target="_blank" rel="noopener">CRYPTO1: 密码分析学 (门禁卡破解)</a></li>
+</ul><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/mifare.png" alt="img"></p><p>然而实际上，Crypto1 并没有完结，直到 2023 年，M1 卡还在国内外大量使用。例如从国内硕士宿舍，到英国博士的学生宿舍，都可以轻松地复制门禁卡。</p><p>我不禁在想，可能知道 Crypto1 被破解的人，还不够多。</p><blockquote>
+<p>这篇文章就让知道的人，越来越多。</p>
+</blockquote><h2 id="1-NFC-卡选择" style=""><a class="anchor hidden-xs" href="#1-NFC-卡选择" title="1-NFC-卡选择"><i class="fa fa-link"></i></a>1. NFC 卡选择</h2><p>首先，我们需要鉴定自己的 NFC 卡是不是可以破解的，毕竟越来越多的学校、公司开始用更安全的卡。</p><p>我们先确定门禁卡的频率，如果把卡放在支持 NFC 的手机背后，手机有响应的话，说明这张卡是常见的 13.56MHz，有被破解的可能。</p><blockquote>
+<p>如果没有响应，那么可以关掉浏览器去玩耍了。</p>
+</blockquote><p>除了常见的 13.56MHz 高频，还有一些老旧的学校大楼门禁用的是 125kHz 低频，例如华科曾经的动力楼等，这种低频卡也是可以轻易复制的。</p><p>为了进一步确认卡的型号，我们可以在支持 NFC 的手机上安装 NFC Tools，读取要复制的卡片型号。</p><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/nfc_tools.png" alt="img"></p><p>比如，这张卡被识别为脆弱的 NXP - Mifare Classic 1k。</p><blockquote>
+<p>如果不是这个型号，也可以关掉浏览器去玩耍了。</p>
+</blockquote><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/m1.png" alt="img"></p><p>另外，需要确认卡的 ID (Serial Number) 是 4 位的，比如有的卡是 7 位的，就在暗示你关掉浏览器去玩耍。</p><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/m1-7.png" alt="img"></p><p>如果你手上这张卡不幸是 NXP - Mifare Classic 1k，以及有 4 位的 ID，那么请不要关闭浏览器。</p><h2 id="2-硬件购买" style=""><a class="anchor hidden-xs" href="#2-硬件购买" title="2-硬件购买"><i class="fa fa-link"></i></a>2. 硬件购买</h2><p>接下来我们需要下面的硬件 (一般淘宝 20 包邮)：</p><ul>
+<li>PN532 模块：用来和卡片通信，读取卡片数据；</li>
+<li>USB-TTL：把 PN532 和 电脑 用串口通信连接起来。</li>
+<li>一张空白卡用来复制 (UID，CUID)。</li>
+</ul><p>一张门禁卡里面，存储了卡的 ID 和 数据。<strong>如果要复制一张卡，就要同时复制 ID 和数据</strong>，但是合法的卡片 ID 是不能修改的，所以不合法的中国厂家造出了可以修改 ID 的卡，留了一些通信后门。</p><ul>
+<li><strong>第一代不合法的卡片被称为 UID 卡</strong>，它们有特殊的后门指令，用来修改卡片的 ID。于是一些门禁系统为了防范不合法的卡，会故意向卡片发送后门指令，只要卡片响应了，说明它不合法，拒绝开门。</li>
+<li><strong>第二代的非法卡片，被称为 CUID 卡</strong>。它们不通过后门修改 ID，不会响应后门指令，而是通过正常的指令，修改原本不能修改的 ID，所以不容易被门禁系统察觉。</li>
+</ul><blockquote>
+<p>如果你对 NFC 不太熟悉，就只买 UID 卡；如果复制完不能用，在买 CUID 卡。</p>
+</blockquote><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/pn532.png" alt="img"></p><blockquote>
+<p>不幸的是，毕竟买的是非法的 NFC 卡，店家也可能会非法随机发货。</p>
+</blockquote><p>比如，**我曾经买了 10 张第二代 CUID 卡，结果收到了 4 张 125Khz 的低频卡，4 张 CUID 卡，和 2 张 UID 卡。**所以我们在收到卡片后，需要确认一下卡片的型号。</p><h2 id="3-PN532-破解" style=""><a class="anchor hidden-xs" href="#3-PN532-破解" title="3-PN532-破解"><i class="fa fa-link"></i></a>3. PN532 破解</h2><p>同样，我们可以先用支持 NFC 的手机，读取卡片型号，没有响应的可能就是 125kHz 低频卡。</p><p>在筛选掉低频卡后，我们进一步确认卡片是有后门的一代 UID 卡，还是没有后门的二代 CUID 卡。</p><h3 id="31-libnfc-安装" style=""><a class="anchor hidden-xs" href="#31-libnfc-安装" title="31-libnfc-安装"><i class="fa fa-link"></i></a>3.1 libnfc 安装</h3><p>我们把 PN532 连接到电脑后，在 Ubuntu 下安装 libnfc：</p><pre><code>$ sudo apt install libnfc-dev libnfc-bin libnfc-examples libnfc-pn53x-examples
+</code></pre><p>接下来修改 libnfc 的配置文件 /etc/nfc/libnfc.conf，在最后一行加上 PN532 和电脑通信的串口：</p><pre><code>$ sudo vim /etc/nfc/libnfc.conf
+
+    device.name = "pn532"
+    device.connstring = "pn532_uart:/dev/ttyUSB0"
+</code></pre><p>我们把卡片放在 PN532 上，就可以 sudo nfc-list读取卡片的信息了：</p><pre><code>$ sudo nfc-list 
+nfc-list uses libnfc 1.7.1
+NFC device: pn532_uart:/dev/ttyUSB0 opened
+1 ISO14443A passive target(s) found:
+ISO/IEC 14443A (106 kbps) target:
+    ATQA (SENS_RES): 00  04  
+       UID (NFCID1): 01  02  03  04  
+      SAK (SEL_RES): 08  
+</code></pre><p>如果这里没有读取到卡片信息，可以检查下卡片是不是没贴紧模块，再确认 PN532 的拨码开关都是 OFF。</p><blockquote>
+<p>PN532 模块支持 串口 (HSU)，I2C，SPI 通信，模块正面有2个拨码开关，默认都是 OFF，代表串口。</p>
+</blockquote><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/pn532_switch.png" alt="img"></p><p>我们先尝试用后门指令修改卡的 ID 为 01 02 03 04，如果顺利修改，说明是有后门的第一代 UID；如果修改失败，就是第二代 CUID。</p><pre><code>$ sudo nfc-mfsetuid 01020304
+$ sudo nfc-list
+nfc-list uses libnfc 1.7.1
+NFC device: pn532_uart:/dev/ttyUSB0 opened
+1 ISO14443A passive target(s) found:
+ISO/IEC 14443A (106 kbps) target:
+    ATQA (SENS_RES): 00  04  
+       UID (NFCID1): 01  02  03  04  
+      SAK (SEL_RES): 08  
+</code></pre><blockquote>
+<p>当然，也有可能店家合法发货，给了你一张合法的卡片。</p>
+</blockquote><p>如果前面顺利修改了空白卡的 ID，我们就可以把门禁卡的 ID 复制到空白卡上了：</p><pre><code># 把门禁卡放到 PN532 上
+$ sudo nfc-list
+nfc-list uses libnfc 1.7.1
+NFC device: pn532_uart:/dev/ttyUSB0 opened
+1 ISO14443A passive target(s) found:
+ISO/IEC 14443A (106 kbps) target:
+    ATQA (SENS_RES): 00  04  
+       UID (NFCID1): 11  22  33  44  
+      SAK (SEL_RES): 08  
+
+# 把空白卡放到 PN532 上
+# 记得把下面的 11223344 替换成上面读出来的4位ID
+$ sudo nfc-mfsetuid 11223344
+</code></pre><p><strong>这样，非法空白卡就有了和你门禁卡一样的 ID，接下来就是复制数据了。</strong></p><h3 id="32-mfoc-hardnested-破解" style=""><a class="anchor hidden-xs" href="#32-mfoc-hardnested-破解" title="32-mfoc-hardnested-破解"><i class="fa fa-link"></i></a>3.2 mfoc-hardnested 破解</h3><p>到这里，我们确认了非法卡片的型号，接下来就可以破解原始卡片了。</p><p>我们先安装 mfoc-hardnested。</p><pre><code>$ git clone https://github.com/nfc-tools/mfoc-hardnested
+$ cd mfoc-hardnested
+$ ./configure
+$ make &amp;&amp; sudo make install
+</code></pre><p><strong>接下来把要破解的门禁卡，放到 PN532 上破解卡数据：</strong></p><pre><code>$ sudo mfoc-hardnested -O mycard.mfd
+</code></pre><p>好，结束了！！ 破解出来的卡片数据在 mycard.mfd里面。</p><h3 id="33-复制卡片" style=""><a class="anchor hidden-xs" href="#33-复制卡片" title="33-复制卡片"><i class="fa fa-link"></i></a>3.3 复制卡片</h3><p>最后，我们需要把复制出来的数据，写入到空白的 UID 卡里面。</p><pre><code>$ sudo nfc-mfclassic w a mycard.mfd
+</code></pre><p>好，又结束了！！</p><h3 id="34-其他问题" style=""><a class="anchor hidden-xs" href="#34-其他问题" title="34-其他问题"><i class="fa fa-link"></i></a>3.4 其他问题</h3><p>如果一切顺利，我们就已复制完成了 ID 和 数据。</p><p>这里顺便一提，如果下次想要复制一张新的卡，需要告诉软件原来的卡数据。因为向 NFC 卡写数据，需要知道卡的密钥 (KeyA / KeyB)，而密钥就包含在数据里。</p><pre><code>$ nfc-mfclassic w a new_data.mfd old_data.mfd
+</code></pre><blockquote>
+<p>有的卡复制完后，控制位可能被改成了只读，从此不能修改数据。 如果对 NFC 控制位不熟，建议就用空白卡复制。</p>
+</blockquote><h2 id="4-Proxmark3-破解" style=""><a class="anchor hidden-xs" href="#4-Proxmark3-破解" title="4-Proxmark3-破解"><i class="fa fa-link"></i></a>4. Proxmark3 破解</h2><blockquote>
+<p>如果你已经顺利破解了，已经可以关掉浏览器了，接下来介绍的是另一种破解方法。</p>
+</blockquote><p>PN532 是一种低成本的解决办法，而 Proxmark (AVR + FPGA) 则是针对 NFC 开发者的工具，Proxmark 可以读取高频，低频，各种型号卡的数据，甚至它本身就可以模拟 NFC 卡，所以价格比 PN532 高出不少。</p><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/proxmark.png" alt="img"></p><blockquote>
+<p>Proxmark 是针对开发者的工具，所以接下来不会有太多科普的内容。</p>
+</blockquote><h3 id="41-Proxmark-3-安装" style=""><a class="anchor hidden-xs" href="#41-Proxmark-3-安装" title="41-Proxmark-3-安装"><i class="fa fa-link"></i></a>4.1 Proxmark 3 安装</h3><p>Proxmark 有很多型号，这里我用的是 Proxmark 3。</p><pre><code>$ git clone https://github.com/RfidResearchGroup/proxmark3
+$ cd proxmark3
+$ cp Makefile.platform.sample Makefile.platform
+$ vim Makefile.platform
+    PLATFORM=PM3GENERIC
+$ make
+</code></pre><p>接下来 Proxmark 连接电脑，就可以看到启动信息:</p><pre><code>$ sudo ./pm3
+[=] Session log /root/.proxmark3/logs/log_20231105180758.txt
+[+] loaded from JSON file `/root/.proxmark3/preferences.json`
+[=] Using UART port /dev/ttyACM0
+[=] Communicating with PM3 over USB-CDC
+
+
+  8888888b.  888b     d888  .d8888b.   
+  888   Y88b 8888b   d8888 d88P  Y88b  
+  888    888 88888b.d88888      .d88P  
+  888   d88P 888Y88888P888     8888"  
+  8888888P"  888 Y888P 888      "Y8b.  
+  888        888  Y8P  888 888    888  
+  888        888   "   888 Y88b  d88P 
+  888        888       888  "Y8888P"    [ ☕ ]
+
+
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+  [ Proxmark3 RFID instrument ]
+
+    MCU....... AT91SAM7S512 Rev B
+    Memory.... 512 KB ( 61% used )
+
+    Client.... Iceman/master/v4.17140-285-g7026fd69f 2023-11-05 18:06:30
+    Bootrom... Iceman/master/5ae919d-dirty-suspect 2023-10-18 21:12:50 
+    OS........ Iceman/master/5ae919d-dirty-suspect 2023-10-18 21:13:01 
+    Target.... PM3 GENERIC
+
+[usb] pm3 --&gt; 
+</code></pre><h3 id="42-Proxmark3-破解" style=""><a class="anchor hidden-xs" href="#42-Proxmark3-破解" title="42-Proxmark3-破解"><i class="fa fa-link"></i></a>4.2 Proxmark3 破解</h3><p>我们可以先用 hf search确保卡片可以被识别到。</p><pre><code>[usb] pm3 --&gt; hf search
+ 🕔  Searching for ISO14443-A tag...          
+[+]  UID: 01 02 03 04 
+[+] ATQA: 00 04
+[+]  SAK: 08 [2]
+[+] Possible types:
+[+]    MIFARE Classic 1K
+[=] proprietary non iso14443-4 card found, RATS not supported
+[+] Magic capabilities : Gen 1a
+[+] Prng detection: weak
+[#] Auth error
+[?] Hint: try `hf mf` commands
+</code></pre><p>接下来就可以自动破解了：</p><pre><code>[usb] pm3 --&gt; hf mf autopwn                   
+[!] ⚠️  no known key was supplied, key recovery might fail
+[+] loaded 56 keys from hardcoded default array
+[=] running strategy 1
+[=] Chunk 0.3s | found 32/32 keys (56)
+......
+[+] Generating binary key file
+[+] Found keys have been dumped to /root/hf-mf-01020304-key.bin
+[=] --[ FFFFFFFFFFFF ]-- has been inserted for unknown keys where res is 0
+[=] transferring keys to simulator memory ( ok )
+[=] dumping card content to emulator memory (Cmd Error: 04 can occur)
+[=] downloading card content from emulator memory
+[+] saved 1024 bytes to binary file /root/hf-mf-01020304-dump.bin
+[+] saved to json file /root/hf-mf-01020304-dump.json
+[=] autopwn execution time: 2 seconds
+</code></pre><p>可以看到，破解出来的密钥和数据，分别保存到了 hf-mf-01020304-key.bin 和 hf-mf-01020304-dump.bin。</p><h3 id="43-Proxmark3-复制" style=""><a class="anchor hidden-xs" href="#43-Proxmark3-复制" title="43-Proxmark3-复制"><i class="fa fa-link"></i></a>4.3 Proxmark3 复制</h3><p>我们可以复制破解出来的数据到空白的卡片。</p><pre><code>$ hf mf cload -f hf-mf-01020304-dump.eml
+</code></pre><h3 id="44-常见问题" style=""><a class="anchor hidden-xs" href="#44-常见问题" title="44-常见问题"><i class="fa fa-link"></i></a>4.4 常见问题</h3><p>然而实际操作可能不会那么顺利，下面是常见问题的解决办法。</p><p><strong>[1]</strong> <strong>wupC1 error Can’t set magic card block: 0</strong></p><p>这说明这张卡不是有后门的一代卡，不能通过后门指令写入数据，我们需要用 hexedit 查看 hf-mf-01020304-dump.bin 里 block0 的数据，手动写入。</p><pre><code>$ hf mf wrbl --force --blk 0 -k FFFFFFFFFFFF -d 010203040408040000004A495256494E
+</code></pre><p><strong>[2]</strong> <strong>BCC0 incorrect, got 0x04, expected 0x00</strong></p><p>之前我们可能写入了一些错误的数据，破坏了卡的结构，例如 Block0，导致给出了错误的响应。</p><p>Proxmark 默认把读取的卡片当作正常卡，所以收到错误响应的时候，就会停止操作。但是，我们也可以选择忽略警告，继续操作来修复卡的数据。</p><pre><code>$ hf 14a config --bcc ignore
+$ hf mf wrbl --force --blk 0 -k FFFFFFFFFFFF -d 010203040408040000004A495256494E
+$ hf 14a config --bcc std
+</code></pre><p>下面都是类似的，忽略不同的警告，来修复卡片的数据。</p><p><strong>[3]</strong> <strong>Card didn’t answer to CL2 select all</strong></p><pre><code>$ hf 14a config --cl2 skip
+$ hf mf cload -f hf-mf-01020304-dump.eml
+$ hf 14a config --cl2 std
+</code></pre><p><strong>[4]</strong> <strong>Card doesn’t support standard iso14443-3 anticollision</strong></p><pre><code>$ hf 14a config --atqa force --bcc ignore --cl2 skip --cl3 skip --rats skip
+$ hf mf wrbl --force --blk 0 -k FFFFFFFFFFFF -d 010203040408040000004A495256494E
+$ hf 14a config --atqa std --bcc std --cl2 std --cl3 std --rats std
+</code></pre><h2 id="总结" style=""><a class="anchor hidden-xs" href="#总结" title="总结"><i class="fa fa-link"></i></a>总结</h2><p>如果你对 NFC 卡的数据结构 (KeyA/ KeyB / Block) 不太熟悉，用 PN532 + UID (第一代后门) 可以避免很多问题。</p><p>当 PN532 + UID 卡无法成功复制的时候，就可以考虑尝试开发者工具 Proxmark + CUID (第二代) 卡。</p></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav">
+<li class=""><a href="#CRYPTO1-门禁卡破解-Proxmark-PN532" title="CRYPTO1: 门禁卡破解 (Proxmark, PN532)">CRYPTO1: 门禁卡破解 (Proxmark, PN532)</a><ul class="nav">
+<li><a href="#1-NFC-卡选择" title="1. NFC 卡选择">1. NFC 卡选择</a></li>
+<li><a href="#2-硬件购买" title="2. 硬件购买">2. 硬件购买</a></li>
+<li><a href="#3-PN532-破解" title="3. PN532 破解">3. PN532 破解</a><ul class="nav">
+<li><a href="#31-libnfc-安装" title="3.1 libnfc 安装">3.1 libnfc 安装</a></li>
+<li><a href="#32-mfoc-hardnested-破解" title="3.2 mfoc-hardnested 破解">3.2 mfoc-hardnested 破解</a></li>
+<li><a href="#33-复制卡片" title="3.3 复制卡片">3.3 复制卡片</a></li>
+<li><a href="#34-其他问题" title="3.4 其他问题">3.4 其他问题</a></li>
+</ul>
+</li>
+<li><a href="#4-Proxmark3-破解" title="4. Proxmark3 破解">4. Proxmark3 破解</a><ul class="nav">
+<li><a href="#41-Proxmark-3-安装" title="4.1 Proxmark 3 安装">4.1 Proxmark 3 安装</a></li>
+<li><a href="#42-Proxmark3-破解" title="4.2 Proxmark3 破解">4.2 Proxmark3 破解</a></li>
+<li><a href="#43-Proxmark3-复制" title="4.3 Proxmark3 复制">4.3 Proxmark3 复制</a></li>
+<li><a href="#44-常见问题" title="4.4 常见问题">4.4 常见问题</a></li>
+</ul>
+</li>
+<li><a href="#总结" title="总结">总结</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
+        <div class="toc"><ul class="nav">
+<li class=""><a href="#CRYPTO1-门禁卡破解-Proxmark-PN532" title="CRYPTO1: 门禁卡破解 (Proxmark, PN532)">CRYPTO1: 门禁卡破解 (Proxmark, PN532)</a><ul class="nav">
+<li><a href="#1-NFC-卡选择" title="1. NFC 卡选择">1. NFC 卡选择</a></li>
+<li><a href="#2-硬件购买" title="2. 硬件购买">2. 硬件购买</a></li>
+<li><a href="#3-PN532-破解" title="3. PN532 破解">3. PN532 破解</a><ul class="nav">
+<li><a href="#31-libnfc-安装" title="3.1 libnfc 安装">3.1 libnfc 安装</a></li>
+<li><a href="#32-mfoc-hardnested-破解" title="3.2 mfoc-hardnested 破解">3.2 mfoc-hardnested 破解</a></li>
+<li><a href="#33-复制卡片" title="3.3 复制卡片">3.3 复制卡片</a></li>
+<li><a href="#34-其他问题" title="3.4 其他问题">3.4 其他问题</a></li>
+</ul>
+</li>
+<li><a href="#4-Proxmark3-破解" title="4. Proxmark3 破解">4. Proxmark3 破解</a><ul class="nav">
+<li><a href="#41-Proxmark-3-安装" title="4.1 Proxmark 3 安装">4.1 Proxmark 3 安装</a></li>
+<li><a href="#42-Proxmark3-破解" title="4.2 Proxmark3 破解">4.2 Proxmark3 破解</a></li>
+<li><a href="#43-Proxmark3-复制" title="4.3 Proxmark3 复制">4.3 Proxmark3 复制</a></li>
+<li><a href="#44-常见问题" title="4.4 常见问题">4.4 常见问题</a></li>
+</ul>
+</li>
+<li><a href="#总结" title="总结">总结</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/js/bootstrap.min.js" integrity="sha256-kJrlY+s09+QoWjpkOrXXwhxeaoDz9FW5SaxF8I0DibQ=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>
