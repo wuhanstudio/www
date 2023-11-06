@@ -2,7 +2,7 @@ CRYPTO1: 门禁卡破解 (Proxmark, PN532)
 ==================================
 
 
-> 2015 年 Crypto1 被宣布理论死亡，这篇文章理论应用实践，介绍如何让门禁卡实际也死亡。 
+> 2015 年 Crypto1 被宣布理论死亡，这篇文章理论应用实践，介绍如何破解门禁卡。
 
 之前一篇文章介绍了 Crypto1 加密算法，是如何被人逆向工程，并公开了算法细节，随后从认证方式 (Authentication) 到 核心算法 (Crypto1) 全部被破解，最终在 2015 年使用 Crypto1 加密算法的 NXP Mifare Classic 卡 (M1 卡) 迎来了理论上的死亡。
 
@@ -36,7 +36,7 @@ CRYPTO1: 门禁卡破解 (Proxmark, PN532)
 
 ![img](https://doc.wuhanstudio.cc/posts/crypto1_pn532/m1.png)
 
-另外，需要确认卡的 ID (Serial Number) 是 4 位的，比如有的卡是 7 位的，就在暗示你关掉浏览器去玩耍。
+**另外，需要确认卡的 ID (Serial Number) 是 4 位的**，比如有的卡是 7 位的，就在暗示你关掉浏览器去玩耍。
 
 ![img](https://doc.wuhanstudio.cc/posts/crypto1_pn532/m1-7.png)
 
@@ -57,13 +57,13 @@ CRYPTO1: 门禁卡破解 (Proxmark, PN532)
 - **第一代不合法的卡片被称为 UID 卡**，它们有特殊的后门指令，用来修改卡片的 ID。于是一些门禁系统为了防范不合法的卡，会故意向卡片发送后门指令，只要卡片响应了，说明它不合法，拒绝开门。
 - **第二代的非法卡片，被称为 CUID 卡**。它们不通过后门修改 ID，不会响应后门指令，而是通过正常的指令，修改原本不能修改的 ID，所以不容易被门禁系统察觉。
 
-> 如果你对 NFC 不太熟悉，就只买 UID 卡；如果复制完不能用，在买 CUID 卡。
+> 如果你对 NFC 不太熟悉，就只买 UID 卡；如果复制完不能用，再买 CUID 卡。
 
 ![img](https://doc.wuhanstudio.cc/posts/crypto1_pn532/pn532.png)
 
 > 不幸的是，毕竟买的是非法的 NFC 卡，店家也可能会非法随机发货。
 
-比如，**我曾经买了 10 张第二代 CUID 卡，结果收到了 4 张 125Khz 的低频卡，4 张 CUID 卡，和 2 张 UID 卡。**所以我们在收到卡片后，需要确认一下卡片的型号。
+比如，**我曾经买了 10 张第二代 CUID 卡，结果收到了 4 张 125Khz 的低频卡，4 张 CUID 卡，和 2 张 UID 卡**。所以我们在收到卡片后，需要确认一下卡片的型号。
 
 
 
@@ -81,7 +81,7 @@ CRYPTO1: 门禁卡破解 (Proxmark, PN532)
 $ sudo apt install libnfc-dev libnfc-bin libnfc-examples libnfc-pn53x-examples
 ```
 
-接下来修改 libnfc 的配置文件 /etc/nfc/libnfc.conf，在最后一行加上 PN532 和电脑通信的串口： 
+接下来修改 libnfc 的配置文件 `/etc/nfc/libnfc.conf`，在最后一行加上 PN532 和电脑通信的串口： 
 
 ```
 $ sudo vim /etc/nfc/libnfc.conf
@@ -123,7 +123,7 @@ ISO/IEC 14443A (106 kbps) target:
       SAK (SEL_RES): 08  
 ```
 
-> 当然，也有可能店家合法发货，给了你一张合法的卡片。
+> 当然，也有可能店家合法发货，给了你一张合法的卡片，没有修改 ID 功能。
 
 如果前面顺利修改了空白卡的 ID，我们就可以把门禁卡的 ID 复制到空白卡上了：
 
@@ -259,7 +259,7 @@ QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
 
 ### 4.2 Proxmark3 破解
 
-我们可以先用 hf search确保卡片可以被识别到。
+我们可以先用 `hf search` 确保卡片可以被识别到。
 
 ```
 [usb] pm3 --> hf search
@@ -276,7 +276,7 @@ QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
 [?] Hint: try `hf mf` commands
 ```
 
-接下来就可以自动破解了：
+接下来就可以 `hf mf autopwn` 自动破解了：
 
 ```
 [usb] pm3 --> hf mf autopwn                   

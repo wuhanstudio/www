@@ -35,7 +35,7 @@
 
 <body>
     <div id="doc" class="markdown-body container-fluid"><h1 id="CRYPTO1-门禁卡破解-Proxmark-PN532" style=""><a class="anchor hidden-xs" href="#CRYPTO1-门禁卡破解-Proxmark-PN532" title="CRYPTO1-门禁卡破解-Proxmark-PN532"><i class="fa fa-link"></i></a>CRYPTO1: 门禁卡破解 (Proxmark, PN532)</h1><blockquote>
-<p>2015 年 Crypto1 被宣布理论死亡，这篇文章理论应用实践，介绍如何让门禁卡实际也死亡。</p>
+<p>2015 年 Crypto1 被宣布理论死亡，这篇文章理论应用实践，介绍如何破解门禁卡。</p>
 </blockquote><p>之前一篇文章介绍了 Crypto1 加密算法，是如何被人逆向工程，并公开了算法细节，随后从认证方式 (Authentication) 到 核心算法 (Crypto1) 全部被破解，最终在 2015 年使用 Crypto1 加密算法的 NXP Mifare Classic 卡 (M1 卡) 迎来了理论上的死亡。</p><ul>
 <li><a href="https://zhuanlan.zhihu.com/p/465900396" target="_blank" rel="noopener">CRYPTO1: 密码分析学 (门禁卡破解)</a></li>
 </ul><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/mifare.png" alt="img"></p><p>然而实际上，Crypto1 并没有完结，直到 2023 年，M1 卡还在国内外大量使用。例如从国内硕士宿舍，到英国博士的学生宿舍，都可以轻松地复制门禁卡。</p><p>我不禁在想，可能知道 Crypto1 被破解的人，还不够多。</p><blockquote>
@@ -44,7 +44,7 @@
 <p>如果没有响应，那么可以关掉浏览器去玩耍了。</p>
 </blockquote><p>除了常见的 13.56MHz 高频，还有一些老旧的学校大楼门禁用的是 125kHz 低频，例如华科曾经的动力楼等，这种低频卡也是可以轻易复制的。</p><p>为了进一步确认卡的型号，我们可以在支持 NFC 的手机上安装 NFC Tools，读取要复制的卡片型号。</p><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/nfc_tools.png" alt="img"></p><p>比如，这张卡被识别为脆弱的 NXP - Mifare Classic 1k。</p><blockquote>
 <p>如果不是这个型号，也可以关掉浏览器去玩耍了。</p>
-</blockquote><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/m1.png" alt="img"></p><p>另外，需要确认卡的 ID (Serial Number) 是 4 位的，比如有的卡是 7 位的，就在暗示你关掉浏览器去玩耍。</p><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/m1-7.png" alt="img"></p><p>如果你手上这张卡不幸是 NXP - Mifare Classic 1k，以及有 4 位的 ID，那么请不要关闭浏览器。</p><h2 id="2-硬件购买" style=""><a class="anchor hidden-xs" href="#2-硬件购买" title="2-硬件购买"><i class="fa fa-link"></i></a>2. 硬件购买</h2><p>接下来我们需要下面的硬件 (一般淘宝 20 包邮)：</p><ul>
+</blockquote><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/m1.png" alt="img"></p><p><strong>另外，需要确认卡的 ID (Serial Number) 是 4 位的</strong>，比如有的卡是 7 位的，就在暗示你关掉浏览器去玩耍。</p><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/m1-7.png" alt="img"></p><p>如果你手上这张卡不幸是 NXP - Mifare Classic 1k，以及有 4 位的 ID，那么请不要关闭浏览器。</p><h2 id="2-硬件购买" style=""><a class="anchor hidden-xs" href="#2-硬件购买" title="2-硬件购买"><i class="fa fa-link"></i></a>2. 硬件购买</h2><p>接下来我们需要下面的硬件 (一般淘宝 20 包邮)：</p><ul>
 <li>PN532 模块：用来和卡片通信，读取卡片数据；</li>
 <li>USB-TTL：把 PN532 和 电脑 用串口通信连接起来。</li>
 <li>一张空白卡用来复制 (UID，CUID)。</li>
@@ -52,11 +52,11 @@
 <li><strong>第一代不合法的卡片被称为 UID 卡</strong>，它们有特殊的后门指令，用来修改卡片的 ID。于是一些门禁系统为了防范不合法的卡，会故意向卡片发送后门指令，只要卡片响应了，说明它不合法，拒绝开门。</li>
 <li><strong>第二代的非法卡片，被称为 CUID 卡</strong>。它们不通过后门修改 ID，不会响应后门指令，而是通过正常的指令，修改原本不能修改的 ID，所以不容易被门禁系统察觉。</li>
 </ul><blockquote>
-<p>如果你对 NFC 不太熟悉，就只买 UID 卡；如果复制完不能用，在买 CUID 卡。</p>
+<p>如果你对 NFC 不太熟悉，就只买 UID 卡；如果复制完不能用，再买 CUID 卡。</p>
 </blockquote><p><img src="https://doc.wuhanstudio.cc/posts/crypto1_pn532/pn532.png" alt="img"></p><blockquote>
 <p>不幸的是，毕竟买的是非法的 NFC 卡，店家也可能会非法随机发货。</p>
-</blockquote><p>比如，**我曾经买了 10 张第二代 CUID 卡，结果收到了 4 张 125Khz 的低频卡，4 张 CUID 卡，和 2 张 UID 卡。**所以我们在收到卡片后，需要确认一下卡片的型号。</p><h2 id="3-PN532-破解" style=""><a class="anchor hidden-xs" href="#3-PN532-破解" title="3-PN532-破解"><i class="fa fa-link"></i></a>3. PN532 破解</h2><p>同样，我们可以先用支持 NFC 的手机，读取卡片型号，没有响应的可能就是 125kHz 低频卡。</p><p>在筛选掉低频卡后，我们进一步确认卡片是有后门的一代 UID 卡，还是没有后门的二代 CUID 卡。</p><h3 id="31-libnfc-安装" style=""><a class="anchor hidden-xs" href="#31-libnfc-安装" title="31-libnfc-安装"><i class="fa fa-link"></i></a>3.1 libnfc 安装</h3><p>我们把 PN532 连接到电脑后，在 Ubuntu 下安装 libnfc：</p><pre><code>$ sudo apt install libnfc-dev libnfc-bin libnfc-examples libnfc-pn53x-examples
-</code></pre><p>接下来修改 libnfc 的配置文件 /etc/nfc/libnfc.conf，在最后一行加上 PN532 和电脑通信的串口：</p><pre><code>$ sudo vim /etc/nfc/libnfc.conf
+</blockquote><p>比如，<strong>我曾经买了 10 张第二代 CUID 卡，结果收到了 4 张 125Khz 的低频卡，4 张 CUID 卡，和 2 张 UID 卡</strong>。所以我们在收到卡片后，需要确认一下卡片的型号。</p><h2 id="3-PN532-破解" style=""><a class="anchor hidden-xs" href="#3-PN532-破解" title="3-PN532-破解"><i class="fa fa-link"></i></a>3. PN532 破解</h2><p>同样，我们可以先用支持 NFC 的手机，读取卡片型号，没有响应的可能就是 125kHz 低频卡。</p><p>在筛选掉低频卡后，我们进一步确认卡片是有后门的一代 UID 卡，还是没有后门的二代 CUID 卡。</p><h3 id="31-libnfc-安装" style=""><a class="anchor hidden-xs" href="#31-libnfc-安装" title="31-libnfc-安装"><i class="fa fa-link"></i></a>3.1 libnfc 安装</h3><p>我们把 PN532 连接到电脑后，在 Ubuntu 下安装 libnfc：</p><pre><code>$ sudo apt install libnfc-dev libnfc-bin libnfc-examples libnfc-pn53x-examples
+</code></pre><p>接下来修改 libnfc 的配置文件 <code>/etc/nfc/libnfc.conf</code>，在最后一行加上 PN532 和电脑通信的串口：</p><pre><code>$ sudo vim /etc/nfc/libnfc.conf
 
     device.name = "pn532"
     device.connstring = "pn532_uart:/dev/ttyUSB0"
@@ -80,7 +80,7 @@ ISO/IEC 14443A (106 kbps) target:
        UID (NFCID1): 01  02  03  04  
       SAK (SEL_RES): 08  
 </code></pre><blockquote>
-<p>当然，也有可能店家合法发货，给了你一张合法的卡片。</p>
+<p>当然，也有可能店家合法发货，给了你一张合法的卡片，没有修改 ID 功能。</p>
 </blockquote><p>如果前面顺利修改了空白卡的 ID，我们就可以把门禁卡的 ID 复制到空白卡上了：</p><pre><code># 把门禁卡放到 PN532 上
 $ sudo nfc-list
 nfc-list uses libnfc 1.7.1
@@ -142,7 +142,7 @@ QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
     Target.... PM3 GENERIC
 
 [usb] pm3 --&gt; 
-</code></pre><h3 id="42-Proxmark3-破解" style=""><a class="anchor hidden-xs" href="#42-Proxmark3-破解" title="42-Proxmark3-破解"><i class="fa fa-link"></i></a>4.2 Proxmark3 破解</h3><p>我们可以先用 hf search确保卡片可以被识别到。</p><pre><code>[usb] pm3 --&gt; hf search
+</code></pre><h3 id="42-Proxmark3-破解" style=""><a class="anchor hidden-xs" href="#42-Proxmark3-破解" title="42-Proxmark3-破解"><i class="fa fa-link"></i></a>4.2 Proxmark3 破解</h3><p>我们可以先用 <code>hf search</code> 确保卡片可以被识别到。</p><pre><code>[usb] pm3 --&gt; hf search
  🕔  Searching for ISO14443-A tag...          
 [+]  UID: 01 02 03 04 
 [+] ATQA: 00 04
@@ -154,7 +154,7 @@ QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
 [+] Prng detection: weak
 [#] Auth error
 [?] Hint: try `hf mf` commands
-</code></pre><p>接下来就可以自动破解了：</p><pre><code>[usb] pm3 --&gt; hf mf autopwn                   
+</code></pre><p>接下来就可以 <code>hf mf autopwn</code> 自动破解了：</p><pre><code>[usb] pm3 --&gt; hf mf autopwn                   
 [!] ⚠️  no known key was supplied, key recovery might fail
 [+] loaded 56 keys from hardcoded default array
 [=] running strategy 1
@@ -189,23 +189,23 @@ $ hf 14a config --atqa std --bcc std --cl2 std --cl3 std --rats std
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
                 <div class="toc"><ul class="nav">
 <li class=""><a href="#CRYPTO1-门禁卡破解-Proxmark-PN532" title="CRYPTO1: 门禁卡破解 (Proxmark, PN532)">CRYPTO1: 门禁卡破解 (Proxmark, PN532)</a><ul class="nav">
-<li><a href="#1-NFC-卡选择" title="1. NFC 卡选择">1. NFC 卡选择</a></li>
-<li><a href="#2-硬件购买" title="2. 硬件购买">2. 硬件购买</a></li>
-<li><a href="#3-PN532-破解" title="3. PN532 破解">3. PN532 破解</a><ul class="nav">
-<li><a href="#31-libnfc-安装" title="3.1 libnfc 安装">3.1 libnfc 安装</a></li>
-<li><a href="#32-mfoc-hardnested-破解" title="3.2 mfoc-hardnested 破解">3.2 mfoc-hardnested 破解</a></li>
-<li><a href="#33-复制卡片" title="3.3 复制卡片">3.3 复制卡片</a></li>
+<li class=""><a href="#1-NFC-卡选择" title="1. NFC 卡选择">1. NFC 卡选择</a></li>
+<li class=""><a href="#2-硬件购买" title="2. 硬件购买">2. 硬件购买</a></li>
+<li class=""><a href="#3-PN532-破解" title="3. PN532 破解">3. PN532 破解</a><ul class="nav">
+<li class=""><a href="#31-libnfc-安装" title="3.1 libnfc 安装">3.1 libnfc 安装</a></li>
+<li class=""><a href="#32-mfoc-hardnested-破解" title="3.2 mfoc-hardnested 破解">3.2 mfoc-hardnested 破解</a></li>
+<li class=""><a href="#33-复制卡片" title="3.3 复制卡片">3.3 复制卡片</a></li>
 <li><a href="#34-其他问题" title="3.4 其他问题">3.4 其他问题</a></li>
 </ul>
 </li>
-<li><a href="#4-Proxmark3-破解" title="4. Proxmark3 破解">4. Proxmark3 破解</a><ul class="nav">
-<li><a href="#41-Proxmark-3-安装" title="4.1 Proxmark 3 安装">4.1 Proxmark 3 安装</a></li>
-<li><a href="#42-Proxmark3-破解" title="4.2 Proxmark3 破解">4.2 Proxmark3 破解</a></li>
-<li><a href="#43-Proxmark3-复制" title="4.3 Proxmark3 复制">4.3 Proxmark3 复制</a></li>
-<li><a href="#44-常见问题" title="4.4 常见问题">4.4 常见问题</a></li>
+<li class=""><a href="#4-Proxmark3-破解" title="4. Proxmark3 破解">4. Proxmark3 破解</a><ul class="nav">
+<li class=""><a href="#41-Proxmark-3-安装" title="4.1 Proxmark 3 安装">4.1 Proxmark 3 安装</a></li>
+<li class=""><a href="#42-Proxmark3-破解" title="4.2 Proxmark3 破解">4.2 Proxmark3 破解</a></li>
+<li class=""><a href="#43-Proxmark3-复制" title="4.3 Proxmark3 复制">4.3 Proxmark3 复制</a></li>
+<li class=""><a href="#44-常见问题" title="4.4 常见问题">4.4 常见问题</a></li>
 </ul>
 </li>
-<li><a href="#总结" title="总结">总结</a></li>
+<li class=""><a href="#总结" title="总结">总结</a></li>
 </ul>
 </li>
 </ul>
@@ -216,23 +216,23 @@ $ hf 14a config --atqa std --bcc std --cl2 std --cl3 std --rats std
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
         <div class="toc"><ul class="nav">
 <li class=""><a href="#CRYPTO1-门禁卡破解-Proxmark-PN532" title="CRYPTO1: 门禁卡破解 (Proxmark, PN532)">CRYPTO1: 门禁卡破解 (Proxmark, PN532)</a><ul class="nav">
-<li><a href="#1-NFC-卡选择" title="1. NFC 卡选择">1. NFC 卡选择</a></li>
-<li><a href="#2-硬件购买" title="2. 硬件购买">2. 硬件购买</a></li>
-<li><a href="#3-PN532-破解" title="3. PN532 破解">3. PN532 破解</a><ul class="nav">
-<li><a href="#31-libnfc-安装" title="3.1 libnfc 安装">3.1 libnfc 安装</a></li>
-<li><a href="#32-mfoc-hardnested-破解" title="3.2 mfoc-hardnested 破解">3.2 mfoc-hardnested 破解</a></li>
-<li><a href="#33-复制卡片" title="3.3 复制卡片">3.3 复制卡片</a></li>
+<li class=""><a href="#1-NFC-卡选择" title="1. NFC 卡选择">1. NFC 卡选择</a></li>
+<li class=""><a href="#2-硬件购买" title="2. 硬件购买">2. 硬件购买</a></li>
+<li class=""><a href="#3-PN532-破解" title="3. PN532 破解">3. PN532 破解</a><ul class="nav">
+<li class=""><a href="#31-libnfc-安装" title="3.1 libnfc 安装">3.1 libnfc 安装</a></li>
+<li class=""><a href="#32-mfoc-hardnested-破解" title="3.2 mfoc-hardnested 破解">3.2 mfoc-hardnested 破解</a></li>
+<li class=""><a href="#33-复制卡片" title="3.3 复制卡片">3.3 复制卡片</a></li>
 <li><a href="#34-其他问题" title="3.4 其他问题">3.4 其他问题</a></li>
 </ul>
 </li>
-<li><a href="#4-Proxmark3-破解" title="4. Proxmark3 破解">4. Proxmark3 破解</a><ul class="nav">
-<li><a href="#41-Proxmark-3-安装" title="4.1 Proxmark 3 安装">4.1 Proxmark 3 安装</a></li>
-<li><a href="#42-Proxmark3-破解" title="4.2 Proxmark3 破解">4.2 Proxmark3 破解</a></li>
-<li><a href="#43-Proxmark3-复制" title="4.3 Proxmark3 复制">4.3 Proxmark3 复制</a></li>
-<li><a href="#44-常见问题" title="4.4 常见问题">4.4 常见问题</a></li>
+<li class=""><a href="#4-Proxmark3-破解" title="4. Proxmark3 破解">4. Proxmark3 破解</a><ul class="nav">
+<li class=""><a href="#41-Proxmark-3-安装" title="4.1 Proxmark 3 安装">4.1 Proxmark 3 安装</a></li>
+<li class=""><a href="#42-Proxmark3-破解" title="4.2 Proxmark3 破解">4.2 Proxmark3 破解</a></li>
+<li class=""><a href="#43-Proxmark3-复制" title="4.3 Proxmark3 复制">4.3 Proxmark3 复制</a></li>
+<li class=""><a href="#44-常见问题" title="4.4 常见问题">4.4 常见问题</a></li>
 </ul>
 </li>
-<li><a href="#总结" title="总结">总结</a></li>
+<li class=""><a href="#总结" title="总结">总结</a></li>
 </ul>
 </li>
 </ul>
