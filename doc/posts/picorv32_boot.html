@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        Picorv32 启动流程 + 中断 (RV32IM) - CodiMD
+    </title>
+    <link rel="icon" type="image/png" href="https://codimd.wuhanstudio.cc/favicon.png">
+    <link rel="apple-touch-icon" href="https://codimd.wuhanstudio.cc/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha256-H0KfTigpUV+0/5tn2HXC0CPwhhDhWgSawJdnFd0CGCo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fork-awesome/1.1.3/css/fork-awesome.min.css" integrity="sha256-ZhApazu+kejqTYhMF+1DzNKjIzP7KXu6AzyXcC1gMus=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github-gist.min.css" integrity="sha256-tAflq+ymku3Khs+I/WcAneIlafYgDiOQ9stIHH985Wo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,300italic,300|Source+Serif+Pro|Source+Code+Pro:400,300,500&subset=latin,latin-ext);.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{padding:0 1em;color:#777;border-left:.25em solid #ddd}.night .markdown-body blockquote{color:#bcbcbc}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.night .markdown-body h1,.night .markdown-body h2,.night .markdown-body h3,.night .markdown-body h4,.night .markdown-body h5,.night .markdown-body h6{color:#ddd}.markdown-body h1 .fa-link,.markdown-body h2 .fa-link,.markdown-body h3 .fa-link,.markdown-body h4 .fa-link,.markdown-body h5 .fa-link,.markdown-body h6 .fa-link{color:#000;vertical-align:middle;visibility:hidden;font-size:16px}.night .markdown-body h1 .fa-link,.night .markdown-body h2 .fa-link,.night .markdown-body h3 .fa-link,.night .markdown-body h4 .fa-link,.night .markdown-body h5 .fa-link,.night .markdown-body h6 .fa-link{color:#fff}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .fa-link,.markdown-body h2:hover .anchor .fa-link,.markdown-body h3:hover .anchor .fa-link,.markdown-body h4:hover .anchor .fa-link,.markdown-body h5:hover .anchor .fa-link,.markdown-body h6:hover .anchor .fa-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{margin-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.night .markdown-body table tr{background-color:#5f5f5f}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.night .markdown-body table tr:nth-child(2n){background-color:#4f4f4f}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:.2em 0;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.night .markdown-body code,.night .markdown-body tt{color:#eee;background-color:hsla(0,0%,90.2%,.36)}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\A0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.markdown-body kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid;border-color:#ccc #ccc #bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important}.markdown-body pre{border:inherit!important}.night .markdown-body pre{filter:invert(100%)}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-webkit-inline-flex;display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.night .markdown-body .gist table tr:nth-child(2n){background-color:#ddd}.markdown-body code[data-gist-id]{background:none;padding:0;filter:invert(100%)}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram,.markdown-body pre.vega{text-align:center;background-color:inherit;border-radius:0;white-space:inherit}.night .markdown-body pre.graphviz .graph>polygon{fill:#333}.night .markdown-body pre.mermaid .sectionTitle,.night .markdown-body pre.mermaid .titleText,.night .markdown-body pre.mermaid text{fill:#fff}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code,.markdown-body pre.vega>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg,.markdown-body pre.vega>svg{max-width:100%;height:100%}.night .markdown-body .abc path{fill:#eee}.night .markdown-body .abc path.note_selected{fill:##4DD0E1}.night tspan{fill:#fefefe}.night pre rect{fill:transparent}.night pre.flow-chart path,.night pre.flow-chart rect{stroke:#fff}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p,.markdown-body .alert>ul{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body img{background-color:transparent}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;-webkit-transition:opacity .2s;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;-webkit-transition:opacity .2s;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.MJX_Assistive_MathML{display:none}.ui-infobar{position:relative;z-index:2;max-width:758px;margin-top:25px;margin-bottom:-25px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:10000}.ui-toc-label{opacity:.3;background-color:#ccc;border:none}.ui-toc-label,.ui-toc .open .ui-toc-label{-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;-webkit-transition:opacity .2s;transition:opacity .2s}.ui-toc-dropdown{margin-top:23px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child>ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.night .ui-toc-dropdown .nav>li>a:focus,.night .ui-toc-dropdown .nav>li>a:hover{color:#fff;border-left-color:#fff}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.night .ui-toc-dropdown .nav>.active:focus>a,.night .ui-toc-dropdown .nav>.active:hover>a,.night .ui-toc-dropdown .nav>.active>a{color:#fff;border-left:2px solid #fff}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.night .ui-toc-dropdown .nav>li>a{color:#aaa}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,"\30D2\30E9\30AE\30CE\89D2\30B4   Pro W3",Osaka,Meiryo,"\30E1\30A4\30EA\30AA",MS Gothic,"\FF2D\FF33   \30B4\30B7\30C3\30AF",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,"\FF2D\FF33   \FF30\30B4\30B7\30C3\30AF",sans-serif}.markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang TC,Microsoft JhengHei,"\5FAE\8EDF\6B63\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,"\5FAE\8EDF\6B63\9ED1UI",sans-serif}.markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang SC,Microsoft YaHei,"\5FAE\8F6F\96C5\9ED1",sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol}.ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,"\5FAE\8F6F\96C5\9ED1UI",sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:3px;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:contain}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}small span{line-height:22px}small .dropdown{display:inline-block}small .dropdown a:focus,small .dropdown a:hover{text-decoration:none}.unselectable{-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}.night .navbar{background:#333;border-bottom-color:#333;color:#eee}.night .navbar a{color:#eee}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;font-family:Source Sans Pro,Helvetica,Arial,sans-serif;letter-spacing:.025em}.focus,:focus{outline:none!important}::-moz-focus-inner{border:0!important}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid"><h1 id="Picorv32-启动流程--中断-RV32IM" style=""><a class="anchor hidden-xs" href="#Picorv32-启动流程--中断-RV32IM" title="Picorv32-启动流程--中断-RV32IM"><i class="fa fa-link"></i></a>Picorv32 启动流程 + 中断 (RV32IM)</h1><blockquote>
+<p>Picorv32 是一个只用 3000 行 Verilog 代码实现的 RISC-V CPU。</p>
+</blockquote><p>之前的文章介绍了 RISC-V  指令集设计 (CPU)，LiteX 定制 SoC，这篇文章会介绍 CPU 启动流程 (裸机程序)，最后一步则是移植操作系统 RT-Thread Nano。</p><p>这样分成4步，我们就在 FPGA 上定制了一个 SoC (RISC-V 软核)，并移植了实时系统 (RTOS)。</p><ul>
+<li>[1] CPU 设计：<a href="https://zhuanlan.zhihu.com/p/658051034" target="_blank" rel="noopener">Picorv32 自定义 RISC-V 中断指令</a></li>
+<li>[2] SoC 设计：<a href="https://zhuanlan.zhihu.com/p/598689675" target="_blank" rel="noopener">LiteX 定制 SoC (RISC-V CPU)</a></li>
+<li><strong>[3] SoC 启动：Picorv32 启动流程 (裸机程序)</strong></li>
+<li>[4] 操作系统：<a href="https://zhuanlan.zhihu.com/p/654103964" target="_blank" rel="noopener">Picorv32 移植 RT-Thread Nano</a> (In Progress)</li>
+</ul><p>所以这篇文章在前两篇的基础上，假定大家已经熟悉了 RISC-V 指令集，并且在 IceSugar 开发板 (或者其他支持 LiteX 的 FPGA) 上运行了 Picorv32 SoC，接下来要做的是给这个 FPGA 上的 SoC 编写固件程序。</p><blockquote>
+<p>顺便一提，第二篇文章还介绍了如何在 LiteX 定制的 SoC 上使用 C 和 Rust，不过当时 CPU 用的 VexRiscv，这篇文章着重于 Picorv32 的 CPU 启动流程。不过它们都是 RISC-V CPU，只是 Picorv32 为了硬件设计简单，没有遵循 RISC-V 的中断标准，而是自定义了 R-type 的中断指令。</p>
+</blockquote><h2 id="0-最终效果" style=""><a class="anchor hidden-xs" href="#0-最终效果" title="0-最终效果"><i class="fa fa-link"></i></a>0 最终效果</h2><p>先放上这篇文章的最终效果，就是在 LiteX 定制的 SoC 上运行一个裸机程序 (没有操作系统)，利用定时器每隔1秒打印 Hello World，并且响应来自串口的中断（当然计数也用到了定时器中断），下一篇则是移植 RT-Thread Nano 实时系统 （项目源码在 GitHub 上）。</p><ul>
+<li><a href="https://github.com/wuhanstudio/litex-picorv32-rtthread" target="_blank" rel="noopener">GitHub: litex-picorv32-rtthread</a></li>
+</ul><p><img src="https://doc.wuhanstudio.cc/posts/picorv32_boot/litex_demo.png" alt="img"></p><h2 id="1-链接脚本-linkerld" style=""><a class="anchor hidden-xs" href="#1-链接脚本-linkerld" title="1-链接脚本-linkerld"><i class="fa fa-link"></i></a>1 链接脚本 linker.ld</h2><p>**我们首先要知道 CPU 上电后从哪里加载程序。**我用的 IceSugar 开发板有一个 SPI Flash，所有的程序都保存在这个 SPI Flash 里。</p><p><img src="https://doc.wuhanstudio.cc/posts/picorv32_boot/ice_sugar.png" alt="img"></p><p>最初开发板上电后，FPGA 首先从 SPI Flash 起始地址 (0x00000000) 读取 FPGA 的固件，这样 FPGA 就被设置成了软核 RISC-V CPU；接下来软核 CPU 开始读取 BIOS 程序，也就是打印第一张图里面大大的 LiteX Logo 和 SoC 的信息。</p><p>因此，我们可以在 LiteX SoC 的配置程序 (muselab_icesugar.py) 里面看见，我们首先把 FPGA 的固件烧录到了 0x00000 的位置，接下来把 BIOS 烧录到了 0x40000 的位置。</p><pre><code># FPGA 固件偏移地址 0x00000
+prog.flash(0x00000000,        "build/muselab_icesugar/gateware/muselab_icesugar.bin")
+
+# BIOS 偏移地址 0x40000，可以自定义
+parser.add_target_argument("--bios-flash-offset", default="0x40000",         help="BIOS offset in SPI Flash.")
+prog.flash(bios_flash_offset, "build/muselab_icesugar/software/bios/bios.bin")
+</code></pre><p><strong>这里的 BIOS 是 LiteX 提供的一个默认裸机程序</strong>，为了让我们测试 FPGA 顺利被设置成了 LiteX SoC。当然， 我们也可以覆盖这个默认的 BIOS，换成我们自己的程序（这也是后面我们要做的），所以每次烧录程序我们都覆盖了 SPI Flash 地址 0x40000 的程序。</p><pre><code># 烧录到 0x40000 覆盖 BIOD
+icesprog -w demo.bin -o 0x40000
+</code></pre><blockquote>
+<p>顺便一提，视力异常好的朋友可能注意到开发板上，在 FPGA 芯片左边，居然有个 STM32，这个 STM32 是 ICELink 帮助烧录程序到 SPI Flash，所以我们才可以在电脑上调用 iceprog 下载程序。</p>
+</blockquote><p><strong>于是我们清楚了，Picorv32 开机后会从 SPI Flash 的 0x40000 位置执行程序</strong>。在 LiteX SoC 的设计里，我们也告诉了 SoC 在偏移地址 0x40000 的位置，有一个 32KB 的 ROM，开机后请从这里执行程序。</p><pre><code># Add ROM linker region --------------------------------------------------------------------
+# BIOS 偏移地址 0x40000，可以自定义
+self.bus.add_region("rom", SoCRegion(
+    origin = self.bus.regions["spiflash"].origin + bios_flash_offset,
+     size   = 32*kB,
+     linker = True)
+)
+self.cpu.set_reset_address(self.bus.regions["rom"].origin)
+</code></pre><p>**不过前面提到的都是物理地址，**我们在写固件程序的时候，还需要给 GCC 编译器提供链接脚本 linker.ld，告诉编译器应该把代码 (code) 和 数据 (data)，分别放在哪里。于是我们需要在 linker.ld 文件里指定 ROM (固件) 和 SRAM (内存) 的位置。</p><pre><code>MEMORY {
+	sram : ORIGIN = 0x00000000, LENGTH = 0x00010000
+	spiflash : ORIGIN = 0x00800000, LENGTH = 0x00800000
+	rom : ORIGIN = 0x00840000, LENGTH = 0x00008000
+	csr : ORIGIN = 0x82000000, LENGTH = 0x00010000
+}
+</code></pre><p>**奇怪的是，上面 ROM 的地址是 0x840000，我们前面不是说固件放在了 SPI Flash 地址 0x40000 的位置吗？**这是因为 CPU 是通过总线 (BUS) 和外部设备，例如 SPI Flash 通信的。在 CPU 的内部总线上，SPI Flash 被分配到的地址是 0x800000，所以 CPU 总线位置 0x800000 + SPI Flash 物理偏移地址 0x40000 就得到了 CPU 视角下固件代码的位置 0x840000。</p><blockquote>
+<p>LiteX 的好处在于，前面我提到的链接脚本 linker.ld 是自动生成的，我们并不需要手动去计算，在生成 SoC 的时候，这些地址 LiteX 都会帮我们计算好，所以这里我只是解释一下 LiteX 是怎么计算程序加载地址的。</p>
+</blockquote><h2 id="2-汇编启动-startS" style=""><a class="anchor hidden-xs" href="#2-汇编启动-startS" title="2-汇编启动-startS"><i class="fa fa-link"></i></a>2 汇编启动 start.S</h2><p>现在我们知道了，只要把固件烧录到 SPI Flash 地址 0x40000 的位置，CPU 开机就会从那里加载程序。我们还要告诉编译器，把我们的入口函数放在那个位置，这样开机就会加载入口函数 _start。</p><pre><code># 程序入口位置
+ENTRY(_start)
+
+SECTIONS
+{
+	.text :
+	{
+		_ftext = .;
+		/* Make sure start.S files come first, and then the isr */
+		/* don't get disposed of by greedy optimisation */
+		*start*(.text)
+		KEEP(*start*(.text))
+		KEEP(*(.text.irq))
+
+		*(.text .stub .text.* .gnu.linkonce.t.*)
+		_etext = .;
+	} &gt; rom
+}
+</code></pre><p>这样我们就可以开始写固件程序了，我们首先需要用汇编初始化 CPU 状态，才能跳转到 C 程序。在 start.S 汇编代码里定义了 _start 入口函数，接下来一行跳转指令到 _crt0 函数，在那里完成 CPU 的初始化。</p><pre><code>// 包含 picorv32 自定义的 R-type 指令
+#include "custom_ops.S"
+
+.global _start
+_start:
+
+.org 0x00000000 # Reset
+  j _crt0
+
+.org 0x00000010 # IRQ
+_irq_vector:
+ 中断处理函数
+
+_crt0:
+ CPU 初始化
+</code></pre><p>有人可能会问，为什么要跳转到 _crt0 呢？直接在这里初始化 CPU 不就可以了吗？这是因为 picorv32 规定了在代码的 0x10 位置 (16 字节)，放置中断处理函数，每次 CPU 发生中断 (定时器，串口) 就会自动执行 0x10 位置的代码。</p><pre><code>0 字节：
+  上电后，自动执行这里的代码
+  这里代码太长，就会覆盖下面的中断处理
+
+16字节：
+  中断处理
+  放在这里的代码，每次 CPU 中断会自动执行；
+
+主程序：
+   CPU 初始化，写多长都可以，不用担心覆盖中断函数
+</code></pre><p>如果我们开始的时候不跳转，那就最多只能写 16 字节的代码，再写就覆盖中断函数了，所以我们把实际的初始化代码跳转到中断函数后面，就不用担心覆盖中断函数了。</p><blockquote>
+<p>顺便一提，_crt0 代表 C Runtime，意思是这段代码执行完就跳转到 C 环境</p>
+</blockquote><p>那么 CPU 初始化要做些什么呢？我们首先把寄存器用 0 初始化，RISC-V 一共有 32 个通用寄存器，所以我们首先把它们都复位成 0；接下来我们要先禁用全部中断，因为 CPU 还没初始化，我们不希望代码跳转到其他位置；然后就是设置栈空间，这样 CPU 就知道数据要保存在哪里；最后一步就是跳转到 main 函数了，从此我们就可以用 C 写 main() 了。</p><pre><code>_crt0:
+  /* 初始化 32 个通用寄存器 */
+  addi x1, zero, 0
+  addi x2, zero, 0
+  ... 省略 ...
+  addi x30, zero, 0
+  addi x31, zero, 0
+
+  /* 暂时关闭全部中断 */
+  li t0, 0xffffffff
+  picorv32_maskirq_insn(zero, t0)
+  /* reflect that in _irq_mask */
+  la t1, _irq_mask
+  sw t0, 0(t1)
+
+  ... 省略 ...
+  /* set main stack */
+  la sp, _fstack
+
+  /* 设置中断函数 */
+  la t0, _irq
+  picorv32_setq_insn(q2, t0)
+
+  /* jump to main */
+  jal ra, main
+
+1:
+  /* loop forever */
+  j 1b
+</code></pre><p>在跳转 main 函数之前，我们还设置了中断函数的位置 _irq，这一步其实并不是必要的。这个主要是因为我想把中断处理函数放在一个单独的 interrupt_gcc.S 文件里，不然 start.S 文件就太长了，我只希望把 CPU 初始化相关的代码放在 start.S 里面，看起来比较整洁，后面我会详细介绍中断。</p><p>这里还有一个好消息，其实 CPU 初始化的 start.S 代码 LiteX 也自动生成了，不同 CPU 的汇编初始化代码可以在 LiteX 仓库的 cpu 目录下找到，毕竟 CPU 初始化代码一般也都是由 CPU 的设计者提供，自己根据需要略微修改就可以了。</p><ul>
+<li><a href="https://github.com/enjoy-digital/litex/tree/master/litex/soc/cores/cpu" target="_blank" rel="noopener">LiteX CPU 初始化代码</a></li>
+</ul><h2 id="3-主函数-mainc" style=""><a class="anchor hidden-xs" href="#3-主函数-mainc" title="3-主函数-mainc"><i class="fa fa-link"></i></a>3. 主函数 main.c</h2><p>利用汇编初始化 CPU 后，我们就可以用 C  编写 main 函数了，感觉一下就轻松了不少。</p><p>但是在实际写 C 代码前，我们还需要提供一个最小的 C 环境，也就是 libc。这个可以由编译器提供，但是 riscv64-gcc 编译器默认只提供 64 位的 libc，虽然 64 位的 riscv-gcc 支持编译生成 32 位的 riscv 代码，但是并不提供 32 位的 libc，直接编译就会报错不支持。所以 LiteX 甚至非常贴心地为我们准备了 libc，在生成 SoC 后可以在 build 目录下找到需要的 libc。</p><p><img src="https://doc.wuhanstudio.cc/posts/picorv32_boot/litex_libc.png" alt="img"></p><p>不光 libc，LiteX 还无微不至地提供了驱动函数，例如定时器，i2c, SPI 等等，所以我们在使用了 LiteX 提供的这些 C 函数后，甚至可以直接调用 printf()。</p><p>下面的 main.c 看起来非常清晰，先包含 LiteX 提供的 libc 和 驱动函数，接下来打开中断，初始化串口，就可以反复打印 Hello World 了。</p><pre><code>#include &lt;stdio.h&gt;
+
+#include &lt;irq.h&gt;
+#include &lt;libbase/uart.h&gt;
+
+int main(void)
+{
+    // 打开中断
+    irq_setmask(0);
+    irq_setie(1);
+
+    // 串口初始化
+    uart_init();
+
+    ... 省略定时器中断 ...
+
+    // 打印 Hello World
+    printf("Hello World \n");
+
+    while(1)
+    {
+        if(timeup) {
+            printf("Hello World %d\n", count);
+            timeup = 0;
+        }
+    };
+
+    return 0;
+}
+</code></pre><p>相信上面的 main.c 不需要过多的解释，不过我省略了定时器中断相关的代码，因为这是唯一需要特别小心的地方，我在下一个部分单独介绍。</p><h2 id="4-中断处理-IRQ" style=""><a class="anchor hidden-xs" href="#4-中断处理-IRQ" title="4-中断处理-IRQ"><i class="fa fa-link"></i></a>4. 中断处理 IRQ</h2><p>如果我们不使用定时器和中断，上面的代码就能反复打印 Hello World 了，但是嵌入式的乐趣也就在各种硬件资源 (timer, i2c, spi, irq)，所以我在这个部分单独介绍 picorv32 的定时器中断。</p><p>前面我们提到，在程序的 0x10 (16 字节) 处放置的是 picorv32 默认的中断处理函数，但是我不希望 start.S 函数太长，所以在这个中断处理函数里，没有实际的中断处理，只是让它跳转到 interrupt_gcc.S 里定义的中断函数。</p><pre><code>// 0x10 位置保存中断函数
+.org 0x00000010 # IRQ
+_irq_vector:
+  // 保存栈和寄存器
+  addi sp, sp, -16
+  sw t0, 4(sp)
+  sw ra, 8(sp)
+
+  // 跳转到其他文件里的中断函数
+  picorv32_getq_insn(t0, q2)
+  sw t0, 12(sp)
+
+  jalr t0 // Call the true IRQ vector.
+
+  // 恢复栈和寄存器
+  lw t0, 12(sp)
+  picorv32_setq_insn(q2, t0) // Restore the true IRQ vector.
+  
+  lw ra, 8(sp)
+  lw t0, 4(sp)
+  addi sp, sp, 16
+
+  // 中断返回
+  picorv32_retirq_insn() // return from interrupt
+</code></pre><p>因此，也可以在 start.S 的初始化代码里看到这样的内容，这样就可以在 interrupt_gcc.S 里面定义 _irq 函数了：</p><pre><code>// 设置实际的中断函数名为 _irq
+la t0, _irq
+picorv32_setq_insn(q2, t0)
+</code></pre><p>另一方面，我们也不希望纯用汇编来写中断函数，那就太痛苦了，所以在 interrupt_gcc.S 里我们的目的是再一次跳转到 C 函数的中断处理。为了跳转到 C 中断处理，由于 picorv32 中断不会自动保存现场（寄存器状态），所以我们需要在汇编里手动保存寄存器和 stack 的状态，调用 C 的中断函数，在 C 函数返回后再手动恢复。</p><blockquote>
+<p>这也就是之前的文章里提到的，picorv32 硬件设计很简单，但是软件就要做很多处理了。</p>
+</blockquote><pre><code>#include "custom_ops.S"
+
+// 中断处理函数
+ .global _irq
+_irq:
+  // 保存寄存器
+  picorv32_setq_insn(q2, x1)
+  picorv32_setq_insn(q3, x2)
+
+  /* use x1 to index into irq_regs */
+  lui x1, %hi(irq_regs)
+  addi x1, x1, %lo(irq_regs)
+
+  /* use x2 as scratch space for saving registers */
+
+  /* q0 (== x1), q2(== x2), q3 */
+  picorv32_getq_insn(x2, q0)
+  sw x2,   0*4(x1)
+  picorv32_getq_insn(x2, q2)
+  sw x2,   1*4(x1)
+  picorv32_getq_insn(x2, q3)
+  sw x2,   2*4(x1)
+
+  /* save x3 - x31 */
+  sw x3,   3*4(x1)
+  sw x4,   4*4(x1)
+  ...
+  sw x30, 30*4(x1)
+  sw x31, 31*4(x1)
+
+  // 更新需要处理的中断在 _irq_pending
+  picorv32_getq_insn(t0, q1)
+  la t1, (_irq_pending)
+  sw t0, 0(t1)
+
+  /* prepare C handler stack */
+  lui sp, %hi(_irq_stack)
+  addi sp, sp, %lo(_irq_stack)
+
+  // 调用 C 中断函数
+  jal ra, irq
+
+  // 恢复寄存器
+  lui x1, %hi(irq_regs)
+  addi x1, x1, %lo(irq_regs)
+
+  /* restore q0 - q2 */
+  lw x2,   0*4(x1)
+  picorv32_setq_insn(q0, x2)
+  lw x2,   1*4(x1)
+  picorv32_setq_insn(q1, x2)
+  lw x2,   2*4(x1)
+  picorv32_setq_insn(q2, x2)
+
+  /* restore x3 - x31 */
+  lw x3,   3*4(x1)
+  lw x4,   4*4(x1)
+  ...
+  lw x30, 30*4(x1)
+  lw x31, 31*4(x1)
+
+  /* restore x1 - x2 from q registers */
+  picorv32_getq_insn(x1, q1)
+  picorv32_getq_insn(x2, q2)
+
+  // 中断返回
+  ret
+</code></pre><p>我们首先在 main.c 主函数里初始化定时器和中断，至于定时器相关寄存器的配置，我们需要阅读 LiteX 生成的文档，在编译 SoC 的时候会在 build/doc 目录生成文档，例如这个页面就定义了各个中断位：</p><p><img src="https://doc.wuhanstudio.cc/posts/picorv32_boot/litex_int.png" alt="img"></p><p>在 Timer0 的文档页面，我们可以看到应当如何设置定时器0相关的寄存器，因为这部分寄存器配置并没有遵循 RISC-V 的标准，但也比较简单，文档描述也非常清晰，所以就不详细介绍了。</p><p><img src="https://doc.wuhanstudio.cc/posts/picorv32_boot/litex_timer0.png" alt="img"></p><p>这样我们就可以 照着文档配置定时器，我生成的 SoC 时钟是 CONFIG_CLOCK_FREQUENCY= 24_000_000 = 24MHz，所以把定时器的数值设置为 CONFIG_CLOCK_FREQUENCY 就是定时 1 秒，超时后会进入中断函数，并自动重装定时器的值。</p><pre><code>// 打开全局中断
+irq_setmask(0);
+irq_setie(1);
+
+// 打开定时器0中断
+timer0_ev_enable_write(1);
+irq_setmask(irq_getmask() | (1 &lt;&lt; TIMER0_INTERRUPT));
+
+// 设置定时器0计时1秒
+timer0_en_write(0);
+timer0_load_write(0);
+timer0_reload_write(CONFIG_CLOCK_FREQUENCY);
+timer0_en_write(1);
+</code></pre><p>初始化完了定时器，我们终于可以用 C 写实际的中断函数了，用 C 写中断函数就非常简单，只是清除了对应的中断位，告诉 CPU 我们处理完中断了。</p><pre><code>#include &lt;stdio.h&gt;
+
+#include &lt;irq.h&gt;
+#include &lt;libbase/uart.h&gt;
+
+extern int volatile timeup;
+extern int volatile count;
+
+void irq(void)
+{
+    if(timer0_ev_pending_zero_read())
+    {
+        // 清除定时器中断处理位
+        timer0_ev_pending_zero_write(1);
+
+        // 主函数打印的数值 ++
+        timeup = 1;
+        count++;
+    }
+
+    if(uart_ev_pending_rx_read() || uart_ev_pending_tx_read())
+    {
+        // 串口中断处理
+        printf("UART Interrupt \n");
+        uart_isr();
+    }
+
+    return;
+}
+</code></pre><p>程序编译完后，我们就可以看到每隔1秒打印一个 Hello World，并且可以响应串口中断。</p><p><img src="https://doc.wuhanstudio.cc/posts/picorv32_boot/litex_output.png" alt="img"></p><h2 id="总结" style=""><a class="anchor hidden-xs" href="#总结" title="总结"><i class="fa fa-link"></i></a>总结</h2><p>虽然我们只是实现了一个定时打印 Hello World 和 串口中断，用现成的 MCU 和 SDK 可能分分钟就实现了，但是这个 MCU 是一个可以自定义的 SoC，我们可以根据需要给这个 SoC 灵活添加 i2c，SPI，UART 各种外设，甚至也可以给这个 SoC 换一个 CPU，反正 LiteX 会自动生成 CPU 的初始化代码，以及 libc 和基本的驱动代码。</p><p>另一方面，LiteX 这一套流程走下来，也对 CPU 指令集的设计，SoC 的综合，CPU 启动初始化，C 运行环境 和中断有了更深的理解，最后一步就是给这个 SoC 移植实时系统 RT-Thread Nano 了。</p><p>其实我三年前移植过了 picorv32 到 RT-Thread Nano，还可以使用 msh 控制台。不过一方面当时没有用 LiteX，而是 picorv32 的 Verilog 代码直接烧录到 FPGA，整个 SoC 不是那么灵活；另一方面，当时 <strong>picorv32 的 Verilog 配置部分没有打开硬件中断，全部用的软件中断</strong>。感兴趣的话下面链接是三年前不灵活的 picorv32，不过它的 RT-Thread 已经移植完成了。</p><ul>
+<li><a href="https://github.com/wuhanstudio/picorv32_EG4S20" target="_blank" rel="noopener">RT-Thread on Picorv32 (无硬件中断)</a></li>
+</ul><p>所以最近决定更进一步，用 LiteX 定制一个更灵活的 SoC，还能运行 RT-Thread。</p></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav">
+<li class=""><a href="#Picorv32-启动流程--中断-RV32IM" title="Picorv32 启动流程 + 中断 (RV32IM)">Picorv32 启动流程 + 中断 (RV32IM)</a><ul class="nav">
+<li><a href="#0-最终效果" title="0 最终效果">0 最终效果</a></li>
+<li><a href="#1-链接脚本-linkerld" title="1 链接脚本 linker.ld">1 链接脚本 linker.ld</a></li>
+<li><a href="#2-汇编启动-startS" title="2 汇编启动 start.S">2 汇编启动 start.S</a></li>
+<li><a href="#3-主函数-mainc" title="3. 主函数 main.c">3. 主函数 main.c</a></li>
+<li class=""><a href="#4-中断处理-IRQ" title="4. 中断处理 IRQ">4. 中断处理 IRQ</a></li>
+<li class=""><a href="#总结" title="总结">总结</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
+        <div class="toc"><ul class="nav">
+<li class=""><a href="#Picorv32-启动流程--中断-RV32IM" title="Picorv32 启动流程 + 中断 (RV32IM)">Picorv32 启动流程 + 中断 (RV32IM)</a><ul class="nav">
+<li><a href="#0-最终效果" title="0 最终效果">0 最终效果</a></li>
+<li><a href="#1-链接脚本-linkerld" title="1 链接脚本 linker.ld">1 链接脚本 linker.ld</a></li>
+<li><a href="#2-汇编启动-startS" title="2 汇编启动 start.S">2 汇编启动 start.S</a></li>
+<li><a href="#3-主函数-mainc" title="3. 主函数 main.c">3. 主函数 main.c</a></li>
+<li class=""><a href="#4-中断处理-IRQ" title="4. 中断处理 IRQ">4. 中断处理 IRQ</a></li>
+<li class=""><a href="#总结" title="总结">总结</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/js/bootstrap.min.js" integrity="sha256-kJrlY+s09+QoWjpkOrXXwhxeaoDz9FW5SaxF8I0DibQ=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>
