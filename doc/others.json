@@ -1,0 +1,35 @@
+[
+    {
+        "title": "Micro-ROS on RT-Thread",
+        "subtitle": "Google Summer of Code (GSoC).",
+        "author": "Han Wu",
+        "date": 13,
+        "month": "June",
+        "year": 2021,
+        "url": "posts/gsoc.html",
+        "type": "others",
+        "home": false
+    },
+    {
+        "title": "Gowalla: Mobile Social Networks",
+        "subtitle": "SCC 363 - Security and Risk.",
+        "author": "Han Wu",
+        "date": 12,
+        "month": "April",
+        "year": 2023,
+        "url": "posts/gowalla.html",
+        "type": "others",
+        "home": false
+    },
+    {
+        "title": "COVID-19 数据可视化",
+        "subtitle": "SCC 212 - Advanced Programming.",
+        "author": "Han Wu",
+        "date": 10,
+        "month": "April",
+        "year": 2020,
+        "url": "posts/covid.html",
+        "type": "embedded",
+        "home": false
+    }
+]

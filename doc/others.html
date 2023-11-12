@@ -12,9 +12,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
-
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
@@ -65,54 +62,8 @@
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
-
-                    <!-- Post preview-->
-                    <div class="post-preview">
-                        <a href="posts/gsoc.html">
-                            <h2 class="post-title">Micro-ROS on RT-Thread</h2>
-                            <h3 class="post-subtitle">Google Summer of Code (GSoC).</h3>
-                        </a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="https://wuhanstudio.cc">Han Wu</a>
-                            on June 13, 2021
-                        </p>
-                    </div>
-
-                    <!-- Divider-->
-                    <hr class="my-4" />
-
-                    <!-- Post preview-->
-                    <div class="post-preview">
-                        <a href="posts/gowalla.html">
-                            <h2 class="post-title">Gowalla: Mobile Social Networks</h2>
-                            <h3 class="post-subtitle">SCC 363 - Security and Risk</h3>
-                        </a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="#!">Han Wu</a>
-                            on April 12, 2020
-                        </p>
-                    </div>
-
-                    <!-- Divider-->
-                    <hr class="my-4" />
-
-                    <!-- Post preview-->
-                    <div class="post-preview">
-                        <a href="posts/covid.html">
-                            <h2 class="post-title">COVID-19 数据可视化</h2>
-                            <h3 class="post-subtitle">SCC 212 - Advanced Programming</h3>
-                        </a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="#!">Han Wu</a>
-                            on April 10, 2020
-                        </p>
-                    </div>
-
                     <!-- Pager-->
-                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">更多 →</a></div>
+                    <div class="d-flex justify-content-end mb-4" id="btn_more"><a class="btn btn-primary text-uppercase" href="#!">更多 →</a></div>
                 </div>
             </div>
         </div>
@@ -128,5 +79,12 @@
             </div>
         </footer>
 
+        <!-- Custome JS-->
+        <script src="js/scripts.js"></script>
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                showPosts(["others"], false);
+            })
+        </script>
     </body>
 </html>
