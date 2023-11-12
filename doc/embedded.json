@@ -1,0 +1,145 @@
+[
+    {
+        "title": "Picorv32 启动流程 + 中断 (RV32IM)",
+        "subtitle": "Picorv32 是一个只用 3000 行 Verilog 代码实现的 RISC-V CPU。",
+        "author": "Han Wu",
+        "date": 1,
+        "month": "October",
+        "year": 2023,
+        "url": "posts/picorv32_boot.html",
+        "type": "embedded",
+        "home": false
+    },
+    {
+        "title": "Picorv32 中断 + 定时器 指令 (RISC-V)",
+        "subtitle": "Picorv32 是一个只用 3000 行 Verilog 代码实现的 RISC-V CPU。",
+        "author": "Han Wu",
+        "date": 29,
+        "month": "September",
+        "year": 2023,
+        "url": "posts/picorv32_int.html",
+        "type": "embedded",
+        "home": false
+    },
+    {
+        "title": "LiteX 定制 SoC 上移植实时系统 (RT-Thread)",
+        "subtitle": "在用了各种 MCU 之后，一直都想用 FPGA 自己造一个 SoC，再给它移植操作系统。",
+        "author": "Han Wu",
+        "date": 3,
+        "month": "September",
+        "year": 2023,
+        "url": "posts/litex_rtt.html",
+        "type": "embedded",
+        "home": false
+    },
+    {
+        "title": "Buildroot 定制嵌入式 Linux (树莓派 4)",
+        "subtitle": "Buildroot 定制 Linux 内核固件，添加自己的软件包，以及自动初始化程序。",
+        "author": "Han Wu",
+        "date": 10,
+        "month": "March",
+        "year": 2023,
+        "url": "posts/buildroot_raspi.html",
+        "type": "embedded",
+        "home": true
+    },
+    {
+        "title": "RT-Thread 互补滤波器 (STM32 + 6 轴 IMU)",
+        "subtitle": "对于一个只有 6 轴 IMU 的 MCU，轻量级的 互补滤波器 (Complementary Filter) 更加合适，利用 3 轴陀螺仪和 3 轴加速度计来估计开发板的姿态 (Pitch, Roll, Yaw)。",
+        "author": "Han Wu",
+        "date": 7,
+        "month": "March",
+        "year": 2023,
+        "url": "posts/imu_filter.html",
+        "type": "embedded",
+        "home": true
+    },
+    {
+        "title": "LiteX 定制 SoC 上使用 C 和 Rust 嵌入式 (RISC-V)",
+        "subtitle": "在使用了各种开发板、MCU 后，开始尝试自己在 FPGA 上定制一个 SoC，并用 C 和 Rust 给这个 SoC 开发固件。",
+        "author": "Han Wu",
+        "date": 14,
+        "month": "January",
+        "year": 2023,
+        "url": "posts/litex_c_rust.html",
+        "type": "embedded",
+        "home": true
+    },
+    {
+        "title": "创建 Rust 嵌入式项目 (RISC-V)",
+        "subtitle": "这篇文章以 GD32VF103 Start 开发板为例，创建一个 Rust 经典的 blinky，又名点灯项目。",
+        "author": "Han Wu",
+        "date": 10,
+        "month": "January",
+        "year": 2023,
+        "url": "posts/rust_proj.html",
+        "type": "embedded",
+        "home": false
+    },
+    {
+        "title": "在 RTOS 上移植 MicroROS (ROS2)",
+        "subtitle": "这篇文章会先介绍一下 ROS2 的架构，接下来以 Arduino 和 RT-Thread 为例，介绍如何移植 MicroROS 到嵌入式平台。",
+        "author": "Han Wu",
+        "date": 31,
+        "month": "July",
+        "year": 2023,
+        "url": "posts/uros_rtt.html",
+        "type": "embedded",
+        "home": false
+    },
+    {
+        "title": "如何 伪造/篡改 USB 摄像头",
+        "subtitle": "深度学习能不能安全地部署？会不会有人能很轻易地攻击部署好的深度学习模型。",
+        "author": "Han Wu",
+        "date": 2,
+        "month": "February",
+        "year": 2022,
+        "url": "posts/usb_cam.html",
+        "type": "embedded",
+        "home": false
+    },
+    {
+        "title": "在 Picorv32 / 蜂鸟 E203 软核上运行 RT-Thread",
+        "subtitle": "这篇文章主要介绍一下如何在2个FPGA软核上运行 RT-Thread。",
+        "author": "Han Wu",
+        "date": 2,
+        "month": "October",
+        "year": 2021,
+        "url": "posts/picorv32_fpga.html",
+        "type": "embedded",
+        "home": true
+    },
+    {
+        "title": "Rust 嵌入式开发 STM32 & RISC-V",
+        "subtitle": "最近 Mozilla 的 Rust 和 Google 的 Golang 两门新语言非常受关注。",
+        "author": "Han Wu",
+        "date": 2,
+        "month": "October",
+        "year": 2021,
+        "url": "posts/erust.html",
+        "type": "embedded",
+        "home": true
+    },
+    {
+        "title": "在 RT-Thread 上使用 ROS1 / ROS2",
+        "subtitle": "MicroROS on RT-Thread.",
+        "author": "Han Wu",
+        "date": 2,
+        "month": "October",
+        "year": 2021,
+        "url": "posts/micro_ros.html",
+        "type": "embedded",
+        "home": true
+    },
+    {
+        "title": "RTT MSH 控制台显示彩色图片",
+        "subtitle": "RT-Thread vt100 软件包。",
+        "author": "Han Wu",
+        "date": 20,
+        "month": "September",
+        "year": 2021,
+        "url": "posts/vt100.html",
+        "type": "embedded",
+        "home": false
+    }
+]
