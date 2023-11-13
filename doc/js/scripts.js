@@ -1,7 +1,10 @@
+window.page = 0;
+var PAGINATION = 5;
+
 function showPosts(types, home) {
-    var all_posts = [];
+    let all_posts = [];
     for (let j = 0; j < types.length; j++){
-        var type = types[j];
+        let type = types[j];
         $.ajax({
             async: false,
             type: 'GET',
@@ -25,7 +28,9 @@ function showPosts(types, home) {
         return date_b - date_a;
     });
 
-    for (let i = 0; i < all_posts.length; i++) {
+    let nextPage = Math.min(all_posts.length, window.page + PAGINATION) 
+
+    for (let i = window.page; i < nextPage; i++) {
             // console.log(all_posts[i])
             $( "#btn_more").before(`
                 <!-- Post preview-->
@@ -43,5 +48,11 @@ function showPosts(types, home) {
                 <!-- Divider-->
                 <hr class="my-4" />
             `);
+    }
+
+    window.page = nextPage;
+
+    if (nextPage === all_posts.length) {
+        $('#btn_page').addClass("disabled");
     }
 }

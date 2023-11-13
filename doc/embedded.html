@@ -62,7 +62,9 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Pager-->
-                    <div class="d-flex justify-content-end mb-4" id="btn_more"><a class="btn btn-primary text-uppercase" href="#!">更多 →</a></div>
+                    <div class="d-flex justify-content-end mb-4" id="btn_more">
+                        <a class="btn btn-primary text-uppercase" href="#!" id="btn_page">更多 →</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,6 +85,10 @@
         <script>
             window.addEventListener('DOMContentLoaded', () => {
                 showPosts(["embedded"], false);
+                $("#btn_page").click(function()
+                {
+                    showPosts(["embedded"], false);
+                });
             })
         </script>
     </body>
