@@ -1,5 +1,16 @@
 [
     {
+        "title": "WASM 浏览器 / 云服务 / 嵌入式",
+        "subtitle": "WASM 在浏览器取得了巨大的成功，而 WASM 嵌入式还在画大饼，WASM 云服务略有小成，还在努力。",
+        "author": "Han Wu",
+        "date": 17,
+        "month": "November",
+        "year": 2023,
+        "url": "posts/wasm.html",
+        "type": "cloud",
+        "home": true
+    },
+    {
         "title": "Proxmox 搭建 k3s 集群 (负载均衡)",
         "subtitle": "Proxmox 搭建轻量级的 Kubernetes (k8s) 集群 K3S。",
         "author": "Han Wu",
