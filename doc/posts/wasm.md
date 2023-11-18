@@ -7,7 +7,7 @@ WASM 浏览器 / 云服务 / 嵌入式
 
 从 2023 年开始，一些最受欢迎的云原生应用 (Cloud Native) 在 KubeCon 有了自己的分会场 (Co-Located Events)，例如：**每个 k8s 集群几乎都会部署的 Istio，很受欢迎的 ArgoCD，针对机器学习的 Kubeflow**，还有一些我没用过，但是最近很受欢迎的 Cilium，OpenTofu (Terraform fork)。
 
-![img](https://doc.wuhanstudio.cc/posts/wasmargocd.png)
+![img](https://doc.wuhanstudio.cc/posts/wasm/argocd.png)
 
 最近准备参加 KubeCon 2024，发现有个 Cloud Native Wasm Day 专场。我印象中 WASM 最早是提升浏览器性能，后来在嵌入式也有一些应用，但是我还从来没有把 WASM 和 云服务 联系起来过，没想到 WASM 已经和 Rust 共同扩展到 Serverless 领域了。
 
@@ -42,15 +42,15 @@ emcc hello.c -o hello.html
 
 这样我们就可以在浏览器里面看到控制台输出了：
 
-![img](https://doc.wuhanstudio.cc/posts/wasmemscripten.png)
+![img](https://doc.wuhanstudio.cc/posts/wasm/emscripten.png)
 
 自从有了 WASM，浏览器的发展一发不可收拾，其中最过分的要属 AutoCAD 了，直接把他们 30 多年的桌面应用 AutoCAD 移植到了浏览器里面，从此我们可以在浏览器里出图了，这也证明了 Emscripten 已经成熟到可以转换大型桌面程序到浏览器了。
 
-![img](https://doc.wuhanstudio.cc/posts/wasmautocad.png)
+![img](https://doc.wuhanstudio.cc/posts/wasm/autocad.png)
 
 **后来，我们开始习惯在浏览器里面运行各种桌面应用了**，例如浏览器里用 MS Word, MS PPT，Photoshop (Photopea)，以及 Unity3D，Unreal 自动导出网页版。
 
-![img](https://doc.wuhanstudio.cc/posts/wasmphotopea.png)
+![img](https://doc.wuhanstudio.cc/posts/wasm/photopea.png)
 
 
 
@@ -91,7 +91,7 @@ emcc example.cpp -o example.html -s USE_SDL=2
 
 WASM 在浏览器里面运行的架构，看起来是这样的：
 
-![img](https://doc.wuhanstudio.cc/posts/wasmoverview.png)
+![img](https://doc.wuhanstudio.cc/posts/wasm/overview.png)
 
 > 那么能不能把 WASM 应用到浏览器以外的场景呢？例如云服务和嵌入式。
 
@@ -103,7 +103,7 @@ WASM 在浏览器里面运行的架构，看起来是这样的：
 
 接下来会介绍 WASM 在 嵌入式 (WAMR) 和 云服务 (Wasmer / Wasmtime) 的运行环境。
 
-![img](https://doc.wuhanstudio.cc/posts/wasmstructure.png)
+![img](https://doc.wuhanstudio.cc/posts/wasm/structure.png)
 
 
 
@@ -131,7 +131,7 @@ iwasm <wasm file>
 
 当然，WASM 嵌入式肯定是需要访问硬件的，于是就有了 [WebAssembly System Interface](https://github.com/WebAssembly/WASI)API (WASI) 来定义一些系统相关的 API，帮助 WASM 访问文件系统，IO，I2C，SPI，HTTP，Random，Socket，时钟等资源，然后通过 WASI-SDK 编写代码生成 .wasm 程序，通过嵌入式平台的 WAMR 运行环境执行代码。 
 
-![img](https://doc.wuhanstudio.cc/posts/wasmwasi.png)
+![img](https://doc.wuhanstudio.cc/posts/wasm/wasi.png)
 
 使用 WASM-SDK 的好处在于，这样写的嵌入式代码是跨操作系统 (Linux, Windows, MacOS, RTOS)，跨硬件平台的 (x64, ARM, RISC-V)，因为硬件相关的操作 WASI 都做了抽象。
 
@@ -243,7 +243,7 @@ Hello, world!
 
 另一方面，现在大部分 Serverless 应用，都是 Python 或者 JavaScript 写的，它们启动、运行速度都不够快，为了提升性能，Rust + Wasm + Serverless 很自然地走到了一起。
 
-![img](https://doc.wuhanstudio.cc/posts/wasmwasmer.png)
+![img](https://doc.wuhanstudio.cc/posts/wasm/wasmer.png)
 
 只不过，Serverless 自己发展得很好，例如 AWS Lambda。Rust + Serverless 在 AWS 的大力宣传下，发展速度也很快。但是 Rust + Serverless + WASM 三个一起就不太行了，比如 wasmer 官网用 Rust 关键词只搜到 37 个软件包，除去 hello-world，tuotrial， 真正用 Rust 编写的成熟 Serverless WASM 应用，并没有几个。
 
