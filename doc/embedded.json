@@ -1,5 +1,16 @@
 [
     {
+        "title": "Android 解锁 Bootloader (Magisk + Root)",
+        "subtitle": "The Big Brother is watching you using Android. – 1984",
+        "author": "Han Wu",
+        "date": 30,
+        "month": "November",
+        "year": 2023,
+        "url": "posts/android_bootloader.html",
+        "type": "embedded",
+        "home": false
+    },
+    {
         "title": "Picorv32 启动流程 + 中断 (RV32IM)",
         "subtitle": "Picorv32 是一个只用 3000 行 Verilog 代码实现的 RISC-V CPU。",
         "author": "Han Wu",
