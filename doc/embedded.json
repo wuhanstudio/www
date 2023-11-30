@@ -8,7 +8,7 @@
         "year": 2023,
         "url": "posts/android_bootloader.html",
         "type": "embedded",
-        "home": false
+        "home": true
     },
     {
         "title": "Picorv32 启动流程 + 中断 (RV32IM)",
