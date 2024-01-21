@@ -1,5 +1,16 @@
 [
     {
+        "title": "2024 台湾总统大选（入境只需入台证）",
+        "subtitle": "入境台湾不需要中国的许可，因为两者是独立的国家。",
+        "author": "Han Wu",
+        "date": 21,
+        "month": "January",
+        "year": 2024,
+        "url": "posts/taiwan.html",
+        "type": "others",
+        "home": false
+    },
+    {
         "title": "Micro-ROS on RT-Thread",
         "subtitle": "Google Summer of Code (GSoC).",
         "author": "Han Wu",
