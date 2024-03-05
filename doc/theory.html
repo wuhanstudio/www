@@ -37,7 +37,6 @@
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="embedded.html">嵌入式</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="cloud.html">云服务</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="others.html">其他</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="theory.html">Theory</a></li>
                         <!-- <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="https://blog.wuhanstudio.uk">EN</a></li> -->
                     </ul>
                 </div>
@@ -45,13 +44,14 @@
         </nav>
 
         <!-- Page Header-->
-        <header class="masthead" style="background-image: url('assets/img/cloud.png')">
+        <header class="masthead" style="background-image: url('assets/img/misc.jpg')">
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="page-heading">
-                            <h1>云服务</h1>
-                            <span class="subheading">Docker, Kubernetes, etc</span>
+                            <h1>Theory</h1>
+                            <span class="subheading">CV, CG, Scientific Machine Learning, etc.</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -60,14 +60,13 @@
 
         <!-- Main Content-->
         <div class="container px-4 px-lg-5">
-             <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Pager-->
-                    <div class="d-flex justify-content-end mb-4" id="btn_more" id="btn_page">
+                    <div class="d-flex justify-content-end mb-4" id="btn_more">
                         <a class="btn btn-primary text-uppercase" href="#!" id="btn_page">更多 →</a>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -86,10 +85,10 @@
         <script src="js/scripts.js"></script>
         <script>
             window.addEventListener('DOMContentLoaded', () => {
-                showPosts(["cloud"], false);
+                showPosts(["theory"], false);
                 $("#btn_page").click(function()
                 {
-                    showPosts(["cloud"], false);
+                    showPosts(["theory"], false);
                 });
             })
         </script>

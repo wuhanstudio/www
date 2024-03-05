@@ -1,0 +1,13 @@
+[
+    {
+    "title": "CNN 并没有用 卷积 (Convolution)",
+        "subtitle": "TL;DR: CNN uses cross-correlation, NOT convolution.",
+        "author": "Han Wu",
+        "date": 5,
+        "month": "March",
+        "year": 2024,
+        "url": "posts/convolution.html",
+        "type": "theory",
+        "home": true
+    }
+]
