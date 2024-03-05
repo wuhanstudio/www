@@ -28,6 +28,8 @@ $$
 然而如果我们细看这个方法，就会发现 **它其实并不是 Convolution (符号：$\ast$)，而是 Cross-Correlation (符号：$\otimes$)**：
 
 $$
+\begin{align}
+&
 \begin{bmatrix}
 a & b & c\\
 d & e & f\\
@@ -38,14 +40,17 @@ g & h & i
 1 & 2 & 3\\
 4 & 5 & 6\\
 7 & 8 & 9
-\end{bmatrix}
-= 
+\end{bmatrix}\\
+&= 
 a·1 + b·2 + c·3 + d·4 +\ ...\ + h·8 + i·9
+\end{align}
 $$
 
 实际上，真正的卷积应当是这样计算的：
 
 $$
+\begin{align}
+&
 \begin{bmatrix}
 a & b & c\\
 d & e & f\\
@@ -56,9 +61,10 @@ g & h & i
 1 & 2 & 3\\
 4 & 5 & 6\\
 7 & 8 & 9
-\end{bmatrix}
-= 
+\end{bmatrix}\\
+&= 
 a·9 + b·8 + c·7 + d·6 +\ ...\ + h·2 + i·1
+\end{align}
 $$
 
 上面的公式是 element-wise 对应位相乘 (ax1, bx2, cx3 ...)，而下面的公式则是把矩阵 **先上下左右反转** 之后，再对应位相乘的 (ax9, bx8, cx7 ...)：
@@ -78,12 +84,20 @@ $$
 
 如果我们用 $\omega$ 表示一个 $k \times k$ 的 kernel，用 $f(x, y)$ 表示输入图像，把这两种计算方式总结成公式，很容易就看出来区别了：
 $$
-\text{Cross-Correlation (深度学习误认为是卷积):\ } g(x, y)=\omega \otimes f(x,y)=\sum_{i=-k}^k{\omega(i,j)\  f(x+i, y+j)}
+\begin{align}
+g(x, y) &=\omega \otimes f(x,y)\\
+&= \sum_{i=-k}^k{\omega(i,j)\  f(x+i, y+j)}
+\end{align}
 $$
 $$
-\text{Convolution (信号处理里定义的卷积):\ } g(x, y)=\omega \ast f(x,y)=\sum_{i=-k}^k{\omega(i,j)f(x-i, y-j)}
+\begin{align}
+g(x, y) &= \omega \ast f(x,y) \\
+&= \sum_{i=-k}^k{\omega(i,j)f(x-i, y-j)}
+\end{align}
 $$
-上面 Cross-Correlation 是 $f(x+i, y+j)$，下面 Convolution 是 $f(x-i, y-j)$。
+上面 C
+
+ross-Correlation 是 $f(x+i, y+j)$，下面 Convolution 是 $f(x-i, y-j)$。
 
 
 
@@ -182,7 +196,10 @@ $$
 
 上面这张图可能是很多学 Signal Processing 的人牢记的公式，但是随着时间推移，却忘了为什么要翻转和平移信号。
 $$
-f \ast g(t)= \int_{0}^{t}f(\tau)g(t-\tau)d\tau,\ \text{for}\ f, g \in [0, \infty)=\int_{0}^{t}f(t-\tau)g(\tau)d\tau,\ \text{for}\ f, g \in [0, \infty)
+\begin{align}
+f \ast g(t) &= \int_{0}^{t}f(\tau)g(t-\tau)d\tau,\\\
+&=\int_{0}^{t}f(t-\tau)g(\tau)d\tau,\ \text{for}\ f, g \in [0, \infty)
+\end{align}
 $$
 其实原因很简单，我们在 t 时刻的输入信号 $g(t)$，也会受到  $\tau=0，g(\tau)=g(0)$ 时刻的影响：比如 $\tau=0$ 时刻轮胎的变形，短时间可能没有恢复，过了 $t$ 时刻还会残留一些影响，而这滞后的影响就是 $f(t-\tau)=f(t-0)=f(t)$ ，所以我们积分的是 $f(t-\tau)g(\tau)=f(t)g(0)$。
 
