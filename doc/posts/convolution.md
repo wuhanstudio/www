@@ -15,6 +15,7 @@ f \ast g(t)= \int_{0}^{t}f(\tau)g(t-\tau)d\tau,\ \text{for}\ f, g \in [0, \infty
 $$
 
 
+
 ## 1 Convolution in Deep Learning
 
 每当提到深度学习的卷积，很多人脑海里都会闪过这样一个小动画：
@@ -80,7 +81,7 @@ $$
 3 & 2 & 1
 \end{bmatrix}
 $$
-### 标准定义
+#### 标准定义
 
 如果我们用 $\omega$ 表示一个 $k \times k$ 的 kernel，用 $f(x, y)$ 表示输入图像，把这两种计算方式总结成公式，很容易就看出来区别了：
 $$
@@ -95,13 +96,11 @@ g(x, y) &= \omega \ast f(x,y) \\
 &= \sum_{i=-k}^k{\omega(i,j)f(x-i, y-j)}
 \end{align}
 $$
-上面 C
-
-ross-Correlation 是 $f(x+i, y+j)$，下面 Convolution 是 $f(x-i, y-j)$。
+上面 Cross-Correlation 是 $f(x+i, y+j)$，下面 Convolution 是 $f(x-i, y-j)$。
 
 
 
-### 信号处理
+#### 信号处理
 
 如果你以前学过 信号处理 (Signal Processing)，可能恍然大悟，一个信号 $f(x)$ 和另一个信号 $g(x)$ 做卷积，我们需要 **先反转信号**，平移后再求积分：
 $$
@@ -170,6 +169,7 @@ $$
 $$
 f \ast g(t)= \int_{-\infty}^{\infty}f(\tau)g(t-\tau)d\tau
 $$
+
 
 
 ## 4 为什么计算 Convolution 要 翻转 信号？
