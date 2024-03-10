@@ -1,13 +1,24 @@
 [
     {
-    "title": "CNN 并没有用 卷积 (Convolution)",
-        "subtitle": "TL;DR: CNN uses cross-correlation, NOT convolution.",
+    "title": "CV 库函数 - 不要误用卷积 (Convolution)",
+        "subtitle": "如何用不同的 CV 库 (OpenCV, scipy) 得到相同的卷积结果。",
         "author": "Han Wu",
         "date": 5,
         "month": "March",
         "year": 2024,
-        "url": "posts/convolution.html",
+        "url": "posts/conv_lib.html",
         "type": "theory",
         "home": true
-    }
+    },
+    {
+        "title": "CNN 并没有用 卷积 (Convolution)",
+            "subtitle": "TL;DR: CNN uses cross-correlation, NOT convolution.",
+            "author": "Han Wu",
+            "date": 5,
+            "month": "March",
+            "year": 2024,
+            "url": "posts/convolution.html",
+            "type": "theory",
+            "home": true
+        }
 ]
