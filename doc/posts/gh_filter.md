@@ -11,6 +11,12 @@ g-h 滤波器 与 PID 控制 (Filter & Control)
 
 当然，最受欢迎的滤波器当属 阿波罗 (Apollo) 登月计划闻名的 **卡尔曼滤波器 (Kalman Filter)**，但是要理解 Kalman Filter 需要一些理论背景，我会尝试从 互补滤波器，g-h Filter，再到 Bayesian Filter，循序渐进到 Kalman Filter 。
 
+- 滤波器
+- 互补滤波器 (Complementart Filter)
+- g-h 滤波器
+- 贝叶斯滤波器 (Bayesian Filter)
+- 卡尔曼滤波器 (Kalman Filter)
+
 
 
 ## 简介 滤波器 (Filter)
@@ -21,21 +27,21 @@ g-h 滤波器 与 PID 控制 (Filter & Control)
 
 ![](gh_filter/filter.png)
 
-虽然这个例子很形象地告诉我们：**各种传感器信号都是有噪声的，滤波器就是为了过滤掉这个噪声。**但是这个例子忽略了非常重要的两个概念：**预测 (Prediction) 和 观测 (Measurement)**，一个动态的过程。这两个概念可以说贯穿了 经典控制理论 以及 强化学习。
+虽然这个例子很形象地告诉我们：**各种传感器信号都是有噪声的，滤波器就是为了过滤掉这个噪声。**但是这个例子忽略了非常重要的两个概念：**预测 (Prediction) 和 测量 (Measurement)**，这是一个动态的过程。这两个概念可以说贯穿了 经典控制理论 以及 **强化学习**。
 
-相比之下，我更喜欢另一个经典例子（不过我忘了这个例子的出处）。
+> 相比之下，我更喜欢另一个经典例子（不过我忘了这个例子的出处）。
 
 假设你面前有两扇门 A B，一扇门是安全出口，而另一扇门的背后有一只老虎，你不得不选择一扇门离开。
 
 然而很不幸，你提前没有任何信息，无法预测老虎在哪一扇门的背后，于是只能说每一扇门后面都有 50% 的概率是只老虎。(A: 50%，B：50%)
 
-![](F:\www\doc\posts\gh_filter\problem.png)
+![](https://doc.wuhanstudio.cc/posts/gh_filter/problem.png)
 
 然而幸运的是，你有一双耳朵，可以偷偷听一听门背后的声音，并且你听到 A 出口后面传来了一声虎啸，这个时候你感觉 A 出口很危险。
 
-然而不幸的是，两扇门太近了，耳朵也可能会听错，假如有 80% 概率听对，20% 的概率听错。在经过耳朵观测 (Measurement) 后，你更新了自己的 估计 (Prediction)，两扇门后有老虎的概率分别是 A: 80%，B: 20%。
+然而不幸的是，两扇门太近了，耳朵也可能会听错，假如有 80% 概率听对，20% 的概率听错。在经过耳朵测量 (Measurement) 后，你更新了自己的 估计 (Prediction)，两扇门后有老虎的概率分别是 A: 80%，B: 20%。
 
-![](F:\www\doc\posts\gh_filter\measure.png)
+![](https://doc.wuhanstudio.cc/posts/gh_filter/measure.png)
 
 生命只有一次，以防万一，你又偷听了一次，这次又听到 A 出口后传来吼叫声。
 
@@ -50,7 +56,7 @@ g-h 滤波器 与 PID 控制 (Filter & Control)
 
 两次观测后，这下你有 94% 的概率相信老虎在 A 后面了，于是大胆地从 B 出口离开了。
 
-![](F:\www\doc\posts\gh_filter\result.png)
+![](https://doc.wuhanstudio.cc/posts/gh_filter/result.png)
 
 这个例子告诉我们 观测 (measurement) 的重要性，每一次偷听门后的声音，我们就对老虎的位置有了一个新的 估计 (Prediction)。滤波其实就是这样一个动态的过程：**在反复的观测中，不断更新自己的估计**。
 
