@@ -36,7 +36,7 @@ WASM / WASI - Kubecon 2024 (巴黎)
 
 接下来我会总结一下 WASM 云服务 和 嵌入式 比较受欢迎的几个项目。
 
-<img src="kubecon_wasm/k8s_decade.jpg" width=80%>
+<img src="kubecon_wasm/k8s_decade.jpg" width=100%>
 
 
 

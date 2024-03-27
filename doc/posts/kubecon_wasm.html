@@ -34,7 +34,7 @@
 </head>
 
 <body>
-    <div id="doc" class="markdown-body container-fluid"><h1 id="WASM--WASI---Kubecon-2024-Paris"><a class="anchor hidden-xs" href="#WASM--WASI---Kubecon-2024-Paris" title="WASM--WASI---Kubecon-2024-Paris"><i class="fa fa-link"></i></a>WASM / WASI - Kubecon 2024 Paris</h1><blockquote>
+    <div id="doc" class="markdown-body container-fluid"><h1 id="WASM--WASI---Kubecon-2024-巴黎"><a class="anchor hidden-xs" href="#WASM--WASI---Kubecon-2024-巴黎" title="WASM--WASI---Kubecon-2024-巴黎"><i class="fa fa-link"></i></a>WASM / WASI - Kubecon 2024 (巴黎)</h1><blockquote>
 <p>2024 年是 Kubernetes (k8s) 十周年，于是上周特地去法国参加了 Kubecon 2024。</p>
 </blockquote><p>现场各个 Talk 中出现最频繁的三个词：WASM / Rust / AI，于是刚好借这个机会整理一下 WASM 离大规模应用还有多远。</p><p>之前一篇文章我总结了 <a href="https://doc.wuhanstudio.cc/posts/wasm.html" target="_blank" rel="noopener">WASM 浏览器 / 云服务 / 嵌入式</a> 各个领域的应用：</p><ul>
 <li>WASM 在浏览器已经非常成熟，比如很多桌面应用都已经被移植到浏览器：Photoshop, AutoCAD，MatLab；</li>
@@ -53,7 +53,7 @@
 <p>这大概是 AI 的另一个好处，如果直接说 Llama，自主研发就被戳破了，但是说 AI 就没人知道具体是什么了。</p>
 </blockquote><ul>
 <li>Meta Llama：<a href="https://github.com/meta-llama/llama" target="_blank" rel="noopener">https://github.com/meta-llama/llama</a></li>
-</ul><p>接下来我会总结一下 WASM 云服务 和 嵌入式 比较受欢迎的几个项目。</p><img src="https://doc.wuhanstudio.cc/posts/kubecon_wasm/k8s_decade.jpg" width="80%"><h2 id="WASM-云服务"><a class="anchor hidden-xs" href="#WASM-云服务" title="WASM-云服务"><i class="fa fa-link"></i></a>WASM 云服务</h2><p>如果希望在云服务大规模部署 WASM 应用，我们需要一个 runtime，现在提到最多的三个：wasmtime, wasmer，WasmEdge。</p><ul>
+</ul><p>接下来我会总结一下 WASM 云服务 和 嵌入式 比较受欢迎的几个项目。</p><img src="https://doc.wuhanstudio.cc/posts/kubecon_wasm/k8s_decade.jpg" width="100%"><h2 id="WASM-云服务"><a class="anchor hidden-xs" href="#WASM-云服务" title="WASM-云服务"><i class="fa fa-link"></i></a>WASM 云服务</h2><p>如果希望在云服务大规模部署 WASM 应用，我们需要一个 runtime，现在提到最多的三个：wasmtime, wasmer，WasmEdge。</p><ul>
 <li>
 <p><a href="https://github.com/bytecodealliance/wasmtime" target="_blank" rel="noopener">wasmtime</a>：Bytecode Alliance 官方项目，各种语言支持比较全，开源贡献者最多；</p>
 </li>
@@ -126,14 +126,14 @@
             </a>
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
                 <div class="toc"><ul class="nav">
-<li class=""><a href="#WASM--WASI---Kubecon-2024-Paris" title="WASM / WASI - Kubecon 2024 Paris">WASM / WASI - Kubecon 2024 Paris</a><ul class="nav">
-<li class=""><a href="#WASM-云服务" title="WASM 云服务">WASM 云服务</a></li>
-<li class=""><a href="#WASM-嵌入式" title="WASM 嵌入式">WASM 嵌入式</a></li>
-<li class=""><a href="#WASI" title="WASI">WASI</a><ul class="nav">
+<li class=""><a href="#WASM--WASI---Kubecon-2024-巴黎" title="WASM / WASI - Kubecon 2024 (巴黎)">WASM / WASI - Kubecon 2024 (巴黎)</a><ul class="nav">
+<li><a href="#WASM-云服务" title="WASM 云服务">WASM 云服务</a></li>
+<li><a href="#WASM-嵌入式" title="WASM 嵌入式">WASM 嵌入式</a></li>
+<li><a href="#WASI" title="WASI">WASI</a><ul class="nav">
 <li><a href="#WASM-Component" title="WASM Component">WASM Component</a></li>
 </ul>
 </li>
-<li class=""><a href="#总结" title="总结">总结</a></li>
+<li><a href="#总结" title="总结">总结</a></li>
 </ul>
 </li>
 </ul>
@@ -143,14 +143,14 @@
     </div>
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
         <div class="toc"><ul class="nav">
-<li class=""><a href="#WASM--WASI---Kubecon-2024-Paris" title="WASM / WASI - Kubecon 2024 Paris">WASM / WASI - Kubecon 2024 Paris</a><ul class="nav">
-<li class=""><a href="#WASM-云服务" title="WASM 云服务">WASM 云服务</a></li>
-<li class=""><a href="#WASM-嵌入式" title="WASM 嵌入式">WASM 嵌入式</a></li>
-<li class=""><a href="#WASI" title="WASI">WASI</a><ul class="nav">
+<li class=""><a href="#WASM--WASI---Kubecon-2024-巴黎" title="WASM / WASI - Kubecon 2024 (巴黎)">WASM / WASI - Kubecon 2024 (巴黎)</a><ul class="nav">
+<li><a href="#WASM-云服务" title="WASM 云服务">WASM 云服务</a></li>
+<li><a href="#WASM-嵌入式" title="WASM 嵌入式">WASM 嵌入式</a></li>
+<li><a href="#WASI" title="WASI">WASI</a><ul class="nav">
 <li><a href="#WASM-Component" title="WASM Component">WASM Component</a></li>
 </ul>
 </li>
-<li class=""><a href="#总结" title="总结">总结</a></li>
+<li><a href="#总结" title="总结">总结</a></li>
 </ul>
 </li>
 </ul>
