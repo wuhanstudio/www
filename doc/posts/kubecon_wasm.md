@@ -90,7 +90,7 @@ WASM 整体目标还是为了实现跨系统、跨硬件的代码，所以需要
 从 WASI 的接口的进展，就能判断 WASM 距离应用还有多远 ：**一共有5个阶段，现在最为成熟的云服务也才到 Phase 3**：
 
 - wasm-io
-- wasm-filesyste
+- wasm-filesystem
 - wasm-socket
 - wasm-http
 - ...
@@ -131,9 +131,9 @@ interface canvas {
 }
 ```
 
-当然，如果写的 WASM 代码不遵循 WIT 标准，也是可以运行的，只不过这样可移植性大大降低地，需要反复造轮子。然而问题又在于，WIT 标准还在制定中，所以整体还有很长一段路要走。
+当然，如果写的 WASM 代码不遵循 WIT 标准，也是可以运行的，只不过这样可移植性大大降低，需要反复造轮子。然而问题又在于：WIT 标准还在制定中，所以整体还有很长一段路要走。
 
-最后关于 WASM 编程语言，Rust 毫无疑问是官方支持的第一梯队，其他的 Golang，Javascript，Python 只能说附带有支持。
+最后关于 WASM 编程语言：Rust 毫无疑问是官方支持的第一梯队，其他的 Golang，Javascript，Python 只能说附带有支持。
 
 
 

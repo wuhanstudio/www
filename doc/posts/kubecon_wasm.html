@@ -95,7 +95,7 @@
 <li><a href="https://github.com/bytecodealliance/wasm-micro-runtime/blob/main/product-mini/README.md#esp-idf" target="_blank" rel="noopener">ESP-IDF</a>，<a href="https://github.com/bytecodealliance/wasm-micro-runtime/blob/main/product-mini/README.md#alios-things" target="_blank" rel="noopener">AliOS-Things</a></li>
 </ul><h2 id="WASI"><a class="anchor hidden-xs" href="#WASI" title="WASI"><i class="fa fa-link"></i></a>WASI</h2><p>WASM 整体目标还是为了实现跨系统、跨硬件的代码，所以需要抽象很多 Interface，这些都是在 WASI 里面定义的。</p><p>从 WASI 的接口的进展，就能判断 WASM 距离应用还有多远 ：<strong>一共有5个阶段，现在最为成熟的云服务也才到 Phase 3</strong>：</p><ul>
 <li>wasm-io</li>
-<li>wasm-filesyste</li>
+<li>wasm-filesystem</li>
 <li>wasm-socket</li>
 <li>wasm-http</li>
 <li>…</li>
@@ -118,7 +118,7 @@
 
     draw-line: func(canvas: canvas-id, from: point, to: point);
 }
-</code></pre><p>当然，如果写的 WASM 代码不遵循 WIT 标准，也是可以运行的，只不过这样可移植性大大降低地，需要反复造轮子。然而问题又在于，WIT 标准还在制定中，所以整体还有很长一段路要走。</p><p>最后关于 WASM 编程语言，Rust 毫无疑问是官方支持的第一梯队，其他的 Golang，Javascript，Python 只能说附带有支持。</p><h2 id="总结"><a class="anchor hidden-xs" href="#总结" title="总结"><i class="fa fa-link"></i></a>总结</h2><p>如果想知道 WASM 最新的发展阶段，可以在下面网站上看看自己关心的 WASI 接口到了什么阶段。</p><p><a href="https://github.com/WebAssembly/WASI/blob/main/Proposals.md" target="_blank" rel="noopener">https://github.com/WebAssembly/WASI/blob/main/Proposals.md</a></p><p>当然，也可以参加 WASM 每双周的 meeting：</p><p><a href="https://github.com/WebAssembly/meetings/blob/main/process/attendance.md" target="_blank" rel="noopener">https://github.com/WebAssembly/meetings/blob/main/process/attendance.md</a></p></div>
+</code></pre><p>当然，如果写的 WASM 代码不遵循 WIT 标准，也是可以运行的，只不过这样可移植性大大降低，需要反复造轮子。然而问题又在于：WIT 标准还在制定中，所以整体还有很长一段路要走。</p><p>最后关于 WASM 编程语言：Rust 毫无疑问是官方支持的第一梯队，其他的 Golang，Javascript，Python 只能说附带有支持。</p><h2 id="总结"><a class="anchor hidden-xs" href="#总结" title="总结"><i class="fa fa-link"></i></a>总结</h2><p>如果想知道 WASM 最新的发展阶段，可以在下面网站上看看自己关心的 WASI 接口到了什么阶段。</p><p><a href="https://github.com/WebAssembly/WASI/blob/main/Proposals.md" target="_blank" rel="noopener">https://github.com/WebAssembly/WASI/blob/main/Proposals.md</a></p><p>当然，也可以参加 WASM 每双周的 meeting：</p><p><a href="https://github.com/WebAssembly/meetings/blob/main/process/attendance.md" target="_blank" rel="noopener">https://github.com/WebAssembly/meetings/blob/main/process/attendance.md</a></p></div>
     <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
         <div class="pull-right dropdown">
             <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
@@ -127,13 +127,13 @@
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
                 <div class="toc"><ul class="nav">
 <li class=""><a href="#WASM--WASI---Kubecon-2024-巴黎" title="WASM / WASI - Kubecon 2024 (巴黎)">WASM / WASI - Kubecon 2024 (巴黎)</a><ul class="nav">
-<li><a href="#WASM-云服务" title="WASM 云服务">WASM 云服务</a></li>
-<li><a href="#WASM-嵌入式" title="WASM 嵌入式">WASM 嵌入式</a></li>
-<li><a href="#WASI" title="WASI">WASI</a><ul class="nav">
+<li class=""><a href="#WASM-云服务" title="WASM 云服务">WASM 云服务</a></li>
+<li class=""><a href="#WASM-嵌入式" title="WASM 嵌入式">WASM 嵌入式</a></li>
+<li class=""><a href="#WASI" title="WASI">WASI</a><ul class="nav">
 <li><a href="#WASM-Component" title="WASM Component">WASM Component</a></li>
 </ul>
 </li>
-<li><a href="#总结" title="总结">总结</a></li>
+<li class=""><a href="#总结" title="总结">总结</a></li>
 </ul>
 </li>
 </ul>
@@ -144,13 +144,13 @@
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
         <div class="toc"><ul class="nav">
 <li class=""><a href="#WASM--WASI---Kubecon-2024-巴黎" title="WASM / WASI - Kubecon 2024 (巴黎)">WASM / WASI - Kubecon 2024 (巴黎)</a><ul class="nav">
-<li><a href="#WASM-云服务" title="WASM 云服务">WASM 云服务</a></li>
-<li><a href="#WASM-嵌入式" title="WASM 嵌入式">WASM 嵌入式</a></li>
-<li><a href="#WASI" title="WASI">WASI</a><ul class="nav">
+<li class=""><a href="#WASM-云服务" title="WASM 云服务">WASM 云服务</a></li>
+<li class=""><a href="#WASM-嵌入式" title="WASM 嵌入式">WASM 嵌入式</a></li>
+<li class=""><a href="#WASI" title="WASI">WASI</a><ul class="nav">
 <li><a href="#WASM-Component" title="WASM Component">WASM Component</a></li>
 </ul>
 </li>
-<li><a href="#总结" title="总结">总结</a></li>
+<li class=""><a href="#总结" title="总结">总结</a></li>
 </ul>
 </li>
 </ul>
