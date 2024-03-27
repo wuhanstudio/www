@@ -3,7 +3,7 @@
     "title": "g-h 滤波器 与 PID 控制 (Filter & Control)",
         "subtitle": "alpha-beta-gamma 滤波器 和 PID 控制 其实很像。",
         "author": "Han Wu",
-        "date": 27,
+        "date": 15,
         "month": "March",
         "year": 2024,
         "url": "posts/gh_filter.html",

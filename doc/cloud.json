@@ -1,5 +1,16 @@
 [
     {
+        "title": "WASM / WASI - Kubecon 2024 (巴黎)",
+        "subtitle": "2024 年是 Kubernetes (k8s) 十周年，于是上周特地去法国参加了 Kubecon 2024。",
+        "author": "Han Wu",
+        "date": 27,
+        "month": "March",
+        "year": 2024,
+        "url": "posts/kubecon_wasm.html",
+        "type": "cloud",
+        "home": true
+    },
+    {
         "title": "WASM 浏览器 / 云服务 / 嵌入式",
         "subtitle": "WASM 在浏览器取得了巨大的成功，而 WASM 嵌入式还在画大饼，WASM 云服务略有小成，还在努力。",
         "author": "Han Wu",
