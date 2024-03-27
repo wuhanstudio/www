@@ -14,7 +14,7 @@
     "title": "CV 库函数 - 不要误用卷积 (Convolution)",
         "subtitle": "如何用不同的 CV 库 (OpenCV, scipy) 得到相同的卷积结果。",
         "author": "Han Wu",
-        "date": 5,
+        "date": 10,
         "month": "March",
         "year": 2024,
         "url": "posts/conv_lib.html",
