@@ -8,6 +8,17 @@
         "year": 2024,
         "url": "posts/postdoc.html",
         "type": "others",
+        "home": false,
+    },
+    {
+        "title": "国内路由器内置监听软件",
+        "subtitle": "监狱里的高墙，刚入狱的时候，你痛恨周围的高墙；慢慢地，你习惯了生活在其中；最终你会发现自己离开它就无法生存了。",
+        "author": "Han Wu",
+        "date": 5,
+        "month": "April",
+        "year": 2024,
+        "url": "posts/antifraud.html",
+        "type": "others",
         "home": false
     },
     {
