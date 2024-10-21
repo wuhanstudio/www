@@ -73,7 +73,7 @@ g-h 滤波器 与 PID 控制 (Filter & Control)
 
 前面老虎的例子，主要是为了体现**反复观测** (measurement) 的重要性，这样传感器 (sensor) 即使有测量误差，我们也可以通过反复测量，越来越接近真实值。比如下面这张图，假如房间温度**几乎稳定不变**，我们连续采样50次取平均值，哪怕测量值一直在抖动，最后我们计算的平均值几乎和房间实际温度一样了，这就是传说中的**均值滤波**。
 
-![](gh_filter/mean_filter.gif)
+![](https://doc.wuhanstudio.cc/posts/gh_filter/mean_filter.gif)
 
 那么问题来了，**现实世界是一个动态的过程**，面对一个反复横跳的老虎，或者正在加热的水壶，我们测量是需要花时间的，每次测量完，老虎的位置、或者水温就变了，那我们要怎么 **动态地** 追踪老虎的位置或者水温呢？
 
@@ -88,7 +88,7 @@ g-h 滤波器 与 PID 控制 (Filter & Control)
 
 > 老虎的例子突出测量 (Measurement)，接下来突出预测 (Prediction)，这样滤波的两个核心就完整了。
 
-![](gh_filter/temp.gif)
+![](https://doc.wuhanstudio.cc/posts/gh_filter/temp.gif)
 
 现在开始正式介绍 g-h 滤波的算法了，这里先给出完整算法，其实就三行：
 $$
