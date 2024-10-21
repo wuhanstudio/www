@@ -1,4 +1,4 @@
-$g-h$ 滤波器 与 PID 控制 (Filter & Control)
+g-h 滤波器 与 PID 控制 (Filter & Control)
 ======================
 
 之前的一篇文章介绍了 **[互补滤波器 (Complementary Filter)](https://doc.wuhanstudio.cc/posts/imu_filter.html)**，并演示了如何从 IMU 原始数据，用互补滤波器得到更准确的 加速度 和 旋转角速度 (核心算法的代码就 7 行)。
@@ -17,9 +17,7 @@ $g-h$ 滤波器 与 PID 控制 (Filter & Control)
 - 贝叶斯滤波器 (Bayesian Filter)
 - 卡尔曼滤波器 (Kalman Filter)
 
-
-
-## 简介 滤波器 (Filter)
+# 简介 滤波器 (Filter)
 
 > 想起来还没介绍 什么是 滤波器 (Filter)？
 
@@ -71,7 +69,7 @@ $g-h$ 滤波器 与 PID 控制 (Filter & Control)
 
 
 
-# $g-h$ Filter
+# g-h Filter
 
 前面老虎的例子，主要是为了体现**反复观测** (measurement) 的重要性，这样传感器 (sensor) 即使有测量误差，我们也可以通过反复测量，越来越接近真实值。比如下面这张图，假如房间温度**几乎稳定不变**，我们连续采样50次取平均值，哪怕测量值一直在抖动，最后我们计算的平均值几乎和房间实际温度一样了，这就是传说中的**均值滤波**。
 
@@ -119,7 +117,7 @@ $$
 
 这也就是前面提到的，g-h 滤波引入的物理预测模型，是不是非常简单。
 
-![image-20241020202132434](https://doc.wuhanstudio.cc/posts/gh_filter/prediction)
+![image-20241020202132434](https://doc.wuhanstudio.cc/posts/gh_filter/prediction.png)
 
 第一步的公式是不是就能看懂了，如果我们知道当前时刻估计的温度 $\hat{x}_t$，就能根据速度 $v_t$ 来算出下一时刻的预测值 $\tilde{x}_{t+1}$。
 $$
@@ -131,7 +129,7 @@ $$
 
 > $\tilde{x}$ 读作 $x$ tilder，代表模型预测值；$\hat{x}$ 读作 $x$ hat，代表预测和测量结合，最终给出的估计值。
 
-![image-20241020211401055](https://doc.wuhanstudio.cc/posts/gh_filter/estimate)
+![image-20241020211401055](https://doc.wuhanstudio.cc/posts/gh_filter/estimate.png)
 
 
 
@@ -207,7 +205,7 @@ $$
 
 
 
-## $g-h$ 参数选择
+# g-h 参数选择
 
 文章开头的时候，我说 $g-h$ 滤波器和 PID 控制很像，现在你应该理解了，毕竟 $g$ 和 $h$ 分别代表位置和速度，刚好类似比例系数 P 和微分系数 D，并且 PID 控制的乐趣就在于调参，接下来我会介绍怎么调节 $g$ 和 $h$。
 
@@ -219,7 +217,7 @@ $$
 
 
 
-### 情况1：$g=0, h=0$
+## 情况1：g=0, h=0
 
 首先，我们看一下如果 $g=0$，$h=0$，那 $g-h$ 滤波器会画出怎样的估计曲线呢？
 
@@ -243,7 +241,7 @@ $$
 
 
 
-### 情况2：$g=1, h \neq 0$
+## 情况2：g=1, h≠0
 
 同样，你也可以先自己思考一下：
 
@@ -254,7 +252,7 @@ $$
 
 ![2024_10_21_11_58_11_484.mp4 [speed output image]](https://doc.wuhanstudio.cc/posts/gh_filter/g1hn.gif)
 
-### 情况3：$g=0, h \neq 0$
+## 情况3：g=0, h≠0
 
 那么，如果只有$g=0$ 呢？
 
@@ -277,7 +275,7 @@ $$
 
 
 
-### 情况4: $g=0.39, h=0.01$
+## 情况4: g=0.39, h≠0.01
 
 现在你应该感受到 $g-h$ 参数调节的重要性，在经过多次调节后，才能找到比较合适的参数。
 
