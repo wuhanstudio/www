@@ -12,7 +12,7 @@ g-h 滤波器 与 PID 控制 (Filter & Control)
 当然，最受欢迎的滤波器当属 阿波罗 (Apollo) 登月计划闻名的 **卡尔曼滤波器 (Kalman Filter)**，但是要理解 Kalman Filter 需要一些理论背景，我会尝试从 互补滤波器，$g-h$ Filter，再到 Bayesian Filter，循序渐进到 Kalman Filter 。
 
 - **简介滤波器**
-- 互补滤波器 (Complementart Filter)
+- 互补滤波器 (Complementary Filter)
 - **$g-h$ 滤波器**
 - 贝叶斯滤波器 (Bayesian Filter)
 - 卡尔曼滤波器 (Kalman Filter)
