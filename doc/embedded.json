@@ -1,5 +1,16 @@
 [
     {
+        "title": "Magnetometer 磁力计校正",
+        "subtitle": "有人可能会问磁力计为什么要校正呢？毕竟指南针不是一直指向南极吗？实际上并不是。",
+        "author": "Han Wu",
+        "date": 3,
+        "month": "November",
+        "year": 2024,
+        "url": "posts/magnet_calib.html",
+        "type": "embedded",
+        "home": true
+    },
+    {
         "title": "Android 解锁 Bootloader (Magisk + Root)",
         "subtitle": "The Big Brother is watching you using Android. – 1984",
         "author": "Han Wu",

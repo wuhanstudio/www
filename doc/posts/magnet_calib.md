@@ -46,7 +46,7 @@ declination = 36' / 60' = 0.6 degree
 heading = heading - declination 
 ```
 
-![image-20241103010305106](https://doc.wuhanstudio.cc/posts/magnet_calib/uk_declination)
+![image-20241103010305106](https://doc.wuhanstudio.cc/posts/magnet_calib/uk_declination.png)
 
 
 
@@ -66,7 +66,7 @@ mag_Z = mag_z - z_offset
 
 后面会介绍，怎么用软件 MotionCal 得到 x_offset，y_offset，z_offset。
 
-![image-20241103012012355](https://doc.wuhanstudio.cc/posts/magnet_calib/hard-iron)
+![image-20241103012012355](https://doc.wuhanstudio.cc/posts/magnet_calib/hard-iron.png)
 
 ## Soft-Iron Calibration
 
