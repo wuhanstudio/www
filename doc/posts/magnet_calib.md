@@ -114,7 +114,7 @@ m_{c} = \begin{bmatrix}
 0.009 & -0.021 & 1.038 
 \end{bmatrix} * \begin{bmatrix}
 m_x + 144\\
-m_y + 81\\
+m_y - 81\\
 m_z + 241
 \end{bmatrix}
 $$
