@@ -1,5 +1,16 @@
 [
     {
+        "title": "Quaternion 与 三维空间旋转",
+            "subtitle": "无论是做游戏开发、无人机，还是无人驾驶，相信很多人都听说过 Quaternion (四元数)。",
+            "author": "Han Wu",
+            "date": 4,
+            "month": "Nov",
+            "year": 2024,
+            "url": "posts/quaternion_rotate.html",
+            "type": "theory",
+            "home": true
+    },
+    {
     "title": "g-h 滤波器 与 PID 控制 (Filter & Control)",
         "subtitle": "alpha-beta-gamma 滤波器 和 PID 控制 其实很像。",
         "author": "Han Wu",
