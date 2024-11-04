@@ -90,7 +90,7 @@ z = cos\theta + i sin\theta
 $$
 这样用旋转来理解虚数 $i$，相信容易了不少，上面的 $z$ 我们就可以理解成逆时针旋转 $\theta$。
 
-![image-20241103175834400](C:\Users\Han\AppData\Roaming\Typora\typora-user-images\image-20241103175834400.png)
+![image-20241103175834400](https://doc.wuhanstudio.cc/posts/quaternion_rotate/quat_2d.png)
 
 那么如果我们先旋转 $\theta_1$，再旋转 $\theta_2$，会怎么样呢？相信大家都知道最终角度是 $\theta_1+\theta_2$，但是我们需要证明一下。
 
