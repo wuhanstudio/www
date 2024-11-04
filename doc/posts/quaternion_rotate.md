@@ -140,7 +140,7 @@ q = cos\theta + sin\theta(a\textbf{i} + b\textbf{j})
 $$
 这里说是三维，其实不过是多了个虚轴 $j$ 罢了，如果我们俯视这个三维的球体，会发现改变 $i, j$ 的参数，其实就是在旋转一个二维的单位向量 $ai + bj$，其中 $\ a^2+b^2=1$ 表示单位圆上的点。
 
-![Record_2024_11_04_19_34_46_65.mp4 [video-to-gif output image]](https://s1.ezgif.com/tmp/ezgif-1-13ba962dc1.gif)
+![Record_2024_11_04_19_34_46_65.mp4 [video-to-gif output image]](https://doc.wuhanstudio.cc/posts/quaternion_rotate/2d_rotation.gif)
 
 那么我们固定这个二维的向量  $ai + bj$，再改变 $\theta$ 是什么效果呢？注意看下面动画圈出来的红色向量，其实改变的就是与这个二维向量的夹角 $\theta$ 。如果我们切换到与 $ai+bj$ 垂直的正视图，又看到一个单位圆的旋转了。
 $$
