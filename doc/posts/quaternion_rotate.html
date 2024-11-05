@@ -34,7 +34,7 @@
 </head>
 
 <body>
-    <div id="doc" class="markdown-body container-fluid"><h1 id="Quaternion-与-三维空间旋转" style=""><a class="anchor hidden-xs" href="#Quaternion-与-三维空间旋转" title="Quaternion-与-三维空间旋转"><i class="fa fa-link"></i></a>Quaternion 与 三维空间旋转</h1><p>无论是做游戏开发 (Unity3D / Unreal 5)、无人机，还是无人驾驶，相信很多人都听说过 Quaternion (四元数)。</p><p>举个例子，无人机如果用 <strong>欧拉角</strong> 计算旋转姿态，就会像下面左边那样坠机；而使用 <strong>Quaternion</strong> 的话受到扰动后依旧能恢复平稳。</p><p><img src="https://doc.wuhanstudio.cc/posts/quaternion_rotate/drone.gif" alt="Record_2024_11_03_17_02_41_917.mp4 [video-to-gif output image]"></p><p>再举个例子，下面是 Unity3D 和 Unreal 戏引擎的 API， 只要是关于旋转的 API 都能发现 Quaternion。</p><pre><code># Unity3D
+    <div id="doc" class="markdown-body container-fluid"><h1 id="Quaternion-与-三维空间旋转" style=""><a class="anchor hidden-xs" href="#Quaternion-与-三维空间旋转" title="Quaternion-与-三维空间旋转"><i class="fa fa-link"></i></a>Quaternion 与 三维空间旋转</h1><p>无论是做游戏开发 (Unity3D / Unreal 5)、无人机，还是无人驾驶，相信很多人都听说过 Quaternion (四元数)。</p><p>举个例子，无人机如果用 <strong>欧拉角</strong> 计算旋转姿态，就会像下面左边那样坠机；而使用 <strong>Quaternion</strong> 的话受到扰动后依旧能恢复平稳。</p><p><img src="https://doc.wuhanstudio.cc/posts/quaternion_rotate/drone.gif" alt="Record_2024_11_03_17_02_41_917.mp4 [video-to-gif output image]"></p><p>再举个例子，下面是 Unity3D 和 Unreal 游戏引擎的 API， 只要是关于旋转的 API 都能发现 Quaternion。</p><pre><code># Unity3D
 public static Quaternion Slerp(Quaternion a, Quaternion b, float t);
 
 # Unreal

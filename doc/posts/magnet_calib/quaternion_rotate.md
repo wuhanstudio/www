@@ -7,7 +7,7 @@ Quaternion 与 三维空间旋转
 
 ![Record_2024_11_03_17_02_41_917.mp4 [video-to-gif output image]](https://doc.wuhanstudio.cc/posts/quaternion_rotate/drone.gif)
 
-再举个例子，下面是 Unity3D 和 Unreal 戏引擎的 API， 只要是关于旋转的 API 都能发现 Quaternion。
+再举个例子，下面是 Unity3D 和 Unreal 游戏引擎的 API， 只要是关于旋转的 API 都能发现 Quaternion。
 
 ```
 # Unity3D
