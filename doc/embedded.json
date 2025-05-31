@@ -1,5 +1,16 @@
 [
     {
+        "title": "Vulkan Compute Shader (GPU 硬件加速)",
+        "subtitle": "2025 年 五月 Vulkan 终于发布了第一个稳定版，新的时代又要开启了。",
+        "author": "Han Wu",
+        "date": 31,
+        "month": "May",
+        "year": 2025,
+        "url": "posts/vulkan_cs.html",
+        "type": "embedded",
+        "home": true
+    },
+    {
         "title": "Magnetometer 磁力计校正",
         "subtitle": "有人可能会问磁力计为什么要校正呢？毕竟指南针不是一直指向南极吗？实际上并不是。",
         "author": "Han Wu",
