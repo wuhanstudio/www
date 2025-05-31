@@ -50,10 +50,10 @@
 </blockquote><p>这里的 Shader 翻译为着色器，是因为一个 3D 物体通常由很多的顶点构成，而 Shader 的主要作用就是计算得到每一个点应该显示什么颜色，并且每一个点的渲染是独立并行的，这就为大规模并行计算提供了可能。</p><p>所以，当有人看到 Shader 可以并行给不同顶点计算颜色的时候，就很自然地想到用 Vertex Shader 和 Fragment Shader 来实现并行加速，但是它们本来是用来渲染的，并不是为了计算。所以，2012 年 OpenGL 推出了 Compute Shader 来满足专门为了计算使用的 Shader。</p><p><img src="https://doc.wuhanstudio.cc/posts/vulkan_cs/shader.png" alt="image-20250531175005093"></p><p>然而不幸的是，<strong>不同 GPU 的硬件指令是互不兼容的</strong>，每次都要为不同的 GPU 编译 Shader 源码是非常不方便的，而且不同厂家的 Shader 编译器也不一样，<strong>很有可能同一个 Shader 源码，不同厂家的编译器编译成了不同的功能</strong>。于是为了解决兼容的问题，2016 年诞生了 SPIR-V 指令，只要我们都先把 Shader 编码编译成更接近硬件指令的 SPIR-V，这样不同厂家就不容易理解错了。</p><p>总结一下，2012 年有了 OpenGL + Compute Shader，2015 年有了跨 GPU 的 SPIR-V 格式，这样我们就可以用 OpenGL 编写跨平台的 GPU 代码了。然而，OpenGL 已经非常老旧了，因为历史原因有很多兼容问题，于是 2016 年还推出了 OpenGL 的替代品 Vulkan，这样我们就可以用全新的 Vulkan + Compute Shader 跨 GPU 并行计算了。</p><p>2025 年五月，Vulkan 终于发布了第一个稳定版本，至此，一个新的时代就开始了。</p><br><h1 id="Vulkan-相关的工具"><a class="anchor hidden-xs" href="#Vulkan-相关的工具" title="Vulkan-相关的工具"><i class="fa fa-link"></i></a>Vulkan 相关的工具</h1><p>那么问题来了，既然 Vulkan Compute Shader 可以实现跨平台的 GPU 硬件加速，<strong>为什么很多人可能根本没听过 Vulkan 硬件加速呢</strong>？</p><p>一个原因是 Vulkan 非常灵活，比如我们用 OpenGL 是不能选择使用哪个 GPU 的，没法直接用 OpenGL 的 API 拿到 GPU 的硬件细节，但是 Vulkan 就可以办到，我们可以用 Vulkan 对 GPU 进行全方面的配置，这也导致 Vulkan 的代码非常长，业界广为流传：<strong>Vulkan 代码，1000 行起步，也只能画个三角形</strong>。</p><p>另一个原因是 Vulkan 是用 C/C++ 的，对于深度学习很多用 Python 的人来说，要用 C/C++ 去写几千行代码，这个门槛太高了，望而却步，所以实际深度学习领域 Vulkan并不是那么出名。</p><p>当然，前面也提到 Vulkan 是 2025年五月才发布第一个稳定版本，未来 Vulkan 毫无疑问会取代 OpenGL，以后肯定也会有更多深度学习领域的人听说 Vulkan。</p><blockquote>
 <p>Vulkan 几千行 C/C++ 代码起步可能过于惊悚，所以这里介绍一下能让 Vulkan 用起来更简单的工具。</p>
 </blockquote><ul>
-<li>Kompute: GPU 计算本身的代码是 Compute Shader 实现的，Vulkan 只不过是用来部署 Shader，而 Kompute 隐藏了 Vulkan 底层 API，大大减少了部署 Compute Shader 的代码量。</li>
-<li>JAX：可以实现 CPU / GPU 跨界硬件加速，CPU 使用 LLVM，GPU 则是 CUDA，ROCm，Metal 都有。</li>
-<li>Taichi：也是实现 CPU / GPU 异构硬件加速，不过首选 Vulkan 支持。</li>
-<li>Slang：这是 NVIDIA 官方推出的更高级的 Shader 语言，可以支持自动微分。</li>
+<li><a href="https://github.com/KomputeProject/kompute" target="_blank" rel="noopener"><strong>Kompute</strong></a>: GPU 计算本身的代码是 Compute Shader 实现的，Vulkan 只不过是用来部署 Shader，而 Kompute 隐藏了 Vulkan 底层 API，大大减少了部署 Compute Shader 的代码量。</li>
+<li><a href="https://github.com/jax-ml/jax" target="_blank" rel="noopener"><strong>JAX</strong></a>：可以实现 CPU / GPU 跨界硬件加速，CPU 使用 LLVM，GPU 则是 CUDA，ROCm，Metal 都有。</li>
+<li><a href="https://github.com/taichi-dev/taichi" target="_blank" rel="noopener"><strong>Taichi</strong></a>：也是实现 CPU / GPU 异构硬件加速，不过首选 Vulkan 支持。</li>
+<li><a href="https://github.com/shader-slang/slang" target="_blank" rel="noopener"><strong>Slang</strong></a>：这是 NVIDIA 官方推出的更高级的 Shader 语言，可以支持自动微分。</li>
 </ul><br><h1 id="总结"><a class="anchor hidden-xs" href="#总结" title="总结"><i class="fa fa-link"></i></a>总结</h1><p>Ollama 借助了 llama.cpp 项目来运行 LLM大模型，而 llama.cpp 使用了 Kompute 这个开源库，来实现 Vulkan Compute Shader 跨平台 GPU 硬件加速。</p></div>
     <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
         <div class="pull-right dropdown">
@@ -62,8 +62,8 @@
             </a>
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
                 <div class="toc"><ul class="nav">
-<li><a href="#Vulkan-Compute-Shader-GPU-硬件加速" title="Vulkan Compute Shader (GPU 硬件加速)">Vulkan Compute Shader (GPU 硬件加速)</a></li>
-<li><a href="#跨平台-GPU-硬件加速" title="跨平台 GPU 硬件加速">跨平台 GPU 硬件加速</a></li>
+<li class=""><a href="#Vulkan-Compute-Shader-GPU-硬件加速" title="Vulkan Compute Shader (GPU 硬件加速)">Vulkan Compute Shader (GPU 硬件加速)</a></li>
+<li class=""><a href="#跨平台-GPU-硬件加速" title="跨平台 GPU 硬件加速">跨平台 GPU 硬件加速</a></li>
 <li class=""><a href="#Vulkan-相关的工具" title="Vulkan 相关的工具">Vulkan 相关的工具</a></li>
 <li><a href="#总结" title="总结">总结</a></li>
 </ul>
@@ -73,8 +73,8 @@
     </div>
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
         <div class="toc"><ul class="nav">
-<li><a href="#Vulkan-Compute-Shader-GPU-硬件加速" title="Vulkan Compute Shader (GPU 硬件加速)">Vulkan Compute Shader (GPU 硬件加速)</a></li>
-<li><a href="#跨平台-GPU-硬件加速" title="跨平台 GPU 硬件加速">跨平台 GPU 硬件加速</a></li>
+<li class=""><a href="#Vulkan-Compute-Shader-GPU-硬件加速" title="Vulkan Compute Shader (GPU 硬件加速)">Vulkan Compute Shader (GPU 硬件加速)</a></li>
+<li class=""><a href="#跨平台-GPU-硬件加速" title="跨平台 GPU 硬件加速">跨平台 GPU 硬件加速</a></li>
 <li class=""><a href="#Vulkan-相关的工具" title="Vulkan 相关的工具">Vulkan 相关的工具</a></li>
 <li><a href="#总结" title="总结">总结</a></li>
 </ul>

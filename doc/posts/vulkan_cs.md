@@ -13,7 +13,7 @@ Vulkan Compute Shader (GPU 硬件加速)
 
 在花了一个月时间学习 Vulkan 之后，**现在已经可以写一套 GPU 加速代码，跨平台运行在各大 GPU 了**： Intel, NVIDIA,，AMD，Apple，甚至 ARM 的 Mali GPU 上，感觉打开了新世界的大门。 
 
-![](vulkan_cs/overview.jpeg)
+![](https://doc.wuhanstudio.cc/posts/vulkan_cs/overview.jpeg)
 
 于是借着这个机会总结了一下现在硬件加速的平台，可以分为 CPU，GPU 和 xPU，其中 CPU 和 GPU 都可以实现跨平台的代码，而 xPU 则是特殊的专用硬件，比如 Google 的 TPU。
 
@@ -31,7 +31,7 @@ Vulkan Compute Shader (GPU 硬件加速)
 
 但是，我不知道的是，**2012 年 OpenGL 4.3 还发布了 Compute Shader**，也是为了实现用 GPU 做并行计算。
 
-![](vulkan_cs/history.png)
+![](https://doc.wuhanstudio.cc/posts/vulkan_cs/history.png)
 
 这里可能有人会问：OpenGL 不是用来开发 3D 游戏，渲染 3D 场景的吗？OpenGL 还能用来做硬件加速吗？当然是可以的，熟悉计算机图形学的人 (Computer Graphics) 应该清楚，如果我们要渲染一个 3D 物体，需要给 OpenGL 提供 Vertex Shader 和 Fragment Shader。
 
@@ -45,7 +45,7 @@ Vulkan Compute Shader (GPU 硬件加速)
 
 所以，当有人看到 Shader 可以并行给不同顶点计算颜色的时候，就很自然地想到用 Vertex Shader 和 Fragment Shader 来实现并行加速，但是它们本来是用来渲染的，并不是为了计算。所以，2012 年 OpenGL 推出了 Compute Shader 来满足专门为了计算使用的 Shader。
 
-![image-20250531175005093](vulkan_cs/shader.png)
+![image-20250531175005093](https://doc.wuhanstudio.cc/posts/vulkan_cs/shader.png)
 
 然而不幸的是，**不同 GPU 的硬件指令是互不兼容的**，每次都要为不同的 GPU 编译 Shader 源码是非常不方便的，而且不同厂家的 Shader 编译器也不一样，**很有可能同一个 Shader 源码，不同厂家的编译器编译成了不同的功能**。于是为了解决兼容的问题，2016 年诞生了 SPIR-V 指令，只要我们都先把 Shader 编码编译成更接近硬件指令的 SPIR-V，这样不同厂家就不容易理解错了。
 
@@ -67,10 +67,10 @@ Vulkan Compute Shader (GPU 硬件加速)
 
 > Vulkan 几千行 C/C++ 代码起步可能过于惊悚，所以这里介绍一下能让 Vulkan 用起来更简单的工具。
 
-- Kompute: GPU 计算本身的代码是 Compute Shader 实现的，Vulkan 只不过是用来部署 Shader，而 Kompute 隐藏了 Vulkan 底层 API，大大减少了部署 Compute Shader 的代码量。
-- JAX：可以实现 CPU / GPU 跨界硬件加速，CPU 使用 LLVM，GPU 则是 CUDA，ROCm，Metal 都有。 
-- Taichi：也是实现 CPU / GPU 异构硬件加速，不过首选 Vulkan 支持。
-- Slang：这是 NVIDIA 官方推出的更高级的 Shader 语言，可以支持自动微分。
+- [**Kompute**](https://github.com/KomputeProject/kompute): GPU 计算本身的代码是 Compute Shader 实现的，Vulkan 只不过是用来部署 Shader，而 Kompute 隐藏了 Vulkan 底层 API，大大减少了部署 Compute Shader 的代码量。
+- [**JAX**](https://github.com/jax-ml/jax)：可以实现 CPU / GPU 跨界硬件加速，CPU 使用 LLVM，GPU 则是 CUDA，ROCm，Metal 都有。 
+- [**Taichi**](https://github.com/taichi-dev/taichi)：也是实现 CPU / GPU 异构硬件加速，不过首选 Vulkan 支持。
+- [**Slang**](https://github.com/shader-slang/slang)：这是 NVIDIA 官方推出的更高级的 Shader 语言，可以支持自动微分。
 
 <br/>
 
