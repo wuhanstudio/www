@@ -47,6 +47,8 @@ Vulkan Compute Shader (GPU 硬件加速)
 
 所以，当有人看到 Shader 可以并行给不同顶点计算颜色的时候，就很自然地想到用 Vertex Shader 和 Fragment Shader 来实现并行加速，但是它们本来是用来渲染的，并不是为了计算。所以，2012 年 OpenGL 推出了 Compute Shader 来满足专门为了计算使用的 Shader。
 
+## SPIR-V 指令
+
 然而不幸的是，**不同 GPU 的硬件指令是互不兼容的**，每次都要为不同的 GPU 编译 Shader 源码是非常不方便的，而且不同厂家的 Shader 编译器也不一样，**很有可能同一个 Shader 源码，不同厂家的编译器编译成了不同的功能**。于是为了解决兼容的问题，2016 年诞生了 SPIR-V 指令，只要我们都先把 Shader 编码编译成更接近硬件指令的 SPIR-V，这样不同厂家就不容易理解错了。
 
 总结一下，2012 年有了 OpenGL + Compute Shader，2015 年有了跨 GPU 的 SPIR-V 格式，这样我们就可以用 OpenGL 编写跨平台的 GPU 代码了。然而，OpenGL 已经非常老旧了，因为历史原因有很多兼容问题，于是 2016 年还推出了 OpenGL 的替代品 Vulkan，这样我们就可以用全新的 Vulkan + Compute Shader 跨 GPU 并行计算了。
