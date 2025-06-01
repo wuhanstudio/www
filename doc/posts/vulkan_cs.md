@@ -36,16 +36,16 @@ Vulkan Compute Shader (GPU 硬件加速)
 这里可能有人会问：OpenGL 不是用来开发 3D 游戏，渲染 3D 场景的吗？OpenGL 还能用来做硬件加速吗？当然是可以的，熟悉计算机图形学的人 (Computer Graphics) 应该清楚，如果我们要渲染一个 3D 物体，需要给 OpenGL 提供 Vertex Shader 和 Fragment Shader。
 
 > 这里简单介绍一下什么是 Shader （着色器），比如很多人玩游戏的时候，例如下面的黑神话悟空，经常会在游戏启动的时候看见正在进行着色器 (Shader) 编译，这里的 Shader 其实就是运行在 GPU 上的代码。
->
-> 但是 Shader 是源代码，我们需要把它编译成能在 GPU 上运行的指令，然而不同 GPU 的指令是不兼容的，所以游戏第一次加载的时候，需要把源代码 Shader 编译成你电脑 GPU 能认识的指令集。
->
+
+> 不过 Shader 是源代码，我们需要把它编译成能在 GPU 上运行的指令，然而不同 GPU 的指令是不兼容的，所以游戏第一次加载的时候，需要把源代码 Shader 编译成你电脑 GPU 能认识的指令集。
+
+![image-20250531175005093](https://doc.wuhanstudio.cc/posts/vulkan_cs/shader.png)
+
 > 那么，如果我们电脑从 NVIDIA 显卡，换成了 AMD 显卡，是不是需要重新编译 Shader 呢？那当然是需要的，所以如果你换了一个厂家的显卡，重新进入游戏会发现又要重新编译着色器了。
 
 这里的 Shader 翻译为着色器，是因为一个 3D 物体通常由很多的顶点构成，而 Shader 的主要作用就是计算得到每一个点应该显示什么颜色，并且每一个点的渲染是独立并行的，这就为大规模并行计算提供了可能。
 
 所以，当有人看到 Shader 可以并行给不同顶点计算颜色的时候，就很自然地想到用 Vertex Shader 和 Fragment Shader 来实现并行加速，但是它们本来是用来渲染的，并不是为了计算。所以，2012 年 OpenGL 推出了 Compute Shader 来满足专门为了计算使用的 Shader。
-
-![image-20250531175005093](https://doc.wuhanstudio.cc/posts/vulkan_cs/shader.png)
 
 然而不幸的是，**不同 GPU 的硬件指令是互不兼容的**，每次都要为不同的 GPU 编译 Shader 源码是非常不方便的，而且不同厂家的 Shader 编译器也不一样，**很有可能同一个 Shader 源码，不同厂家的编译器编译成了不同的功能**。于是为了解决兼容的问题，2016 年诞生了 SPIR-V 指令，只要我们都先把 Shader 编码编译成更接近硬件指令的 SPIR-V，这样不同厂家就不容易理解错了。
 
