@@ -18,7 +18,7 @@ AI for TDTR 探索
 
 这里简单介绍一下 TDTR 实验，它的目的是测量材料的热性质，例如热导率 (Thermal Conductivity)、热容 (Volumetric Heat Capacity)，试验台架看起来是这样的：
 
-[![img]https://doc.wuhanstudio.cc/posts/tdtr_slang/tdtr_exp.png)](https://pmiclab.com/testing-services/thermal-conductivity/time-domain-thermoreflectance-tdtr/)
+[![img](https://doc.wuhanstudio.cc/posts/tdtr_slang/tdtr_exp.png)](https://pmiclab.com/testing-services/thermal-conductivity/time-domain-thermoreflectance-tdtr/)
 
 可能有人会注意到，不是说测量热性质吗？这明显看起来是一个光学台架呀。
 
@@ -119,13 +119,13 @@ $$
 
 于是就诞生了 **PINN (Physics Informed Neural Network)**，其实想法非常直白，就是在深度学习模型训练的时候，在 Loss Function 里面加上一些物理约束：
 $$
-\text{loss} = \text{loss}_{mse} + \bold{\text{loss}_{physics}}
+\text{loss} = \text{loss}_{mse} + \boldsymbol{\text{loss}_{physics}}
 $$
 而常见的物理约束，可以是偏微分方程，因为深度学习求导数是非常容易的。
 
 比如 Navier-Stokes 流体方程：
 $$
-\nabla \cdot \bold{u}=0
+\nabla \cdot \boldsymbol{u}=0
 $$
 这个等式右边的零约束，就可以加入到 Loss Function 里面。
 
