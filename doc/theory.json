@@ -1,5 +1,16 @@
 [
     {
+        "title": "AI for TDTR 探索",
+            "subtitle": "AI for Time-Domain Thermoreflectance (TDTR)",
+            "author": "Han Wu",
+            "date": 1,
+            "month": "Sep",
+            "year": 2025,
+            "url": "posts/tdtr_slang.html",
+            "type": "theory",
+            "home": true
+    },
+    {
         "title": "Quaternion 与 三维空间旋转",
             "subtitle": "无论是做游戏开发、无人机，还是无人驾驶，相信很多人都听说过 Quaternion (四元数)。",
             "author": "Han Wu",
